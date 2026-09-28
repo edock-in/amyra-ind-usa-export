@@ -31,7 +31,7 @@ Access ends if your Edock account is no longer verified, or if it is used to har
 - **Rupees next to dollars.** Any dollar amount a player sees also shows its rupee value at the `FX` rate.
 - **Cite a source for every fact.** When you change a rule, form, fee, deadline or duty rate, link an official source in the pull request. Good sources include DGFT, the GST portal, RBI, ICEGATE, USPTO, IRS, FDA, CPSC, US Customs and Border Protection, and Amazon Seller Central help pages.
 - **Keep it one static page.** No image or audio files, no trackers, no analytics, and no new network requests other than Google Fonts. The page must work as a plain file and inside hosts that block other sites.
-- **Collect nothing.** The game stores progress only in the player's own browser and never sends personal data anywhere.
+- **Collect nothing.** The game stores progress only in the player's own browser and never sends personal data anywhere. Links to edock.io carry campaign tags, built by `tagged()` in `src/game.js`. Keep them, so Edock can see which game sent each visitor.
 - **Test before you ask for review.** Play one full run at phone width and on a desktop, with sound on and off.
 
 ## Reporting outdated information

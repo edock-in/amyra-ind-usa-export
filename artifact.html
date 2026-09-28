@@ -137,6 +137,19 @@ button{font-family:inherit;cursor:pointer}
 .tile .k{font-size:12px;color:var(--ink2)}
 .tile .v{font-weight:700;font-size:16px;margin-top:4px;line-height:1.3;font-variant-numeric:tabular-nums}
 .tile .v.pos{color:var(--green2)} .tile .v.neg{color:var(--red2)}
+.promo{margin-top:14px;background:var(--night2);color:#FFF;border:2px solid var(--ink);border-radius:12px;padding:14px;box-shadow:0 4px 0 #0E1024;text-align:left}
+.promo .eyebrow{font-family:var(--f-title);font-size:9px;letter-spacing:.04em;line-height:1.6;color:var(--marigold)}
+.promo .pitch{font-size:16px;font-weight:500;line-height:1.35;margin-top:6px}
+.promo .ev{display:flex;gap:12px;align-items:center;margin-top:12px;background:#0E1024;border-radius:10px;padding:10px}
+.promo .cal{flex:none;width:58px;border:2px solid var(--marigold);border-radius:8px;overflow:hidden;text-align:center;background:#FFF;color:var(--ink)}
+.promo .cal b{display:block;background:var(--red);color:#FFF;font-family:var(--f-title);font-size:9px;padding:5px 0 4px}
+.promo .cal span{display:block;font-weight:700;font-size:26px;line-height:1;padding:6px 0 5px}
+.promo .ev-t{font-weight:700;font-size:15px;line-height:1.25}
+.promo .ev-m{font-size:13px;color:#C9D0F5;line-height:1.3;margin-top:3px}
+.promo .cta{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;text-decoration:none;font-weight:700;font-size:16px;line-height:1.2;padding:14px 12px;background:var(--marigold);color:var(--ink);border:2px solid var(--ink);border-radius:10px;box-shadow:0 3px 0 #000}
+.promo .cta:active{transform:translateY(3px);box-shadow:none}
+.promo .cta canvas{image-rendering:pixelated;width:20px;height:20px}
+.promo .fine{font-size:12px;color:#9AA4D6;margin-top:8px;text-align:center}
 .credits{margin-top:14px;font-size:12px;color:var(--ink2);text-align:center;line-height:1.35}
 .credits a{color:var(--blue2)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -246,6 +259,7 @@ mute:'R9 2 2 9 e;R9 2 5 2 e;C7 12 3 e;L2 2 14 14 r;L3 2 15 14 r',
 refund:'R2 6 12 9 c;O2 6 12 9 k;R4 4 8 2 l;O4 4 8 2 k;M coin 4 8;R7 1 2 3 k',
 timer:'C8 9 6 w;C8 9 6 k;C8 9 5 w;R7 1 2 2 k;R8 5 1 4 k;R8 9 3 1 k;R4 11 8 1 r',
 key:'C5 6 3 y;C5 6 3 k;C5 6 2 y;R7 5 8 2 y;O7 5 8 2 k;R12 7 1 2 y;R14 7 1 3 y',
+ticket:'R1 4 14 9 y;O1 4 14 9 k;R1 7 2 3 k;R14 7 1 3 k;R10 5 1 1 k;R10 7 1 1 k;R10 9 1 1 k;R10 11 1 1 k;R4 6 4 1 r;R4 8 5 1 O;R4 10 3 1 O',
 map:'R1 2 14 12 s;O1 2 14 12 k;L3 4 6 8 b;L6 8 10 6 b;L10 6 13 11 b;R4 10 2 2 g;R9 4 2 2 r',
 };
 const iconCache={};
@@ -436,6 +450,20 @@ function drawClouds(ctx,camX,W){const off=camX*0.15;for(const c of CLOUDS){const
 /* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
 /* ============ CONTENT ============ */
 const UNITS=300,FX=84;
+const GAME_ID='amyra-ind-usa-export';
+/* The live session promoted at the end of the game. After endsAt the event card hides itself
+   and the button points to all upcoming Edock sessions instead. */
+const SESSION={
+  title:'India to USA: Your first export on Amazon',
+  host:'With Nishant Chaudhary, Business Head, Amyra Farms',
+  when:'Fri, 2 Oct \u00B7 7:00 to 8:30 PM IST \u00B7 Zoom',
+  month:'OCT',day:'2',price:'\u20B9249',
+  url:'https://edock.io/guest/community?event=india-to-usa-your-first-export-on-amazon&tab=events',
+  campaign:'india-to-usa-first-export-2oct',
+  endsAt:'2026-10-02T20:30:00+05:30',
+  allUrl:'https://edock.io/guest/community?tab=events',
+  allCampaign:'edock-sessions'
+};
 const PRODUCTS={
   bottle:{name:'Copper bottle',sprite:'bottle',price:24.99,cost:350,fba:5.5,duty:0.03,compliance:'coo',tag:'Light, tough, India-famous',kwOk:'copper water bottle',kwBad:['tamba bottle','jal patra']},
   spice:{name:'Spice blend',sprite:'spice',price:12.99,cost:120,fba:3.9,duty:0.02,compliance:'fda',tag:'Cheap to make, food rules apply',kwOk:'garam masala seasoning',kwBad:['masala powder packet','desi masala']},
@@ -683,8 +711,18 @@ function travelCard(){const nxt=STATIONS[S.station];panel.innerHTML='';const c=e
   a.appendChild(b);c.appendChild(a);panel.appendChild(c);panel.scrollTop=0;hintEl.classList.add('show');setTimeout(()=>hintEl.classList.remove('show'),3500);}
 function arrive(){arrived=true;walking=false;hurry=false;const st=STATIONS[S.station];S.px=st.x-6;computeSteps();S.stepIdx=Math.min(S.stepIdx,steps.length-1);toast(st.name.toUpperCase());AudioKit.sfx.blip();hud();renderStep();save();}
 function doneCard(){panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl('heart',3));const tt=el('div');tt.appendChild(el('div','card-title','Journey complete'));tt.appendChild(el('div','card-sub',(S.brand||'Your brand')+' went from a workshop in India to a home in America and the money came back.'));head.appendChild(tt);c.appendChild(head);
-  c.appendChild(el('div','card-line','The results stay here. Close them, reopen them, or start over with another product.'));
+  c.appendChild(sessionPromo('end-card'));
+  c.appendChild(el('div','card-line','Your results stay here. Close them, reopen them, or start over with another product.'));
   actions(c,[['See results','sec',()=>showEnd(false),'rupee'],['Passport','sec',showPassport,'stampbook'],['Play again, new product','go',restart,'walk']]);panel.appendChild(c);}
+/* Links to Edock carry UTM tags so edock.io's analytics can see the visit came from this game.
+   The game itself sends nothing. */
+function tagged(url,campaign,placement){try{const u=new URL(url);u.searchParams.set('utm_source',GAME_ID);u.searchParams.set('utm_medium','game');u.searchParams.set('utm_campaign',campaign);u.searchParams.set('utm_content',placement);if(S&&S.product)u.searchParams.set('utm_term',S.product);return u.toString();}catch(e){return url;}}
+function sessionPromo(placement){const live=Date.now()<Date.parse(SESSION.endsAt);const box=el('div','promo');
+  box.appendChild(el('div','eyebrow','YOU MADE IT TO THE END'));
+  box.appendChild(el('div','pitch',live?'That means you will enjoy our live online session. Ask real exporters everything this game could not answer.':'Keep going with Edock\u2019s live sessions, where people who export for real answer your questions.'));
+  if(live){const ev=el('div','ev');const cal=el('div','cal');cal.appendChild(el('b',null,SESSION.month));cal.appendChild(el('span',null,SESSION.day));ev.appendChild(cal);const info=el('div');info.appendChild(el('div','ev-t',SESSION.title));info.appendChild(el('div','ev-m',SESSION.when));info.appendChild(el('div','ev-m',SESSION.host));ev.appendChild(info);box.appendChild(ev);}
+  const a=el('a','cta');a.href=live?tagged(SESSION.url,SESSION.campaign,placement):tagged(SESSION.allUrl,SESSION.allCampaign,placement);a.target='_blank';a.rel='noopener';a.appendChild(iconEl('ticket',2));a.appendChild(document.createTextNode(live?'Save my seat \u00B7 from '+SESSION.price:'See upcoming sessions'));a.addEventListener('click',()=>AudioKit.sfx.coin());box.appendChild(a);
+  box.appendChild(el('div','fine','Opens edock.io in a new tab.'));return box;}
 function restart(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}closeOv();start(null);}
 
 /* ---- overlays ---- */
@@ -711,6 +749,7 @@ function showEnd(fresh){S.done=true;save();if(fresh)AudioKit.sfx.win();const p=P
   const g=el('div','endgrid');[['You started with',fmtINR(START_WALLET),''],['You spent',fmtINR(S.spent),'neg'],['First batch result',(delta>=0?'+':'')+fmtINR(delta),delta>=0?'pos':'neg'],['Next batch, same 300 units',(nextProfit>=0?'+':'')+fmtINR(nextProfit),nextProfit>=0?'pos':'neg'],['Weeks on the road',String(S.weeks),''],['Stamps collected',S.stamps.length+' / '+Object.keys(STAMPS).length,'']].forEach(([k,v,cls])=>{const t=el('div','tile');t.appendChild(el('div','k',k));t.appendChild(el('div','v '+cls,v));g.appendChild(t);});b.appendChild(g);
   b.appendChild(el('p',null,delta>=0?'The first batch already paid for the setup. Everything from here is easier.':'The first batch paid for the setup: trademark, tests, photos, bond. Those never repeat. The next batch is where the profit lives.'));
   if(refund)b.appendChild(el('p',null,'Your 18% tax deposit came back after 7 months: '+fmtINR(refund)+'.'));
+  b.appendChild(sessionPromo('end-results'));
   const a=el('div','actions');const pp=el('button','btn sec','Passport');pp.addEventListener('click',()=>{AudioKit.sfx.blip();showPassport();});a.appendChild(pp);const ag=el('button','btn go','Play again, new product');ag.addEventListener('click',()=>{AudioKit.sfx.blip();restart();});a.appendChild(ag);b.appendChild(a);
   const cr=el('div','credits');cr.innerHTML='Example numbers at \u20B984 per dollar. Rules and duty rates change; check before you spend. <a href="'+GUIDE_URL+'" target="_blank" rel="noopener">Read the full written guide</a>.';b.appendChild(cr);}
 

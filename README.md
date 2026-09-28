@@ -83,12 +83,29 @@ Most changes happen in `src/content.js`:
 - **`STAMPS`** holds each official term with its one-line meaning.
 - **`STATIONS`** holds the 17 stops. Each stop has a plain-words explanation and a list of steps. Each step offers choices, and each choice can cost rupees, add weeks, earn a stamp, or be wrong with a reason.
 - **`FX`** is the dollar-to-rupee rate used everywhere, currently 84.
+- **`SESSION`** is the live Edock session promoted at the end of the game: title, date, host, price, link and end time. Once the end time passes, the event card hides itself and the button points to all upcoming Edock sessions instead.
 
 After any change in `src/`, rebuild and commit both the source and the built files:
 
 ```bash
 ./build.sh
 ```
+
+## Links back to Edock
+
+Players who finish the game see an invitation to Edock's next live session, currently [India to USA: Your first export on Amazon](https://edock.io/guest/community?event=india-to-usa-your-first-export-on-amazon&tab=events) on 2 October 2026.
+
+Every link from the game to edock.io carries campaign tags, so Edock's Google Analytics credits the visit to this game:
+
+| Tag | Value |
+|-----|-------|
+| `utm_source` | `amyra-ind-usa-export` |
+| `utm_medium` | `game` |
+| `utm_campaign` | the session, such as `india-to-usa-first-export-2oct` |
+| `utm_content` | `end-results` for the results popup, `end-card` for the card that stays after it closes |
+| `utm_term` | the product the player chose: `bottle`, `spice`, `toy` or `throw` |
+
+The game itself has no analytics and sends nothing. The tags only travel when a player taps the link.
 
 ## Contributing
 
@@ -100,7 +117,7 @@ Anyone else is welcome to open an issue, or to fork the project and make it thei
 
 This project is released under the [MIT License](LICENSE). You may copy, change, rebrand, host and sell this game or anything you build from it, for free or for profit, without asking us. The one condition is to keep the copyright and license notice in your copy.
 
-If you host your own copy, change `GUIDE_URL` in `src/game.js` and the address in `build.sh` to your own site.
+If you host your own copy, change `GUIDE_URL` in `src/game.js`, the address in `build.sh`, and `GAME_ID` and `SESSION` in `src/content.js` to your own.
 
 ## Hosting
 

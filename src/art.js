@@ -82,6 +82,7 @@ mute:'R9 2 2 9 e;R9 2 5 2 e;C7 12 3 e;L2 2 14 14 r;L3 2 15 14 r',
 refund:'R2 6 12 9 c;O2 6 12 9 k;R4 4 8 2 l;O4 4 8 2 k;M coin 4 8;R7 1 2 3 k',
 timer:'C8 9 6 w;C8 9 6 k;C8 9 5 w;R7 1 2 2 k;R8 5 1 4 k;R8 9 3 1 k;R4 11 8 1 r',
 key:'C5 6 3 y;C5 6 3 k;C5 6 2 y;R7 5 8 2 y;O7 5 8 2 k;R12 7 1 2 y;R14 7 1 3 y',
+ticket:'R1 4 14 9 y;O1 4 14 9 k;R1 7 2 3 k;R14 7 1 3 k;R10 5 1 1 k;R10 7 1 1 k;R10 9 1 1 k;R10 11 1 1 k;R4 6 4 1 r;R4 8 5 1 O;R4 10 3 1 O',
 map:'R1 2 14 12 s;O1 2 14 12 k;L3 4 6 8 b;L6 8 10 6 b;L10 6 13 11 b;R4 10 2 2 g;R9 4 2 2 r',
 };
 const iconCache={};

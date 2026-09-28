@@ -64,8 +64,18 @@ function travelCard(){const nxt=STATIONS[S.station];panel.innerHTML='';const c=e
   a.appendChild(b);c.appendChild(a);panel.appendChild(c);panel.scrollTop=0;hintEl.classList.add('show');setTimeout(()=>hintEl.classList.remove('show'),3500);}
 function arrive(){arrived=true;walking=false;hurry=false;const st=STATIONS[S.station];S.px=st.x-6;computeSteps();S.stepIdx=Math.min(S.stepIdx,steps.length-1);toast(st.name.toUpperCase());AudioKit.sfx.blip();hud();renderStep();save();}
 function doneCard(){panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl('heart',3));const tt=el('div');tt.appendChild(el('div','card-title','Journey complete'));tt.appendChild(el('div','card-sub',(S.brand||'Your brand')+' went from a workshop in India to a home in America and the money came back.'));head.appendChild(tt);c.appendChild(head);
-  c.appendChild(el('div','card-line','The results stay here. Close them, reopen them, or start over with another product.'));
+  c.appendChild(sessionPromo('end-card'));
+  c.appendChild(el('div','card-line','Your results stay here. Close them, reopen them, or start over with another product.'));
   actions(c,[['See results','sec',()=>showEnd(false),'rupee'],['Passport','sec',showPassport,'stampbook'],['Play again, new product','go',restart,'walk']]);panel.appendChild(c);}
+/* Links to Edock carry UTM tags so edock.io's analytics can see the visit came from this game.
+   The game itself sends nothing. */
+function tagged(url,campaign,placement){try{const u=new URL(url);u.searchParams.set('utm_source',GAME_ID);u.searchParams.set('utm_medium','game');u.searchParams.set('utm_campaign',campaign);u.searchParams.set('utm_content',placement);if(S&&S.product)u.searchParams.set('utm_term',S.product);return u.toString();}catch(e){return url;}}
+function sessionPromo(placement){const live=Date.now()<Date.parse(SESSION.endsAt);const box=el('div','promo');
+  box.appendChild(el('div','eyebrow','YOU MADE IT TO THE END'));
+  box.appendChild(el('div','pitch',live?'That means you will enjoy our live online session. Ask real exporters everything this game could not answer.':'Keep going with Edock\u2019s live sessions, where people who export for real answer your questions.'));
+  if(live){const ev=el('div','ev');const cal=el('div','cal');cal.appendChild(el('b',null,SESSION.month));cal.appendChild(el('span',null,SESSION.day));ev.appendChild(cal);const info=el('div');info.appendChild(el('div','ev-t',SESSION.title));info.appendChild(el('div','ev-m',SESSION.when));info.appendChild(el('div','ev-m',SESSION.host));ev.appendChild(info);box.appendChild(ev);}
+  const a=el('a','cta');a.href=live?tagged(SESSION.url,SESSION.campaign,placement):tagged(SESSION.allUrl,SESSION.allCampaign,placement);a.target='_blank';a.rel='noopener';a.appendChild(iconEl('ticket',2));a.appendChild(document.createTextNode(live?'Save my seat \u00B7 from '+SESSION.price:'See upcoming sessions'));a.addEventListener('click',()=>AudioKit.sfx.coin());box.appendChild(a);
+  box.appendChild(el('div','fine','Opens edock.io in a new tab.'));return box;}
 function restart(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}closeOv();start(null);}
 
 /* ---- overlays ---- */
@@ -92,6 +102,7 @@ function showEnd(fresh){S.done=true;save();if(fresh)AudioKit.sfx.win();const p=P
   const g=el('div','endgrid');[['You started with',fmtINR(START_WALLET),''],['You spent',fmtINR(S.spent),'neg'],['First batch result',(delta>=0?'+':'')+fmtINR(delta),delta>=0?'pos':'neg'],['Next batch, same 300 units',(nextProfit>=0?'+':'')+fmtINR(nextProfit),nextProfit>=0?'pos':'neg'],['Weeks on the road',String(S.weeks),''],['Stamps collected',S.stamps.length+' / '+Object.keys(STAMPS).length,'']].forEach(([k,v,cls])=>{const t=el('div','tile');t.appendChild(el('div','k',k));t.appendChild(el('div','v '+cls,v));g.appendChild(t);});b.appendChild(g);
   b.appendChild(el('p',null,delta>=0?'The first batch already paid for the setup. Everything from here is easier.':'The first batch paid for the setup: trademark, tests, photos, bond. Those never repeat. The next batch is where the profit lives.'));
   if(refund)b.appendChild(el('p',null,'Your 18% tax deposit came back after 7 months: '+fmtINR(refund)+'.'));
+  b.appendChild(sessionPromo('end-results'));
   const a=el('div','actions');const pp=el('button','btn sec','Passport');pp.addEventListener('click',()=>{AudioKit.sfx.blip();showPassport();});a.appendChild(pp);const ag=el('button','btn go','Play again, new product');ag.addEventListener('click',()=>{AudioKit.sfx.blip();restart();});a.appendChild(ag);b.appendChild(a);
   const cr=el('div','credits');cr.innerHTML='Example numbers at \u20B984 per dollar. Rules and duty rates change; check before you spend. <a href="'+GUIDE_URL+'" target="_blank" rel="noopener">Read the full written guide</a>.';b.appendChild(cr);}
 

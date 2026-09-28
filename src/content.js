@@ -1,6 +1,20 @@
 /* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
 /* ============ CONTENT ============ */
 const UNITS=300,FX=84;
+const GAME_ID='amyra-ind-usa-export';
+/* The live session promoted at the end of the game. After endsAt the event card hides itself
+   and the button points to all upcoming Edock sessions instead. */
+const SESSION={
+  title:'India to USA: Your first export on Amazon',
+  host:'With Nishant Chaudhary, Business Head, Amyra Farms',
+  when:'Fri, 2 Oct \u00B7 7:00 to 8:30 PM IST \u00B7 Zoom',
+  month:'OCT',day:'2',price:'\u20B9249',
+  url:'https://edock.io/guest/community?event=india-to-usa-your-first-export-on-amazon&tab=events',
+  campaign:'india-to-usa-first-export-2oct',
+  endsAt:'2026-10-02T20:30:00+05:30',
+  allUrl:'https://edock.io/guest/community?tab=events',
+  allCampaign:'edock-sessions'
+};
 const PRODUCTS={
   bottle:{name:'Copper bottle',sprite:'bottle',price:24.99,cost:350,fba:5.5,duty:0.03,compliance:'coo',tag:'Light, tough, India-famous',kwOk:'copper water bottle',kwBad:['tamba bottle','jal patra']},
   spice:{name:'Spice blend',sprite:'spice',price:12.99,cost:120,fba:3.9,duty:0.02,compliance:'fda',tag:'Cheap to make, food rules apply',kwOk:'garam masala seasoning',kwBad:['masala powder packet','desi masala']},
