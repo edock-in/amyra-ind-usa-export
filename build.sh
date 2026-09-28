@@ -30,7 +30,7 @@ wrap() { # $1 title, $2 description, $3 url, $4 theme colour
   cat src/head.html
   cat src/body.html
   echo '<script>'
-  cat src/art.js src/audio.js src/world.js src/content.js src/game.js
+  cat src/art.js src/audio.js src/world.js src/content.js src/hinglish.js src/game.js
   echo '</script>'
 } > artifact.html
 

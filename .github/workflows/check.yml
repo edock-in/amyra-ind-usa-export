@@ -22,6 +22,8 @@ jobs:
             git diff --stat -- index.html artifact.html guide/index.html
             exit 1
           fi
+      - name: Hinglish lines
+        run: node tools/hinglish-check.js
       - name: Scripts must parse
         run: |
           node -e '

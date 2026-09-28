@@ -19,7 +19,7 @@ Access ends if your Edock account is no longer verified, or if it is used to har
 ## Branches
 
 - **`develop`** is where all work comes together. It is the default branch.
-- **`main`** is the live game. Every change to `main` is published straight away. `main` only changes through a merged pull request, and only the maintainer, [@065rshdeep](https://github.com/065rshdeep), can merge into it.
+- **`main`** is the live game. Every change to `main` is published straight away. Only the maintainer, [@065rshdeep](https://github.com/065rshdeep), can change `main`, by merging a pull request or pushing to it directly.
 
 ## Making a change
 
@@ -31,17 +31,18 @@ Access ends if your Edock account is no longer verified, or if it is used to har
 
 ## Releasing
 
-When `develop` is ready, a pull request from `develop` into `main` is opened. The maintainer reviews it and merges it, and the game is published.
+When `develop` is ready, the maintainer moves it to `main`, through a pull request or a direct push, and the game is published.
 
 ## House rules
 
 - **Plain words first.** Write for someone who has never exported anything. One short line per card. Official terms come after the idea, as stamps.
 - **Pictures over text.** Every choice needs an icon or a picture. Draw new icons in `src/art.js`.
 - **Rupees next to dollars.** Any dollar amount a player sees also shows its rupee value at the `FX` rate.
+- **Hinglish too.** Add a Hinglish line to `src/hinglish.js` for every new or changed English line: Hindi in English letters, the way people text. Keep official names such as IEC, LUT and FDA in English. `node tools/hinglish-check.js` lists what is missing. If you cannot write Hinglish, say so in the pull request and a reviewer will add it.
 - **Cite a source for every fact.** When you change a rule, form, fee, deadline or duty rate, link an official source in the pull request. Good sources include DGFT, the GST portal, RBI, ICEGATE, USPTO, IRS, FDA, CPSC, US Customs and Border Protection, and Amazon Seller Central help pages.
 - **Keep it one static page.** No image or audio files, no trackers, no analytics, and no new network requests other than Google Fonts. The page must work as a plain file and inside hosts that block other sites.
 - **Collect nothing.** The game stores progress only in the player's own browser and never sends personal data anywhere. Links to edock.io carry campaign tags, built by `tagged()` in `src/game.js`. Keep them, so Edock can see which game sent each visitor.
-- **Test before you ask for review.** Play one full run at phone width and on a desktop, with sound on and off.
+- **Test before you ask for review.** Play one full run at phone width and on a desktop, with sound on and off, and one run in Hinglish.
 
 ## Reporting outdated information
 

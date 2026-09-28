@@ -71,6 +71,7 @@ const AudioKit=(()=>{
     error(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.14,52,'sawtooth',0.14,sfxG,-3,false);tone(t+0.15,0.24,47,'sawtooth',0.14,sfxG,-5,false);},
     win(){if(!ctx||muted)return;const t=ctx.currentTime;[72,76,79,84].forEach((n,i)=>tone(t+i*0.09,0.2,n,'square',0.15,sfxG,0,false));tone(t+0.4,0.5,88,'square',0.13,sfxG,0,true);},
     step(){if(!ctx||muted)return;noise(ctx.currentTime,0.03,0.1,sfxG,1500,'lowpass');},
+    news(){if(!ctx||muted)return;const t=ctx.currentTime;[79,76,79,84].forEach((n,i)=>tone(t+i*0.08,0.07,n,'square',0.14,sfxG,0,false));},
     horn(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.7,41,'sawtooth',0.16,sfxG,0,false);tone(t,0.7,48,'square',0.07,sfxG,0,false);}
   };
   return {init,play,setMuted,sfx,isMuted:()=>muted};
