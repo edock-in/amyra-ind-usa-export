@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A plain-words, step-by-step guide to exporting from India and selling on Amazon abroad.">
+<meta property="og:title" content="Made in India, Sold on Amazon">
+<meta property="og:description" content="A plain-words, step-by-step guide to exporting from India and selling on Amazon abroad.">
+<meta property="og:url" content="https://games.edock.io/amyra-ind-usa-export/guide/">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F5F8F7">
+<link rel="canonical" href="https://games.edock.io/amyra-ind-usa-export/guide/">
+<title>Made in India, Sold on Amazon</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --paper:#F5F8F7; --card:#FFFFFF; --ink:#152220; --muted:#5C6C69; --line:#D6DFDC; --line-strong:#B9C6C2;
+  --india:#B8690F; --india-soft:#FBEBD3; --india-ink:#7A4406;
+  --abroad:#2E5C9E; --abroad-soft:#DEE8F8; --abroad-ink:#1F3F6E;
+  --sea:#177C76; --sea-soft:#D6EFEC; --sea-ink:#0F5450;
+  --warn:#9A3B1F; --warn-soft:#FBE6DE;
+  --ok:#2C7A4B; --ok-soft:#DDF2E4;
+  --shadow:0 1px 2px rgba(21,34,32,.06),0 8px 24px -12px rgba(21,34,32,.18);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F1514; --card:#171F1E; --ink:#E7EDEB; --muted:#98A8A4; --line:#26312F; --line-strong:#3A4A47;
+    --india:#E4A040; --india-soft:#2E2314; --india-ink:#F2C784;
+    --abroad:#7FA9E6; --abroad-soft:#152236; --abroad-ink:#B7CEF2;
+    --sea:#3FB6AD; --sea-soft:#10302D; --sea-ink:#8FDCD5;
+    --warn:#F08C6E; --warn-soft:#331B14;
+    --ok:#6CC58F; --ok-soft:#142A1D;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F1514; --card:#171F1E; --ink:#E7EDEB; --muted:#98A8A4; --line:#26312F; --line-strong:#3A4A47;
+  --india:#E4A040; --india-soft:#2E2314; --india-ink:#F2C784;
+  --abroad:#7FA9E6; --abroad-soft:#152236; --abroad-ink:#B7CEF2;
+  --sea:#3FB6AD; --sea-soft:#10302D; --sea-ink:#8FDCD5;
+  --warn:#F08C6E; --warn-soft:#331B14;
+  --ok:#6CC58F; --ok-soft:#142A1D;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;text-wrap:balance;margin:0;line-height:1.1;letter-spacing:-.01em}
+p{margin:0}
+a{color:var(--sea-ink)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sea);outline-offset:2px;border-radius:6px}
+.wrap{max-width:880px;margin:0 auto;padding-inline:18px}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-block:10px;flex-wrap:wrap}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:15px;letter-spacing:.01em;white-space:nowrap}
+.prog{flex:1 1 160px;display:flex;align-items:center;gap:10px;min-width:140px}
+.prog .track{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.prog .fill{height:100%;width:0;background:linear-gradient(90deg,var(--india),var(--sea) 60%,var(--abroad));border-radius:99px;transition:width .4s ease}
+.prog .count{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.toggle{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--card);border-radius:99px;padding:6px 10px 6px 8px;cursor:pointer;font-size:13px;color:var(--ink)}
+.toggle .sw{width:30px;height:18px;border-radius:99px;background:var(--line-strong);position:relative;transition:background .2s}
+.toggle .sw::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle[aria-pressed="true"] .sw{background:var(--sea)}
+.toggle[aria-pressed="true"] .sw::after{transform:translateX(12px)}
+
+/* hero */
+.hero{padding-block:44px 20px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(38px,7vw,64px);font-weight:800;margin-top:10px;font-variation-settings:"opsz" 96}
+.hero .lede{font-size:clamp(18px,2.4vw,21px);max-width:62ch;margin-top:18px;color:var(--ink)}
+.hero .lede b{font-weight:700}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+.dot.india{background:var(--india)} .dot.sea{background:var(--sea)} .dot.abroad{background:var(--abroad)}
+
+/* map */
+.map{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.map .hint{font-size:13px;color:var(--muted);margin-bottom:8px}
+.map-scroll{overflow-x:auto}
+.map svg{display:block;width:100%;min-width:640px;height:auto}
+.map .node{cursor:pointer}
+.map .node rect{transition:stroke-width .15s,filter .15s}
+.map .node:hover rect,.map .node:focus-visible rect{stroke-width:2.5}
+.map text{font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+
+/* tags (jargon) */
+.tag{font-family:"JetBrains Mono",ui-monospace,monospace;font-style:normal;font-weight:500;font-size:.72em;letter-spacing:.02em;background:var(--sea-soft);color:var(--sea-ink);border:1px solid color-mix(in srgb,var(--sea) 35%,transparent);border-radius:6px;padding:1px 6px;margin-left:5px;vertical-align:.12em;white-space:nowrap;cursor:pointer;transition:opacity .2s}
+.tag.in{background:var(--india-soft);color:var(--india-ink);border-color:color-mix(in srgb,var(--india) 40%,transparent)}
+.tag.ab{background:var(--abroad-soft);color:var(--abroad-ink);border-color:color-mix(in srgb,var(--abroad) 40%,transparent)}
+body.nojargon .tag{display:none}
+
+/* phases and steps */
+.phase{padding-block:36px 8px}
+.phase-head{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.phase-num{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:8px;background:var(--ink);color:var(--paper);margin-top:4px;white-space:nowrap}
+.phase-head h2{font-size:clamp(26px,4vw,34px);font-weight:700}
+.phase-head p{color:var(--muted);margin-top:6px;max-width:64ch}
+.steps{display:grid;gap:12px;margin-top:20px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-left:5px solid var(--side,var(--sea))}
+.step[data-side="india"]{--side:var(--india)} .step[data-side="abroad"]{--side:var(--abroad)} .step[data-side="sea"]{--side:var(--sea)}
+.step.done{opacity:.72}
+.step.done .sum-title{text-decoration:line-through;text-decoration-color:var(--muted);text-decoration-thickness:2px}
+.step summary{list-style:none;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;padding:16px 18px;cursor:pointer}
+.step summary::-webkit-details-marker{display:none}
+.num{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:22px;color:var(--side,var(--sea));min-width:30px;line-height:1.2;font-variant-numeric:tabular-nums}
+.sum-title{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:20px;line-height:1.2}
+.sum-line{color:var(--muted);margin-top:4px;font-size:15.5px}
+.where{display:inline-block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--side,var(--sea));margin-top:8px}
+.chev{width:22px;height:22px;color:var(--muted);transition:transform .25s;margin-top:4px}
+.step[open] .chev{transform:rotate(180deg)}
+.body{padding:2px 18px 20px 62px;display:grid;gap:18px}
+@media (max-width:560px){.body{padding-left:18px}}
+.block h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+.block p{max-width:66ch}
+.block p + p{margin-top:8px}
+.block ul{margin:0;padding-left:20px;max-width:66ch}
+.block li{margin-top:5px}
+.analogy{background:var(--sea-soft);border-radius:10px;padding:12px 14px;color:var(--sea-ink);max-width:66ch;font-size:16px}
+.analogy b{font-weight:700}
+.decode{display:grid;gap:8px}
+.decode .row{display:grid;grid-template-columns:minmax(90px,150px) 1fr;gap:12px;align-items:baseline;padding:8px 0;border-top:1px dashed var(--line)}
+.decode .row:first-child{border-top:0}
+.decode .k{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;font-weight:500;color:var(--side,var(--sea));word-break:break-word}
+.decode .v{font-size:15.5px}
+.decode .v small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+@media (max-width:480px){.decode .row{grid-template-columns:1fr}}
+.watch{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:12px 14px;max-width:66ch;font-size:15.5px}
+.watch b{font-weight:700}
+.done-row{display:flex;align-items:center;gap:10px;padding-top:6px;border-top:1px solid var(--line)}
+.done-row label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px}
+.done-row input{width:20px;height:20px;accent-color:var(--ok);margin:0}
+
+/* callout between steps */
+.callout{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--india-soft);border:1px solid color-mix(in srgb,var(--india) 35%,transparent);border-radius:var(--radius);padding:16px 18px;color:var(--india-ink)}
+.callout svg{width:26px;height:26px;flex:none;margin-top:2px}
+.callout h3{font-size:18px;font-weight:700}
+.callout p{margin-top:6px;font-size:15.5px;max-width:66ch}
+
+/* money flow */
+.flow{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.flow-scroll{overflow-x:auto}
+.flow svg{display:block;width:100%;min-width:620px;height:auto}
+.flow text{font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+
+/* glossary */
+.gloss{padding-block:40px 20px}
+.gloss h2{font-size:clamp(26px,4vw,34px);font-weight:700}
+.gloss .sub{color:var(--muted);margin-top:6px;max-width:64ch}
+.search{margin-top:18px;display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line-strong);border-radius:12px;padding:10px 14px}
+.search svg{width:20px;height:20px;color:var(--muted);flex:none}
+.search input{flex:1;border:0;background:transparent;font:inherit;color:inherit;outline:none;min-width:0}
+.terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:16px}
+.term{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;scroll-margin-top:90px}
+.term.hit{outline:3px solid var(--sea);outline-offset:0}
+.term .k{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;font-weight:500;color:var(--sea-ink)}
+.term .k.in{color:var(--india-ink)} .term .k.ab{color:var(--abroad-ink)}
+.term .full{font-size:12.5px;color:var(--muted);margin-top:2px}
+.term .v{font-size:15px;margin-top:8px}
+.empty{color:var(--muted);padding:20px 0;font-size:15px}
+
+footer{padding-block:30px 50px;color:var(--muted);font-size:14px;max-width:66ch}
+footer p + p{margin-top:8px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="brand">Made in India, Sold on Amazon</div>
+    <div class="prog" aria-live="polite">
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="count" id="count">0 of 11 done</div>
+    </div>
+    <button class="toggle" id="jargon" aria-pressed="true" title="Show or hide the official terms">
+      <span class="sw" aria-hidden="true"></span><span>Show official terms</span>
+    </button>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">A plain-words map of the whole journey</div>
+    <h1>From a factory in India to a doorstep abroad</h1>
+    <p class="lede">Eleven steps take a product from an Indian workshop to an Amazon customer in another country. Each one is explained here the way a friend would explain it over chai. <b>The official names come second</b>, as small tags you can switch off with the button above.</p>
+    <div class="legend">
+      <span><i class="dot india"></i>Happens on the Indian side</span>
+      <span><i class="dot sea"></i>Happens in between, or online</span>
+      <span><i class="dot abroad"></i>Happens on the target-country side</span>
+    </div>
+
+    <div class="map">
+      <div class="hint">Where each step lives. Tap a box to jump to that step. The example country is the United States, the most common first market.</div>
+      <div class="map-scroll">
+      <svg viewBox="0 0 900 330" role="img" aria-label="Diagram showing which steps happen in India, in between, and in the target country">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--sea)"/></marker>
+        </defs>
+        <rect x="10" y="16" width="290" height="300" rx="16" fill="var(--india-soft)"/>
+        <rect x="600" y="16" width="290" height="300" rx="16" fill="var(--abroad-soft)"/>
+        <rect x="320" y="16" width="260" height="300" rx="16" fill="var(--sea-soft)"/>
+        <text x="30" y="46" font-size="13" font-weight="700" letter-spacing="1.5" fill="var(--india-ink)">INDIA</text>
+        <text x="340" y="46" font-size="13" font-weight="700" letter-spacing="1.5" fill="var(--sea-ink)">THE CROSSING</text>
+        <text x="620" y="46" font-size="13" font-weight="700" letter-spacing="1.5" fill="var(--abroad-ink)">TARGET COUNTRY (US)</text>
+
+        <g class="node" data-go="s1" tabindex="0" role="link" aria-label="Step 1, pick the product"><rect x="30" y="64" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--india)" stroke-width="1.5"/><text x="44" y="89" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--india)">1</tspan>  Pick the product</text></g>
+        <g class="node" data-go="s2" tabindex="0" role="link" aria-label="Step 2, find a maker"><rect x="30" y="112" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--india)" stroke-width="1.5"/><text x="44" y="137" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--india)">2</tspan>  Find a maker</text></g>
+        <g class="node" data-go="s4" tabindex="0" role="link" aria-label="Step 4, export paperwork"><rect x="30" y="160" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--india)" stroke-width="1.5"/><text x="44" y="185" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--india)">4</tspan>  Export paperwork</text></g>
+        <g class="node" data-go="s6" tabindex="0" role="link" aria-label="Step 6, first production run"><rect x="30" y="208" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--india)" stroke-width="1.5"/><text x="44" y="233" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--india)">6</tspan>  First real production run</text></g>
+        <g class="node" data-go="s11" tabindex="0" role="link" aria-label="Step 11, getting paid"><rect x="30" y="256" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--india)" stroke-width="1.5"/><text x="44" y="281" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--india)">11</tspan>  Money lands in your bank</text></g>
+
+        <g class="node" data-go="s5" tabindex="0" role="link" aria-label="Step 5, Amazon seller account"><rect x="340" y="64" width="220" height="40" rx="9" fill="var(--card)" stroke="var(--sea)" stroke-width="1.5"/><text x="354" y="89" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--sea)">5</tspan>  Amazon seller account</text></g>
+        <g class="node" data-go="s8" tabindex="0" role="link" aria-label="Step 8, the listing"><rect x="340" y="112" width="220" height="40" rx="9" fill="var(--card)" stroke="var(--sea)" stroke-width="1.5"/><text x="354" y="137" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--sea)">8</tspan>  Build the listing</text></g>
+        <g class="node" data-go="s9" tabindex="0" role="link" aria-label="Step 9, shipping"><rect x="340" y="160" width="220" height="40" rx="9" fill="var(--card)" stroke="var(--sea)" stroke-width="1.5"/><text x="354" y="185" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--sea)">9</tspan>  Ship to Amazon's warehouse</text></g>
+        <g class="node" data-go="s10" tabindex="0" role="link" aria-label="Step 10, launch"><rect x="340" y="208" width="220" height="40" rx="9" fill="var(--card)" stroke="var(--sea)" stroke-width="1.5"/><text x="354" y="233" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--sea)">10</tspan>  Launch small, learn fast</text></g>
+        <path d="M300 276 C 380 276, 380 296, 450 296 S 520 276, 600 276" fill="none" stroke="var(--sea)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arr)"/>
+        <text x="450" y="266" font-size="12" text-anchor="middle" fill="var(--sea-ink)">goods go this way</text>
+        <path d="M600 306 C 520 306, 520 318, 450 318 S 380 306, 300 306" fill="none" stroke="var(--india)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arr)"/>
+
+        <g class="node" data-go="s3" tabindex="0" role="link" aria-label="Step 3, trademark"><rect x="620" y="64" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--abroad)" stroke-width="1.5"/><text x="634" y="89" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--abroad)">3</tspan>  Claim your brand name</text></g>
+        <g class="node" data-go="s5" tabindex="0" role="link" aria-label="Step 5, US tax identity"><rect x="620" y="112" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--abroad)" stroke-width="1.5"/><text x="634" y="137" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--abroad)">5</tspan>  US tax identity</text></g>
+        <g class="node" data-go="s7" tabindex="0" role="link" aria-label="Step 7, product rules"><rect x="620" y="160" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--abroad)" stroke-width="1.5"/><text x="634" y="185" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--abroad)">7</tspan>  Pass that country's product rules</text></g>
+        <g class="node" data-go="s9" tabindex="0" role="link" aria-label="Step 9, customs on arrival"><rect x="620" y="208" width="250" height="40" rx="9" fill="var(--card)" stroke="var(--abroad)" stroke-width="1.5"/><text x="634" y="233" font-size="14" fill="var(--ink)"><tspan font-weight="700" fill="var(--abroad)">9</tspan>  Someone answers to customs</text></g>
+        <text x="745" y="290" font-size="12" text-anchor="middle" fill="var(--abroad-ink)">customer pays Amazon in dollars</text>
+        <text x="745" y="306" font-size="12" text-anchor="middle" fill="var(--india-ink)">Amazon pays you, money flows back</text>
+      </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 1 -->
+  <section class="phase" id="p1">
+    <div class="phase-head">
+      <div class="phase-num">Part 1</div>
+      <div>
+        <h2>Decide what you are selling, and who makes it</h2>
+        <p>Nothing official yet. This part is about picking a fight you can win and finding the hands that will make the thing.</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <details class="step" id="s1" data-side="india">
+        <summary>
+          <div class="num">1</div>
+          <div>
+            <div class="sum-title">Pick the product</div>
+            <div class="sum-line">Choose something people abroad already buy, that India makes well, and that survives a long boat ride.</div>
+            <span class="where">India · your desk</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>You are looking for a product that is already selling in your target country, where the current sellers are beatable, and where India has a genuine cost or craft advantage. Think brass and copper kitchenware, cotton bedding, spices, jute bags, handloom textiles, wooden toys, yoga props, incense, herbal teas.</p>
+            <p>Good first products are small, light, hard to break, and not too cheap. Shipping and Amazon's fees eat a fixed slice of every sale, so a product that sells for under about fifteen dollars rarely leaves any profit for you.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> opening a food stall at a fair in another city. You do not invent a new dish. You pick a dish people there already queue for, and you make it better or cheaper than the stall next door.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Every later step costs money and months. A wrong product wastes all of it.</li>
+              <li>Some categories carry heavy rules abroad (food, anything you put on your skin, children's items, electronics). Step 7 gets much harder if you pick one of these first.</li>
+              <li>Amazon charges a percentage of the sale price plus a storage and delivery fee per unit. The math has to work before you order anything.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">Niche</div><div class="v">A narrow corner of a big market, such as "copper water bottles" instead of "kitchenware".</div></div>
+              <div class="row"><div class="k">Private label</div><div class="v">Selling a product a factory already makes, under your own brand name. Most first-time Amazon sellers do this.</div></div>
+              <div class="row"><div class="k">BSR</div><div class="v">Best Sellers Rank. Amazon's popularity score on every listing. A lower number means it sells more. Free way to guess demand.<small>Tools like Helium 10 or Jungle Scout turn this into estimated monthly sales.</small></div></div>
+              <div class="row"><div class="k">Unit economics</div><div class="v">The profit on one single unit after every fee, tax, duty and shipping cost is subtracted. If one unit does not make money, a thousand will not either.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> avoid products that are fragile, oversized, battery-powered, or that need to be eaten or applied to skin for your first attempt. Each of these adds a layer of rules or breakage you do not need while learning.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s1"> Mark this step done</label></div>
+        </div>
+      </details>
+
+      <details class="step" id="s2" data-side="india">
+        <summary>
+          <div class="num">2</div>
+          <div>
+            <div class="sum-title">Find the maker in India</div>
+            <div class="sum-line">Locate a factory or workshop that can make your product consistently, and get samples in your hands.</div>
+            <span class="where">India · factories and clusters</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>India makes most things in clusters: brass in Moradabad, textiles in Tiruppur and Panipat, leather in Kanpur, wooden toys in Channapatna, spices in Kerala and Guntur. Start with the cluster for your product. Directories like IndiaMART and TradeIndia, export promotion councils, and simply visiting the town all work.</p>
+            <p>Ask for samples from three or more makers. Compare quality, price per unit, minimum order size, and how quickly they answer messages. The one who replies clearly at 9 pm on a Sunday is often the one to work with.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> hiring a tailor for a wedding. You would never place the full order without seeing a stitched sample first, and you would want to know they can deliver forty outfits, not just one.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Your brand's reputation abroad is only as good as this factory's worst batch.</li>
+              <li>Step 6 needs the factory to print your brand permanently on the product or its packaging. Confirm now that they can.</li>
+              <li>Step 7 may need the factory itself to be registered with a foreign authority (food is the classic case). A cooperative factory saves you weeks.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">MOQ</div><div class="v">Minimum Order Quantity. The smallest batch a factory will make for you. Negotiable, especially if you pay a little more per unit.</div></div>
+              <div class="row"><div class="k">OEM / white label</div><div class="v">The factory makes its existing product and puts your brand on it (white label). OEM means they make it to your custom design.</div></div>
+              <div class="row"><div class="k">Golden sample</div><div class="v">One approved sample you both sign off on. Every unit in the real order must match it. Keep one at home.</div></div>
+              <div class="row"><div class="k">EPC</div><div class="v">Export Promotion Council. Government-backed bodies for each industry (handicrafts, spices, apparel, and so on) that list genuine exporters and manufacturers. Membership also unlocks some export benefits later.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> agree in writing who owns the mould, the design and the packaging artwork. Otherwise the factory can legally sell "your" product to the next buyer who walks in.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s2"> Mark this step done</label></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section class="phase" id="p2">
+    <div class="phase-head">
+      <div class="phase-num">Part 2</div>
+      <div>
+        <h2>Get your papers in order</h2>
+        <p>Three sets of paperwork: one to own your name abroad, one so India lets your goods leave, and one so Amazon and the foreign tax office know who you are.</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <details class="step" id="s3" data-side="abroad">
+        <summary>
+          <div class="num">3</div>
+          <div>
+            <div class="sum-title">Claim your brand name in the target country</div>
+            <div class="sum-line">Register your brand name where the customers are, not just in India. Amazon will ask for proof of this.</div>
+            <span class="where">Target country · trademark office</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>A trademark is the government writing down that a name (and often a logo) belongs to you for a certain kind of product. Trademarks are country by country. An Indian trademark means nothing in an American court, so you file one in the country you will sell in. For the US that is the federal trademark office<i class="tag ab" data-term="uspto">USPTO</i>.</p>
+            <p>The full registration takes a year or more, but you do not need to wait. Amazon accepts a filed application that is still being examined. So file early, get your application number, and move on.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> booking your shop's name on the high street of a foreign city. Until you book it, anyone can put up a sign with your name and sell copies of your product under it.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Without it you cannot join Amazon's brand-owner programme<i class="tag" data-term="brand-registry">Brand Registry</i>, which unlocks rich product pages, protection against copycats, and better advertising tools.</li>
+              <li>Copycats on Amazon are common. Owning the name is how you get their listings removed.</li>
+              <li>Foreign applicants at the US office must file through a US-licensed attorney. Budget for that fee on top of the government fee.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">Trademark</div><div class="v">Legal ownership of a brand name or logo for specific kinds of goods, in one country.</div></div>
+              <div class="row"><div class="k">Class</div><div class="v">The category bucket your goods fall into. Copper bottles and cotton bedsheets sit in different classes, and each class is a separate fee.<small>There are 45 classes worldwide, called Nice classes.</small></div></div>
+              <div class="row"><div class="k">Pending vs registered</div><div class="v">Pending means filed and waiting. Registered means approved. Amazon accepts pending for Brand Registry in most countries, the US included.</div></div>
+              <div class="row"><div class="k">Serial number</div><div class="v">The number the US office gives your application on day one. This is what you type into Amazon.</div></div>
+              <div class="row"><div class="k">Amazon IP Accelerator</div><div class="v">Amazon's list of vetted trademark lawyers. Filing through one gets you into Brand Registry faster, sometimes within days.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> search the target country's trademark database before you print a single label. If someone already owns a similar name in your class, pick another name now. Rebranding after production is painful.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s3"> Mark this step done</label></div>
+        </div>
+      </details>
+
+      <details class="step" id="s4" data-side="india">
+        <summary>
+          <div class="num">4</div>
+          <div>
+            <div class="sum-title">Get India's permission to export</div>
+            <div class="sum-line">Three things: an exporter's ID, a tax registration with a promise letter so you skip upfront tax, and a code from your bank.</div>
+            <span class="where">India · government portals and your bank</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p><b>First, an exporter's ID.</b> India gives every exporter a ten-digit number<i class="tag in" data-term="iec">IEC</i>. It is issued online by the foreign trade department<i class="tag in" data-term="dgft">DGFT</i>, costs a small fee, and is yours for life as long as you confirm your details once a year. Without it, no shipment leaves the country.</p>
+            <p><b>Second, a tax registration plus a promise letter.</b> You register your business for goods and services tax<i class="tag in" data-term="gst">GST</i>. Exports are meant to be tax-free, but the default system makes you pay the tax first<i class="tag in" data-term="igst">IGST</i> and claim it back months later. To skip that, you sign a promise letter<i class="tag in" data-term="lut">LUT</i> on the tax portal saying "I am exporting and I will bring the money home". Then you ship without paying the tax at all. The letter is renewed every April.</p>
+            <p><b>Third, a bank code.</b> Customs needs to know which bank will receive your foreign money. Your bank gives you a code<i class="tag in" data-term="ad-code">AD Code</i> and you register it on the customs portal<i class="tag in" data-term="icegate">ICEGATE</i>. Without this, the port cannot generate your export document.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> getting a passport (the exporter's ID), a signed declaration at the airport that you will come back so you skip a deposit (the promise letter), and telling the airline which account to refund to (the bank code).</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Every shipping document at the port needs the exporter's ID and the bank code. Get them before the goods are ready, not on packing day.</li>
+              <li>The promise letter keeps your cash. Paying 18 percent tax upfront on a large first order, then waiting for a refund, can sink a small business.</li>
+              <li>The promise you make comes due in Step 11. The bank's proof that the money arrived is how you keep it.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">IEC</div><div class="v">Importer Exporter Code. Your 10-digit exporter's ID from the government. One-time, online, linked to your PAN.<small>Must be re-confirmed every year between April and June or it gets deactivated.</small></div></div>
+              <div class="row"><div class="k">DGFT</div><div class="v">Directorate General of Foreign Trade. The department that issues the IEC and later records proof that your export money came home.</div></div>
+              <div class="row"><div class="k">GST</div><div class="v">Goods and Services Tax. India's sales tax. You need a GST number to export as a business and to sign the promise letter.</div></div>
+              <div class="row"><div class="k">IGST</div><div class="v">The version of GST charged when goods cross a state or national border. Exporters either pay it and reclaim it, or skip it with an LUT.</div></div>
+              <div class="row"><div class="k">LUT</div><div class="v">Letter of Undertaking. A one-page promise filed online each financial year. It lets you export without paying IGST upfront.<small>Filed as form GST RFD-11 on the GST portal. Free.</small></div></div>
+              <div class="row"><div class="k">AD Code</div><div class="v">Authorised Dealer Code. A 14-digit code from the bank branch that holds your business current account. Register it once per port on ICEGATE.</div></div>
+              <div class="row"><div class="k">ICEGATE</div><div class="v">Indian customs' online portal. This is where the AD code is registered and where your shipping bill is filed.</div></div>
+              <div class="row"><div class="k">Shipping bill</div><div class="v">The customs form generated for every export shipment. It proves the goods left India. You will need it for tax refunds and to prove you kept your LUT promise.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> open a separate business current account before applying for the bank code. Mixing personal and export money makes the bank's remittance proofs (Step 11) messy, and makes tax filing harder.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s4"> Mark this step done</label></div>
+        </div>
+      </details>
+
+      <details class="step" id="s5" data-side="sea">
+        <summary>
+          <div class="num">5</div>
+          <div>
+            <div class="sum-title">Open your Amazon shop, and tell the US tax office who you are</div>
+            <div class="sum-line">A seller account for that country's Amazon, plus a US tax ID and a form that says "I am not American, do not tax me twice".</div>
+            <span class="where">Online · Amazon and the US tax office</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>Each country's Amazon is a separate shop with its own seller account. Indian residents sign up through Amazon's export programme<i class="tag" data-term="global-selling">Amazon Global Selling</i>, which lets you register for the US, UK, Europe and more with Indian documents: your PAN, a passport or Aadhaar, a business bank account, and your exporter's ID from Step 4. Amazon will do a video call to check you are a real person.</p>
+            <p>For the US, two extra things. A US tax number for your business<i class="tag ab" data-term="ein">EIN</i>, which the US tax office<i class="tag ab" data-term="irs">IRS</i> gives for free to foreign businesses over fax or phone. And a short form that declares you live outside the US<i class="tag ab" data-term="w8ben">W-8BEN / W-8BEN-E</i>, so Amazon does not hold back US tax from your payouts. You fill it inside Amazon's seller dashboard; it is called the tax interview.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> renting a stall in an American mall. The mall (Amazon) wants your ID and bank details. The city (the IRS) wants to know who is trading, gives you a trader number, and lets you sign a note saying your taxes are paid back home so they do not collect them here too.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Skip the foreign-status form and Amazon may withhold up to 30 percent of every payout for US tax.</li>
+              <li>The US tax number is also what customs brokers and freight forwarders ask for when they set you up as the importer in Step 9.</li>
+              <li>Amazon's identity check is strict. Name, address and bank account must match across every document, letter for letter.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">Marketplace</div><div class="v">One country's Amazon site, such as Amazon.com (US) or Amazon.co.uk. Each is a separate account, catalogue and fee schedule.</div></div>
+              <div class="row"><div class="k">Seller Central</div><div class="v">The dashboard where you manage listings, stock, ads and payouts. Your office, basically.</div></div>
+              <div class="row"><div class="k">Professional plan</div><div class="v">The paid monthly seller plan (about 40 dollars a month in the US). Needed for ads, brand tools and selling in most categories.</div></div>
+              <div class="row"><div class="k">EIN</div><div class="v">Employer Identification Number. A US tax ID for a business. Free from the IRS. Foreign businesses apply with form SS-4 by fax or phone; there is no online route without a US social security number.</div></div>
+              <div class="row"><div class="k">W-8BEN</div><div class="v">The form an individual signs to say "I live outside the US". W-8BEN-E is the same form for a company or LLP. It stops US tax being deducted from your Amazon payouts.<small>Valid for three years, then you re-sign.</small></div></div>
+              <div class="row"><div class="k">Tax interview</div><div class="v">Amazon's built-in questionnaire that produces your W-8BEN for you. No paper form to mail.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> apply for the EIN early. The fax route can take weeks, and a bad first application (wrong entity type, missing signature) starts the clock again. You do not need a US company to get one.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s5"> Mark this step done</label></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section class="phase" id="p3">
+    <div class="phase-head">
+      <div class="phase-num">Part 3</div>
+      <div>
+        <h2>Make it, then prove it</h2>
+        <p>Now the factory runs. Then you prove two things: to Amazon that the brand is really yours, and to the target country that the product is safe to sell there.</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <div class="callout" role="note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <div>
+          <h3>The order that trips people up</h3>
+          <p>Amazon's brand programme wants <b>real photographs</b> of your product and packaging with your brand name printed on them permanently. Not a design file, not a sticker, not a mock-up. So the first production run has to happen <b>before</b> you can finish registering the brand, and the trademark (Step 3) has to be filed <b>before</b> that. File first, print second, photograph third.</p>
+        </div>
+      </div>
+
+      <details class="step" id="s6" data-side="india">
+        <summary>
+          <div class="num">6</div>
+          <div>
+            <div class="sum-title">Run the first real batch, brand on it, and photograph it</div>
+            <div class="sum-line">Make the product with your name printed on it, then use those photos to prove to Amazon that the brand is yours.</div>
+            <span class="where">India · the factory, then online</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>Place your first order with the factory from Step 2. Your brand name must be part of the product itself: engraved, embroidered, moulded, printed on the box, woven into a label. Something that cannot peel off.</p>
+            <p>When the first units are ready, photograph them plainly on a table: the product showing the brand, the packaging showing the brand, and a shot of the two together. Upload these to Amazon's brand-owner programme<i class="tag" data-term="brand-registry">Brand Registry</i> along with your trademark application number from Step 3. Approval usually takes a few days to a couple of weeks.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> proving a jersey is your team's. Anyone can hold up a drawing of a logo. Only the real jersey, with the crest stitched in, settles it.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Brand Registry is what lets you build the picture-rich product page in Step 8, run the better ads in Step 10, and pull down copycat listings.</li>
+              <li>It also gives you a brand-owner shortcut on barcodes and lets you lock your product pages so others cannot edit your photos and text.</li>
+              <li>A small first run (a few hundred units) is fine here. Its job is to exist, be photographed and be tested by real customers.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">Brand Registry</div><div class="v">Amazon's programme for brand owners. Free to join. Needs a trademark (filed or registered) and real photos of the branded product.</div></div>
+              <div class="row"><div class="k">Permanently affixed</div><div class="v">Amazon's phrase for branding that cannot be removed: printed, engraved, woven, moulded, or on a sewn-in label. A paper sticker does not count.</div></div>
+              <div class="row"><div class="k">GTIN / UPC</div><div class="v">The barcode number on your packaging. Amazon needs one per product to create a listing. Buy genuine ones from GS1 (the barcode body), or ask Amazon for an exemption as a registered brand owner.<small>Barcodes bought from resellers are often rejected.</small></div></div>
+              <div class="row"><div class="k">Pre-shipment inspection</div><div class="v">Paying an independent inspector to check the finished batch at the factory before it ships. A few thousand rupees that can save a container of returns.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> the brand name on the product, on the trademark filing and on your Amazon account must be spelled identically. "Karigar Home" and "KarigarHome" can get your application rejected.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s6"> Mark this step done</label></div>
+        </div>
+      </details>
+
+      <details class="step" id="s7" data-side="abroad">
+        <summary>
+          <div class="num">7</div>
+          <div>
+            <div class="sum-title">Pass the target country's product rules</div>
+            <div class="sum-line">Some products need that country's safety tests, labels or registrations before Amazon will list them. Food, herbal products and toys are the strict ones.</div>
+            <span class="where">Target country · regulators and test labs</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>Every country has its own idea of what makes a product safe and honestly labelled. India's rules do not travel with the goods. For a plain cotton cushion cover the US asks for little beyond a label naming the fibre, the country of origin and how to wash it. For anything you eat, rub on your skin, or give to a child, there is a proper checklist.</p>
+            <p><b>Food and spices going to the US:</b> the factory must be registered with the US food authority<i class="tag ab" data-term="fda">FDA</i>, you need a US-based contact person for that registration, every shipment is announced in advance, and the label must follow the American format (nutrition panel, allergens, ingredient order).</p>
+            <p><b>Ayurvedic and herbal products:</b> in the US these are sold as dietary supplements, not medicines. You cannot say a product treats or cures anything. Labels follow supplement rules, and heavy-metal testing is wise because Ayurvedic imports get checked for it.</p>
+            <p><b>Toys and children's items:</b> tested by an approved lab against the US toy standard, a written safety certificate<i class="tag ab" data-term="cpc">CPC</i>, and a permanent tracking label on the product. Amazon will not open the toy category until it sees these documents.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> a driving licence. Your Indian licence lets you drive in India. To drive in America for the long term you take their test, follow their signs and carry their paperwork, even though you already know how to drive.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Amazon "gates" regulated categories. You upload the certificates first, then you are allowed to list.</li>
+              <li>Customs can seize or destroy a shipment that fails labelling rules. That is your whole batch and your shipping money gone.</li>
+              <li>Every import into the US must be marked with its country of origin. "Made in India" on the product or its packaging is not optional.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">FDA</div><div class="v">Food and Drug Administration. The US authority for food, supplements, cosmetics and medicines.</div></div>
+              <div class="row"><div class="k">Food facility registration</div><div class="v">The factory registers with the FDA before shipping food to the US. Foreign factories must name a US Agent, a US-based contact the FDA can call. Renewed every two years.</div></div>
+              <div class="row"><div class="k">Prior Notice</div><div class="v">A heads-up filed with the FDA before each food shipment arrives. Your forwarder or broker usually files it.</div></div>
+              <div class="row"><div class="k">Dietary supplement</div><div class="v">The US legal bucket for herbal and Ayurvedic products. Allowed to describe general wellness, never to claim to treat a disease.</div></div>
+              <div class="row"><div class="k">MoCRA</div><div class="v">The 2022 US cosmetics law. Soaps, oils and creams sold as cosmetics need the facility registered and each product listed with the FDA.</div></div>
+              <div class="row"><div class="k">CPSC / CPC</div><div class="v">Consumer Product Safety Commission, the US toy and children's product regulator. A CPC (Children's Product Certificate) is the one-page certificate you write, backed by a lab test against standard ASTM F963.</div></div>
+              <div class="row"><div class="k">Gated category</div><div class="v">An Amazon category locked until you upload approvals. Toys, supplements, food and topicals are commonly gated.</div></div>
+              <div class="row"><div class="k">Country of origin marking</div><div class="v">The permanent "Made in India" on the product or its packaging, required by US customs on every import.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> ask a compliance consultant or your freight forwarder what your exact product needs <em>before</em> the factory prints packaging. Reprinting labels for a finished batch is a common and expensive mistake.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s7"> Mark this step done</label></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PHASE 4 -->
+  <section class="phase" id="p4">
+    <div class="phase-head">
+      <div class="phase-num">Part 4</div>
+      <div>
+        <h2>Put it on the shelf and start selling</h2>
+        <p>Build the page customers will see, get the boxes into Amazon's warehouse, then launch small and let the market tell you what it thinks.</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <details class="step" id="s8" data-side="sea">
+        <summary>
+          <div class="num">8</div>
+          <div>
+            <div class="sum-title">Build the listing</div>
+            <div class="sum-line">Photos that sell, a picture-rich lower section, and the exact words that shoppers in that country type into the search box.</div>
+            <span class="where">Online · Seller Central</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>Your listing is your shop window, your salesperson and your packaging all in one. Shoppers decide in seconds from the main photo. Amazon wants that first photo on a pure white background with the product filling most of the frame. The remaining photos show scale, use, details and what is in the box. One short video helps a lot.</p>
+            <p>Lower on the page, brand owners get a rich section of banners, comparison charts and story images<i class="tag" data-term="aplus">A+ Content</i>. This is where you tell the story of the artisan, the material, the village.</p>
+            <p>Then the words. Americans search for a "comforter", not a "razai"; a "throw pillow", not a "cushion". Use a keyword tool or Amazon's own search data to find the exact phrases, and put them in your title, bullet points and hidden search terms.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> setting up a stall where the customer can only see your photos and read your sign, cannot touch anything, and walks past two hundred rival stalls in a minute. Your photos have to do the touching for them.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Amazon's search engine ranks you by how often shoppers click and buy. A weak listing never gets shown, so ads in Step 10 are wasted on it.</li>
+              <li>Words matter for compliance too. Claims like "cures", "antibacterial" or "organic" need proof or approval in the target country.</li>
+              <li>Photos taken in India can look foreign to a US shopper. Show the product in a home that looks like theirs.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">ASIN</div><div class="v">Amazon Standard Identification Number. The unique code Amazon gives every product page. Yours is created when you list.</div></div>
+              <div class="row"><div class="k">Main image</div><div class="v">The first photo. Pure white background, product filling about 85 percent of the frame, at least 1000 pixels so shoppers can zoom.</div></div>
+              <div class="row"><div class="k">A+ Content</div><div class="v">The picture-rich section below the bullet points. Only brand owners (Step 6) can add it. Free.</div></div>
+              <div class="row"><div class="k">Backend keywords</div><div class="v">Hidden search terms you type into the listing that shoppers never see but the search engine reads.</div></div>
+              <div class="row"><div class="k">Brand Analytics</div><div class="v">Amazon's own report of what people actually search for, and which products they click. Free for brand owners.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> copying a rival's bullet points or photos is a fast way to get your listing suspended. Write your own, in the spelling of the target country (color, not colour, for the US).</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s8"> Mark this step done</label></div>
+        </div>
+      </details>
+
+      <details class="step" id="s9" data-side="sea">
+        <summary>
+          <div class="num">9</div>
+          <div>
+            <div class="sum-title">Ship the boxes to Amazon's warehouse</div>
+            <div class="sum-line">A cargo agent moves the goods from the factory to Amazon's warehouse abroad. Someone on the far side must sign for customs and pay the import duty. Amazon will not be that someone.</div>
+            <span class="where">India → sea or air → target country</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>With Amazon's warehouse service<i class="tag" data-term="fba">FBA</i>, you send your stock to Amazon once and they store it, pack each order, deliver it in two days and handle returns. You never touch a customer parcel. First you tell Amazon what you are sending; Amazon tells you which of its warehouses to send it to and gives you labels for every box.</p>
+            <p>Getting it there is a job for a cargo travel agent<i class="tag" data-term="freight-forwarder">freight forwarder</i>. They collect from the factory, book space on a ship or plane, handle the paperwork at the Indian port, and deliver to Amazon's door. Amazon also offers its own door-to-door service for Indian sellers<i class="tag" data-term="send">Amazon SEND</i>. Sea is cheap and slow (six to eight weeks to the US); air is fast and roughly four times the price. Most sellers fly the first small batch and ship later ones by sea.</p>
+            <p>On the far side there is one role Amazon refuses to play: the person legally responsible for the shipment entering the country<i class="tag ab" data-term="ior">Importer of Record</i>. That person signs the customs forms and pays the import duty. You can be it yourself from India, with a US tax number and a customs bond, or you can pay a broker to be it for you.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> sending your luggage ahead to a hotel abroad. The courier (forwarder) carries it. But the hotel (Amazon) will not stand at customs to open your bags and pay the fees. Either you do, or you hire someone at that airport to do it in your name.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>A shipment with no named importer sits at the port, racking up storage fees, then gets sent back or destroyed.</li>
+              <li>Duty is a real cost in your price. US duty rates on Indian goods changed several times in 2025 and 2026. Check the current rate for your product code before you set a price.</li>
+              <li>Amazon rejects boxes that break its rules: wrong labels, boxes over 50 pounds, loose items. The forwarder must know FBA rules, not just shipping.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">FBA</div><div class="v">Fulfilment by Amazon. Amazon stores, packs, ships and handles returns. You pay a monthly storage fee per cubic foot and a delivery fee per unit sold.</div></div>
+              <div class="row"><div class="k">Freight forwarder</div><div class="v">A company that arranges international cargo end to end: pickup, export customs, ship or plane, and delivery. Your travel agent for boxes.</div></div>
+              <div class="row"><div class="k">Amazon SEND</div><div class="v">Amazon's own door-to-door shipping service for Indian sellers exporting to Amazon warehouses abroad. Booked inside Seller Central.</div></div>
+              <div class="row"><div class="k">Importer of Record</div><div class="v">IOR. The legal name on the customs entry in the destination country, responsible for duties and rule-following. Never Amazon.</div></div>
+              <div class="row"><div class="k">Customs broker</div><div class="v">A licensed agent on the destination side who files the customs entry for you. Many will also act as your Importer of Record for a fee.</div></div>
+              <div class="row"><div class="k">Customs bond</div><div class="v">An insurance-style guarantee US customs requires from importers, promising duties will be paid. A yearly bond costs a few hundred dollars.</div></div>
+              <div class="row"><div class="k">HTS code</div><div class="v">Harmonized Tariff Schedule number. A 10-digit code that classifies your product and sets the duty rate. Your forwarder helps you pick it; picking wrong is costly.</div></div>
+              <div class="row"><div class="k">DDP</div><div class="v">Delivered Duty Paid. A shipping quote that includes duty and delivery to Amazon's door, so there are no surprises on arrival. Ask for it.</div></div>
+              <div class="row"><div class="k">Shipment plan</div><div class="v">The form in Seller Central where you declare what you are sending. Amazon replies with the destination warehouse and box labels.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> the old shortcut of posting small parcels duty-free into the US ended in August 2025. Everything now goes through customs with duty. Price accordingly.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s9"> Mark this step done</label></div>
+        </div>
+      </details>
+
+      <details class="step" id="s10" data-side="sea">
+        <summary>
+          <div class="num">10</div>
+          <div>
+            <div class="sum-title">Launch small, learn fast</div>
+            <div class="sum-line">Send a small first batch, pay for a little advertising, and earn your first honest reviews.</div>
+            <span class="where">Online · Seller Central</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>A new listing has no reviews and no sales history, so Amazon's search barely shows it. You break that deadlock in two ways. You pay Amazon to show your product when someone searches your keywords<i class="tag" data-term="ppc">Sponsored Products</i>, and you collect early reviews through Amazon's own programme where free units go to trusted reviewers<i class="tag" data-term="vine">Amazon Vine</i>.</p>
+            <p>Keep the first batch small: a few hundred units. You will learn what breaks in transit, which photo people click, what questions they ask, and whether your price is right. Fix all of that before the big sea shipment.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> a soft opening for a restaurant. Invite a few dozen people, feed them well, fix the kitchen problems you find, and only then put up the big sign.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Reviews are the currency of Amazon. A product with fifteen honest four-star reviews outsells one with none, every time.</li>
+              <li>Ads on a listing with zero reviews burn money. Run a small budget first, then increase once reviews land.</li>
+              <li>Never buy fake reviews or offer refunds for reviews. Amazon closes accounts for this, permanently, with the money inside frozen.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">PPC / Sponsored Products</div><div class="v">Pay Per Click ads inside Amazon search results. You pay only when a shopper clicks. You choose the keywords and a daily budget.</div></div>
+              <div class="row"><div class="k">ACOS</div><div class="v">Advertising Cost of Sale. Ad spend divided by the sales those ads produced. If you spend 10 dollars to sell 40 dollars of goods, ACOS is 25 percent.</div></div>
+              <div class="row"><div class="k">Amazon Vine</div><div class="v">Amazon's early-review programme. You give up to 30 units free; vetted reviewers write honest reviews. Brand owners only. A small enrolment fee applies.</div></div>
+              <div class="row"><div class="k">Request a Review</div><div class="v">A button on each order in Seller Central that sends Amazon's standard review request. Allowed and free. Use it on every order.</div></div>
+              <div class="row"><div class="k">Buy Box</div><div class="v">The main "Add to Cart" spot on a product page. As the only seller of your own brand, you hold it by default.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> watch the return rate in your first month. Above about 5 percent means a real problem with sizing, quality or expectations set by the photos. Fix the cause, not the reviews.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s10"> Mark this step done</label></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PHASE 5 -->
+  <section class="phase" id="p5">
+    <div class="phase-head">
+      <div class="phase-num">Part 5</div>
+      <div>
+        <h2>Get paid, and close the loop with India</h2>
+        <p>The customer paid Amazon in dollars. Here is how that becomes rupees in your account, and why one bank receipt matters more than it looks.</p>
+      </div>
+    </div>
+    <div class="steps">
+
+      <details class="step" id="s11" data-side="india">
+        <summary>
+          <div class="num">11</div>
+          <div>
+            <div class="sum-title">Receive the money, keep the proof</div>
+            <div class="sum-line">Amazon pays every two weeks into your Indian account. Your bank hands you a receipt that proves the dollars arrived. Keep every one.</div>
+            <span class="where">India · your bank and the trade portal</span>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <div class="block">
+            <h4>In plain words</h4>
+            <p>Amazon collects from the customer, keeps its fees, and pays you the rest roughly every fourteen days. Because your bank account is in India, the dollars must be converted to rupees on the way. Amazon's own converter does this for a cut of a few percent; services like Payoneer or a bank's export account often do it cheaper. Either way, rupees land in the business account you opened in Step 4.</p>
+            <p>Every time foreign money arrives, your bank records it and gives you a receipt<i class="tag in" data-term="firc">FIRA / FIRC</i>. Then, on the foreign trade portal, you match that money to the shipment it paid for and generate an official closing certificate<i class="tag in" data-term="ebrc">e-BRC</i>. That certificate is the government's proof that the promise you signed in Step 4 was kept: the goods left, and the money came home.</p>
+          </div>
+          <div class="analogy"><b>Think of it like</b> a library loan. The promise letter was you borrowing the right to skip tax. The bank receipt is you returning the book. No receipt, and the library assumes you never brought it back.</div>
+          <div class="block">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>India's central bank expects export money to come home within nine months of shipping. The bank receipts prove it did. Missing proofs can block future shipments.</li>
+              <li>The closing certificate is also your ticket to export incentives: small cash-back schemes the government pays exporters, and any tax refunds you are owed.</li>
+              <li>Your accountant needs these to show the tax office why no tax was charged on your sales.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h4>Jargon decoded</h4>
+            <div class="decode">
+              <div class="row"><div class="k">Disbursement</div><div class="v">Amazon's word for a payout. Happens about every 14 days, minus fees, minus any money held for possible refunds.</div></div>
+              <div class="row"><div class="k">Reserve</div><div class="v">A slice of your payout Amazon holds back for a week or two in case of refunds. Normal for new sellers.</div></div>
+              <div class="row"><div class="k">ACCS</div><div class="v">Amazon Currency Converter for Sellers. Amazon's built-in dollar-to-rupee conversion. Convenient, not cheap.</div></div>
+              <div class="row"><div class="k">FIRA / FIRC</div><div class="v">Foreign Inward Remittance Advice or Certificate. The bank's receipt for each foreign payment that arrived, showing the amount, currency and sender. Ask your bank to issue it for every payout.</div></div>
+              <div class="row"><div class="k">e-BRC</div><div class="v">Electronic Bank Realisation Certificate. The official record, generated on the DGFT portal, that a specific shipment was paid for. Links a shipping bill to the money received.<small>Since late 2023 exporters generate these themselves on the DGFT site using the bank's data.</small></div></div>
+              <div class="row"><div class="k">EDPMS</div><div class="v">Export Data Processing and Monitoring System. The central bank's tracker of open shipments. Every shipping bill stays "open" until matching money arrives and is reported.</div></div>
+              <div class="row"><div class="k">RoDTEP</div><div class="v">Remission of Duties and Taxes on Exported Products. A small government cash-back on exports, paid as credits, claimed against your shipping bills and closing certificates.</div></div>
+            </div>
+          </div>
+          <div class="watch"><b>Watch out:</b> if you use a payment service instead of a direct bank transfer, confirm they issue the FIRA in <em>your</em> business name. A receipt in the payment company's name does not close your shipment.</div>
+          <div class="done-row"><label><input type="checkbox" data-done="s11"> Mark this step done</label></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="flow">
+      <div class="hint" style="font-size:13px;color:var(--muted);margin-bottom:8px">How one sale turns into rupees, and the paper trail it leaves</div>
+      <div class="flow-scroll">
+      <svg viewBox="0 0 900 250" role="img" aria-label="Flow of money from customer to Amazon to your Indian bank, with the shipping bill and e-BRC closing the loop">
+        <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+        <g><rect x="20" y="40" width="170" height="64" rx="10" fill="var(--abroad-soft)" stroke="var(--abroad)" stroke-width="1.5"/><text x="105" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="var(--abroad-ink)">US customer</text><text x="105" y="86" text-anchor="middle" font-size="12.5" fill="var(--abroad-ink)">pays $29.99</text></g>
+        <path d="M190 72 H 230" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+        <g><rect x="232" y="40" width="190" height="64" rx="10" fill="var(--sea-soft)" stroke="var(--sea)" stroke-width="1.5"/><text x="327" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="var(--sea-ink)">Amazon</text><text x="327" y="86" text-anchor="middle" font-size="12.5" fill="var(--sea-ink)">keeps ~15% fee + FBA fee</text></g>
+        <path d="M422 72 H 462" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+        <g><rect x="464" y="40" width="190" height="64" rx="10" fill="var(--sea-soft)" stroke="var(--sea)" stroke-width="1.5"/><text x="559" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="var(--sea-ink)">Currency conversion</text><text x="559" y="86" text-anchor="middle" font-size="12.5" fill="var(--sea-ink)">dollars become rupees</text></g>
+        <path d="M654 72 H 694" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+        <g><rect x="696" y="40" width="184" height="64" rx="10" fill="var(--india-soft)" stroke="var(--india)" stroke-width="1.5"/><text x="788" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="var(--india-ink)">Your Indian bank</text><text x="788" y="86" text-anchor="middle" font-size="12.5" fill="var(--india-ink)">issues FIRA receipt</text></g>
+
+        <path d="M788 104 V 150" stroke="var(--india)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr2)"/>
+        <g><rect x="620" y="152" width="260" height="70" rx="10" fill="var(--card)" stroke="var(--india)" stroke-width="1.5"/><text x="750" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">Trade portal (DGFT)</text><text x="750" y="198" text-anchor="middle" font-size="12.5" fill="var(--muted)">FIRA + shipping bill = e-BRC</text><text x="750" y="214" text-anchor="middle" font-size="12" fill="var(--india)">promise kept, shipment closed</text></g>
+
+        <g><rect x="20" y="152" width="230" height="70" rx="10" fill="var(--card)" stroke="var(--line-strong)" stroke-width="1.5"/><text x="135" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">Shipping bill</text><text x="135" y="198" text-anchor="middle" font-size="12.5" fill="var(--muted)">customs proof the goods left India</text><text x="135" y="214" text-anchor="middle" font-size="12" fill="var(--muted)">from Step 9, kept open until paid</text></g>
+        <path d="M250 187 H 615" stroke="var(--line-strong)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr2)"/>
+        <text x="432" y="180" text-anchor="middle" font-size="12" fill="var(--muted)">matched together, within 9 months</text>
+      </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="gloss" id="glossary">
+    <h2>The dictionary, in plain words</h2>
+    <p class="sub">Every official term used above, decoded. Tap any small tag in the steps to jump here. Type to filter.</p>
+    <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="q" placeholder="Search a term, like LUT or Importer of Record" aria-label="Search the dictionary"></label>
+    <div class="terms" id="terms">
+      <div class="term" id="g-iec"><div class="k in">IEC</div><div class="full">Importer Exporter Code · India</div><div class="v">Your 10-digit exporter's ID. Issued online by DGFT, linked to your PAN, confirmed once a year. No shipment leaves India without it.</div></div>
+      <div class="term" id="g-dgft"><div class="k in">DGFT</div><div class="full">Directorate General of Foreign Trade · India</div><div class="v">The government department that hands out exporter IDs and records proof that your export money came home.</div></div>
+      <div class="term" id="g-gst"><div class="k in">GST</div><div class="full">Goods and Services Tax · India</div><div class="v">India's sales tax. You register for it to export as a business. Exports themselves are tax-free, but only if you follow the LUT or refund route.</div></div>
+      <div class="term" id="g-igst"><div class="k in">IGST</div><div class="full">Integrated GST · India</div><div class="v">The version of GST charged when goods cross a border. Exporters skip it with an LUT, or pay it and claim it back later.</div></div>
+      <div class="term" id="g-lut"><div class="k in">LUT</div><div class="full">Letter of Undertaking · India</div><div class="v">A promise letter filed online each financial year: "I am exporting and I will bring the money home." Lets you ship without paying IGST upfront. Free.</div></div>
+      <div class="term" id="g-ad-code"><div class="k in">AD Code</div><div class="full">Authorised Dealer Code · India</div><div class="v">A 14-digit code from the bank branch holding your business account. Registered once per port on ICEGATE so customs knows where your foreign money will land.</div></div>
+      <div class="term" id="g-icegate"><div class="k in">ICEGATE</div><div class="full">Indian Customs online portal</div><div class="v">Where the AD code is registered and where your shipping bill, the customs form for each export, is filed.</div></div>
+      <div class="term" id="g-shipping-bill"><div class="k in">Shipping bill</div><div class="full">Export customs declaration · India</div><div class="v">The customs document generated for each shipment. It proves the goods left India and stays "open" until the payment for it arrives.</div></div>
+      <div class="term" id="g-firc"><div class="k in">FIRA / FIRC</div><div class="full">Foreign Inward Remittance Advice / Certificate · India</div><div class="v">The bank's receipt for each foreign payment that arrived: amount, currency, sender. Ask for one on every Amazon payout.</div></div>
+      <div class="term" id="g-ebrc"><div class="k in">e-BRC</div><div class="full">Electronic Bank Realisation Certificate · India</div><div class="v">The official record that a specific shipment was paid for. Made on the DGFT portal by matching the bank receipt to the shipping bill. Closes your LUT promise.</div></div>
+      <div class="term" id="g-edpms"><div class="k in">EDPMS</div><div class="full">Export Data Processing and Monitoring System · India</div><div class="v">The central bank's tracker of unpaid shipments. Money should arrive within nine months of shipping.</div></div>
+      <div class="term" id="g-rodtep"><div class="k in">RoDTEP</div><div class="full">Remission of Duties and Taxes on Exported Products · India</div><div class="v">A small government cash-back on exports, paid as tradeable credits once your shipments are closed.</div></div>
+      <div class="term" id="g-epc"><div class="k in">EPC</div><div class="full">Export Promotion Council · India</div><div class="v">Industry bodies (handicrafts, spices, apparel and more) that list genuine manufacturers and unlock some export benefits for members.</div></div>
+
+      <div class="term" id="g-uspto"><div class="k ab">USPTO</div><div class="full">United States Patent and Trademark Office</div><div class="v">Where you file a US trademark. Foreign applicants must file through a US-licensed attorney. A filed application is enough for Amazon Brand Registry.</div></div>
+      <div class="term" id="g-ein"><div class="k ab">EIN</div><div class="full">Employer Identification Number · US</div><div class="v">A US tax ID for a business, free from the IRS. Foreign businesses apply by fax or phone with form SS-4. Also used when you are set up as importer.</div></div>
+      <div class="term" id="g-irs"><div class="k ab">IRS</div><div class="full">Internal Revenue Service · US</div><div class="v">The US tax office. Issues the EIN and receives the foreign-status form through Amazon.</div></div>
+      <div class="term" id="g-w8ben"><div class="k ab">W-8BEN / W-8BEN-E</div><div class="full">Certificate of foreign status · US</div><div class="v">The form that says "I live outside the US". BEN for individuals, BEN-E for companies. Stops Amazon withholding up to 30 percent of payouts. Filled inside Seller Central's tax interview.</div></div>
+      <div class="term" id="g-fda"><div class="k ab">FDA</div><div class="full">Food and Drug Administration · US</div><div class="v">Regulates food, supplements, cosmetics and medicines. Food factories register with it (with a US Agent), announce shipments in advance, and follow US label formats.</div></div>
+      <div class="term" id="g-mocra"><div class="k ab">MoCRA</div><div class="full">Modernization of Cosmetics Regulation Act · US</div><div class="v">The 2022 law under which cosmetics makers register their facility and list each product with the FDA.</div></div>
+      <div class="term" id="g-cpc"><div class="k ab">CPSC / CPC</div><div class="full">Consumer Product Safety Commission / Children's Product Certificate · US</div><div class="v">The toy regulator, and the one-page certificate you issue after an approved lab tests the toy against ASTM F963. Needed to open Amazon's toy category.</div></div>
+      <div class="term" id="g-ior"><div class="k ab">Importer of Record</div><div class="full">IOR · destination country</div><div class="v">The legal name on the customs entry, responsible for duty and rules. Amazon never plays this role. You do, or a broker does for a fee.</div></div>
+      <div class="term" id="g-customs-bond"><div class="k ab">Customs bond</div><div class="full">Import guarantee · US</div><div class="v">A guarantee US customs requires from importers that duties will be paid. A continuous yearly bond costs a few hundred dollars.</div></div>
+      <div class="term" id="g-hts"><div class="k ab">HTS code</div><div class="full">Harmonized Tariff Schedule · US</div><div class="v">A 10-digit product classification that sets your duty rate. Your forwarder helps pick it. Rates on Indian goods changed often in 2025 and 2026, so check before pricing.</div></div>
+      <div class="term" id="g-coo"><div class="k ab">Country of origin marking</div><div class="full">Import rule · US</div><div class="v">A permanent "Made in India" on the product or its packaging. Required on every import.</div></div>
+
+      <div class="term" id="g-global-selling"><div class="k">Amazon Global Selling</div><div class="full">Amazon's export programme for Indian sellers</div><div class="v">The sign-up route that lets an Indian resident open seller accounts on Amazon's US, UK, European and other sites with Indian documents.</div></div>
+      <div class="term" id="g-brand-registry"><div class="k">Brand Registry</div><div class="full">Amazon's programme for brand owners</div><div class="v">Free. Needs a trademark (filed or registered) and real photos of your branded product. Unlocks A+ Content, Vine, Brand Analytics and copycat takedowns.</div></div>
+      <div class="term" id="g-fba"><div class="k">FBA</div><div class="full">Fulfilment by Amazon</div><div class="v">You ship stock to Amazon's warehouse; Amazon stores, packs, delivers and handles returns. You pay storage per cubic foot and a fee per unit sold.</div></div>
+      <div class="term" id="g-freight-forwarder"><div class="k">Freight forwarder</div><div class="full">Cargo agent</div><div class="v">Arranges the whole journey of your boxes: factory pickup, Indian customs, ship or plane, and delivery to Amazon. Ask for a DDP quote that includes duty.</div></div>
+      <div class="term" id="g-send"><div class="k">Amazon SEND</div><div class="full">Amazon's own shipping service for Indian exporters</div><div class="v">Door-to-door from India to Amazon warehouses abroad, booked inside Seller Central. An alternative to a freight forwarder.</div></div>
+      <div class="term" id="g-aplus"><div class="k">A+ Content</div><div class="full">Enhanced product page section</div><div class="v">The picture-rich part of the page below the bullet points, with banners and comparison charts. Brand owners only. Free.</div></div>
+      <div class="term" id="g-asin"><div class="k">ASIN</div><div class="full">Amazon Standard Identification Number</div><div class="v">The unique code Amazon gives every product page. Created when you list.</div></div>
+      <div class="term" id="g-gtin"><div class="k">GTIN / UPC</div><div class="full">Barcode number</div><div class="v">The barcode on your packaging, one per product. Buy genuine ones from GS1 or get a brand-owner exemption. Reseller barcodes are often rejected.</div></div>
+      <div class="term" id="g-ppc"><div class="k">PPC / Sponsored Products</div><div class="full">Pay-per-click ads</div><div class="v">Ads in Amazon search results. You pay per click, choose keywords and set a daily budget. ACOS is ad spend divided by the sales it made.</div></div>
+      <div class="term" id="g-vine"><div class="k">Amazon Vine</div><div class="full">Early-review programme</div><div class="v">Give up to 30 units free to vetted reviewers for honest reviews. Brand owners only, small fee. The legitimate way to get first reviews.</div></div>
+      <div class="term" id="g-moq"><div class="k">MOQ</div><div class="full">Minimum Order Quantity</div><div class="v">The smallest batch a factory will make. Negotiable, often for a slightly higher unit price.</div></div>
+      <div class="term" id="g-private-label"><div class="k">Private label</div><div class="full">Selling model</div><div class="v">A factory's existing product sold under your brand. How most first-time Amazon sellers start.</div></div>
+    </div>
+    <p class="empty" id="empty" hidden>No term matches that. Try a shorter word.</p>
+  </section>
+
+  <footer>
+    <p>Written for first-time exporters. The example country is the United States; the Indian-side steps are the same for any destination, the target-country steps change with each one.</p>
+    <p>Prefer to learn by playing? <a href="../">Play The Journey of One Box</a>, the game version of this guide.</p>
+    <p>Rules, fees and duty rates change often. Treat this page as a map, not as legal, tax or customs advice. Confirm current requirements with your bank, a chartered accountant and your freight forwarder before spending money.</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var TOTAL = 11;
+  var store = {
+    get: function(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+    set: function(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  };
+
+  /* jargon toggle */
+  var tog = document.getElementById('jargon');
+  function setJargon(on){
+    document.body.classList.toggle('nojargon', !on);
+    tog.setAttribute('aria-pressed', on ? 'true' : 'false');
+    tog.lastElementChild.textContent = on ? 'Show official terms' : 'Official terms hidden';
+    store.set('jargon', on ? '1' : '0');
+  }
+  setJargon(store.get('jargon') !== '0');
+  tog.addEventListener('click', function(){ setJargon(tog.getAttribute('aria-pressed') !== 'true'); });
+
+  /* tags jump to glossary */
+  document.querySelectorAll('.tag').forEach(function(t){
+    t.setAttribute('role','link'); t.setAttribute('tabindex','0');
+    t.title = 'What does this mean?';
+    function go(){
+      var el = document.getElementById('g-' + t.dataset.term);
+      if(!el) return;
+      var q = document.getElementById('q'); q.value=''; filter('');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      document.querySelectorAll('.term.hit').forEach(function(h){ h.classList.remove('hit'); });
+      el.classList.add('hit');
+      setTimeout(function(){ el.classList.remove('hit'); }, 2600);
+    }
+    t.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); go(); });
+    t.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+  });
+
+  /* map nodes open steps */
+  function openStep(id){
+    var d = document.getElementById(id); if(!d) return;
+    d.open = true;
+    d.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  document.querySelectorAll('.map .node').forEach(function(n){
+    n.addEventListener('click', function(){ openStep(n.dataset.go); });
+    n.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openStep(n.dataset.go); } });
+  });
+  if(/^#s\d{1,2}$/.test(location.hash)) openStep(location.hash.slice(1));
+
+  /* progress */
+  var fill = document.getElementById('fill'), count = document.getElementById('count');
+  var boxes = document.querySelectorAll('input[data-done]');
+  function render(){
+    var n = 0;
+    boxes.forEach(function(b){
+      var step = document.getElementById(b.dataset.done);
+      step.classList.toggle('done', b.checked);
+      if(b.checked) n++;
+    });
+    fill.style.width = (n / TOTAL * 100) + '%';
+    count.textContent = n === TOTAL ? 'All 11 done. Go sell.' : n + ' of ' + TOTAL + ' done';
+  }
+  boxes.forEach(function(b){
+    b.checked = store.get('done:' + b.dataset.done) === '1';
+    b.addEventListener('change', function(){ store.set('done:' + b.dataset.done, b.checked ? '1' : '0'); render(); });
+  });
+  render();
+
+  /* glossary search */
+  var terms = document.querySelectorAll('.term'), empty = document.getElementById('empty');
+  function filter(s){
+    s = s.trim().toLowerCase(); var shown = 0;
+    terms.forEach(function(t){
+      var hit = !s || t.textContent.toLowerCase().indexOf(s) > -1;
+      t.hidden = !hit; if(hit) shown++;
+    });
+    empty.hidden = shown > 0;
+  }
+  document.getElementById('q').addEventListener('input', function(e){ filter(e.target.value); });
+})();
+</script>
+</html>

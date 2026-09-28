@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A pixel-art game that shows anyone in India how to export a product and sell it on Amazon USA, in plain words.">
+<meta property="og:title" content="The Journey of One Box">
+<meta property="og:description" content="A pixel-art game that shows anyone in India how to export a product and sell it on Amazon USA, in plain words.">
+<meta property="og:url" content="https://games.edock.io/amyra-ind-usa-export">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1A1D3A">
+<link rel="canonical" href="https://games.edock.io/amyra-ind-usa-export">
+<title>The Journey of One Box</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;500;700&display=swap">
+<style>
+:root{
+  --night:#1A1D3A; --night2:#232752; --panel:#FFF6E6; --panel2:#F3E4C6; --ink:#2A2016; --ink2:#6B5A45;
+  --marigold:#F2A93B; --marigold2:#D98C1F; --green:#4CC96A; --green2:#2E9A4B; --red:#E8563F; --red2:#B93A27;
+  --blue:#4F8FE6; --blue2:#2F63B0; --sky:#8ED0F5; --white:#FFFFFF;
+  --f-title:"Press Start 2P",ui-monospace,monospace; --f-body:"Rubik",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.35;overflow:hidden}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:2px}
+#app{height:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;background:var(--night);position:relative}
+
+/* mute, always on top */
+#btn-mute{position:absolute;right:10px;top:calc(8px + env(safe-area-inset-top,0px));z-index:80;width:40px;height:40px;border-radius:10px;background:var(--marigold);border:2px solid var(--ink);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;box-shadow:0 3px 0 var(--ink),0 0 0 3px rgba(255,255,255,.25)}
+#btn-mute:active{transform:translateY(1px)}
+#btn-mute canvas{image-rendering:pixelated;width:22px;height:22px}
+#btn-mute[aria-pressed="false"]{background:#FFD9D2;border-color:var(--red2);box-shadow:0 3px 0 var(--red2),0 0 0 3px rgba(255,255,255,.25)}
+
+/* HUD */
+#hud{flex:0 0 auto;background:var(--night2);border-bottom:3px solid #0E1024;color:#FFF;padding-top:env(safe-area-inset-top,0px)}
+.hud-top{display:flex;align-items:center;gap:8px;padding:8px 56px 4px 12px;flex-wrap:wrap}
+.stat{display:inline-flex;align-items:center;gap:6px;background:#0E1024;border-radius:8px;padding:5px 9px;font-size:12px;line-height:1;white-space:nowrap}
+.stat canvas{image-rendering:pixelated;width:16px;height:16px}
+.stat b{font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.stat small{color:#9AA4D6;font-size:11px}
+#hud-spent{color:#FF9E8C} #hud-week{color:#B9C4FF} #hud-wallet{color:var(--marigold)}
+.ib{background:#0E1024;border:2px solid #5A63A8;color:#FFF;font-family:var(--f-body);font-weight:700;font-size:12px;padding:5px 9px;line-height:1;display:inline-flex;align-items:center;gap:6px;border-radius:8px}
+.ib:active{transform:translateY(1px)}
+.ib canvas{image-rendering:pixelated;width:16px;height:16px}
+#track{display:flex;gap:3px;padding:4px 12px 8px;align-items:center}
+.tk{flex:1 1 0;min-width:0;max-width:34px;aspect-ratio:1;border-radius:50%;border:2px solid #3E4680;background:#141838;padding:0;display:flex;align-items:center;justify-content:center;position:relative;opacity:.55}
+.tk canvas{width:70%;height:70%;image-rendering:auto;filter:grayscale(1) brightness(1.6)}
+.tk.done{border-color:var(--green2);background:#173A25;opacity:1}
+.tk.done canvas{filter:none}
+.tk.done::after{content:"";position:absolute;right:-2px;bottom:-2px;width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid var(--night2)}
+.tk.cur{border-color:var(--marigold);background:#3A2C12;opacity:1;animation:pulse 1.4s infinite}
+.tk.cur canvas{filter:none}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(242,169,59,.5)}50%{box-shadow:0 0 0 5px rgba(242,169,59,0)}}
+
+/* VIEW */
+#view{flex:0 0 auto;position:relative;background:#000;border-bottom:3px solid #0E1024;height:min(38vh,300px);overflow:hidden;touch-action:none}
+@media (min-width:900px){#view{height:min(42vh,340px)}}
+#game{display:block;position:absolute;left:0;top:0}
+#toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(27,27,36,.9);color:#FFF;font-family:var(--f-title);font-size:9px;padding:8px 12px;border:2px solid var(--marigold);border-radius:6px;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:94%;text-overflow:ellipsis;overflow:hidden}
+#toast.show{opacity:1}
+#hint{position:absolute;right:10px;bottom:10px;background:rgba(14,16,36,.8);color:#DDE3FF;font-size:11px;font-weight:500;padding:6px 8px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .3s}
+#hint.show{opacity:1}
+
+/* PANEL */
+#panel{flex:1 1 auto;overflow-y:auto;padding:12px 12px calc(16px + env(safe-area-inset-bottom,0px));background:var(--night);-webkit-overflow-scrolling:touch}
+.card{background:var(--panel);border:2px solid var(--ink);border-radius:10px;box-shadow:0 4px 0 #0E1024;padding:14px 14px 16px;color:var(--ink)}
+.card-head{display:flex;align-items:center;gap:12px}
+.card-head canvas{image-rendering:pixelated;width:48px;height:48px;flex:none;background:var(--panel2);border:2px solid var(--ink);border-radius:8px}
+.card-title{font-weight:700;font-size:18px;line-height:1.2;text-wrap:balance}
+.card-sub{font-size:14px;color:var(--ink2);margin-top:2px;line-height:1.25}
+.card-line{margin-top:12px;font-size:17px;font-weight:500;line-height:1.3}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
+.choices.one{grid-template-columns:1fr}
+.choice{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;background:#FFF;border:2px solid var(--ink);border-radius:10px;box-shadow:0 3px 0 var(--ink);color:var(--ink);font-family:var(--f-body);font-size:14px;font-weight:500;line-height:1.2;text-align:center;min-height:96px;transition:transform .08s,box-shadow .08s}
+.choice canvas{image-rendering:pixelated;width:48px;height:48px}
+.choice .lbl{text-wrap:balance}
+.choice .meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--ink2)}
+.choice .meta canvas{width:14px;height:14px}
+.choice:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+.choice.ok{background:var(--green);border-color:var(--green2);box-shadow:0 3px 0 var(--green2);color:#0F2E18}
+.choice.bad{background:#FFD9D2;border-color:var(--red2);box-shadow:0 3px 0 var(--red2);color:var(--red2)}
+.choice.bad .lbl{text-decoration:line-through}
+.choice.meh{background:#FFE9B8;border-color:var(--marigold2);box-shadow:0 3px 0 var(--marigold2)}
+.choice.sel{background:var(--green);border-color:var(--green2);box-shadow:0 3px 0 var(--green2)}
+.choice:disabled{cursor:default}
+.say{margin-top:12px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:2px solid var(--ink);border-radius:8px;background:#FFF;font-size:15px;line-height:1.3}
+.say canvas{image-rendering:pixelated;width:24px;height:24px;flex:none;margin-top:1px}
+.say .bits{font-weight:700;font-size:13px;margin-top:5px;color:var(--ink2)}
+.say.good{background:#E1F7E6;border-color:var(--green2)}
+.say.bad{background:#FFE3DD;border-color:var(--red2)} .say.bad .bits{color:var(--red2)}
+.say.meh{background:#FFF1CF;border-color:var(--marigold2)}
+.actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.btn{flex:1 1 130px;font-family:var(--f-body);font-weight:700;font-size:15px;line-height:1.2;padding:13px 12px;background:var(--marigold);border:2px solid var(--ink);border-radius:10px;box-shadow:0 3px 0 var(--ink);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn canvas{image-rendering:pixelated;width:20px;height:20px}
+.btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+.btn.sec{background:#FFF;flex-grow:0}
+.btn.go{background:var(--green)}
+.btn.walk{background:var(--blue);color:#FFF}
+.btn.danger{background:#FFD9D2;color:var(--red2)}
+.btn:disabled{opacity:.5;cursor:default}
+.more{margin-top:10px;font-size:13px;color:var(--ink2);background:none;border:0;padding:0;text-decoration:underline dotted;text-underline-offset:3px}
+.detail{margin-top:8px;font-size:15px;line-height:1.35;color:var(--ink);background:var(--panel2);padding:10px 12px;border-radius:8px;border-left:5px solid var(--marigold2)}
+.brand-in{display:flex;gap:8px;margin-top:12px;align-items:stretch}
+.brand-in input{flex:1;min-width:0;font-family:var(--f-body);font-weight:700;font-size:16px;letter-spacing:.06em;padding:12px;border:2px solid var(--ink);border-radius:10px;background:#FFF;color:var(--ink);text-transform:uppercase}
+.money{margin-top:12px;background:#FFF;border:2px solid var(--ink);border-radius:8px;padding:10px 12px}
+.money .row{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:4px 0;border-bottom:1px dotted var(--panel2)}
+.money .row:last-child{border-bottom:0;font-weight:700;font-size:15px;padding-top:8px}
+.money .row span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.money .neg{color:var(--red2)} .money .pos{color:var(--green2)}
+.money .bar{height:14px;display:flex;border:2px solid var(--ink);border-radius:4px;overflow:hidden;margin:8px 0}
+.money .bar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12px;color:var(--ink2);margin-top:2px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* OVERLAYS */
+#overlay{position:absolute;inset:0;background:rgba(14,16,36,.94);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto;z-index:30}
+#overlay.show{display:flex}
+.ov{position:relative;width:100%;max-width:560px;background:var(--panel);border:2px solid var(--ink);border-radius:12px;box-shadow:0 8px 0 #000;padding:18px 16px 20px;color:var(--ink);margin:auto}
+.ov h1{font-family:var(--f-title);font-size:clamp(12px,3.6vw,18px);line-height:1.6;margin:0;text-wrap:balance;text-align:center}
+.ov h2{font-weight:700;font-size:18px;line-height:1.3;margin:0 0 6px}
+.ov p{margin:10px 0 0;font-size:15px;line-height:1.35;text-align:center}
+.ov .logo{display:block;margin:0 auto 12px;image-rendering:pixelated;width:min(100%,384px);height:auto;border:2px solid var(--ink);border-radius:8px;background:var(--sky)}
+.ov .actions{justify-content:center}
+.ov .x{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:8px;border:2px solid var(--ink);background:#FFF;font-weight:700;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.prod{display:flex;flex-direction:column;align-items:center;gap:5px;background:#FFF;border:2px solid var(--ink);border-radius:10px;box-shadow:0 3px 0 var(--ink);padding:12px 8px;font-family:var(--f-body);font-size:15px;font-weight:700;color:var(--ink);line-height:1.2}
+.prod canvas{image-rendering:pixelated;width:64px;height:64px}
+.prod .price{font-weight:700;font-size:13px;color:var(--green2)}
+.prod .tag{font-size:12px;font-weight:400;color:var(--ink2)}
+.prod:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+.prod.sel{background:#E1F7E6;border-color:var(--green2);box-shadow:0 3px 0 var(--green2)}
+.pass{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:12px}
+.stamp{aspect-ratio:1;border:2px dashed var(--panel2);border-radius:8px;display:flex;align-items:center;justify-content:center;background:#FFF;padding:4px;cursor:pointer}
+.stamp.got{border-style:solid;border-color:var(--ink);transform:rotate(var(--rot,-4deg))}
+.stamp .seal{width:100%;aspect-ratio:1;border-radius:50%;border:3px double currentColor;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-title);font-size:8px;text-align:center;line-height:1.4;padding:4px;color:var(--ink2);opacity:.35}
+.stamp.got .seal{opacity:1}
+.stamp small{display:block;font-family:var(--f-body);font-size:11px;font-weight:500;letter-spacing:0;margin-top:2px}
+#stamp-say{margin-top:12px;min-height:54px;font-size:15px;line-height:1.3;background:#FFF;border:2px solid var(--ink);border-radius:8px;padding:10px 12px}
+.pop{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg) scale(2.6);width:150px;height:150px;border-radius:50%;border:6px double var(--red2);color:var(--red2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-title);font-size:11px;text-align:center;line-height:1.5;background:rgba(255,246,230,.94);opacity:0;pointer-events:none;z-index:25;padding:10px}
+.pop.show{animation:stampin .55s cubic-bezier(.2,1.6,.4,1) forwards}
+.pop small{font-family:var(--f-body);font-size:12px;font-weight:500}
+@keyframes stampin{0%{opacity:0;transform:translate(-50%,-50%) rotate(-8deg) scale(2.6)}60%{opacity:1;transform:translate(-50%,-50%) rotate(-8deg) scale(.95)}100%{opacity:1;transform:translate(-50%,-50%) rotate(-8deg) scale(1)}}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.endgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.tile{background:#FFF;border:2px solid var(--ink);border-radius:8px;padding:10px;text-align:center}
+.tile .k{font-size:12px;color:var(--ink2)}
+.tile .v{font-weight:700;font-size:16px;margin-top:4px;line-height:1.3;font-variant-numeric:tabular-nums}
+.tile .v.pos{color:var(--green2)} .tile .v.neg{color:var(--red2)}
+.credits{margin-top:14px;font-size:12px;color:var(--ink2);text-align:center;line-height:1.35}
+.credits a{color:var(--blue2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<div id="app">
+  <button id="btn-mute" title="Music on or off" aria-pressed="true"><canvas data-icon="note"></canvas></button>
+  <header id="hud">
+    <div class="hud-top">
+      <span class="stat"><canvas data-icon="wallet"></canvas><b id="hud-spent">₹0</b><small>spent</small></span>
+      <span class="stat"><canvas data-icon="clock"></canvas><b id="hud-week">1</b><small>weeks</small></span>
+      <span class="stat"><canvas data-icon="rupee"></canvas><b id="hud-wallet">₹5,00,000</b><small>left</small></span>
+      <button class="ib" id="btn-pass" title="Passport"><canvas data-icon="stampbook"></canvas><span id="hud-stamps">0</span></button>
+    </div>
+    <div id="track" aria-label="Journey checklist"></div>
+  </header>
+  <div id="view">
+    <canvas id="game"></canvas>
+    <div id="toast" role="status"></div>
+    <div id="hint">Hold the right side to walk, or tap Walk</div>
+  </div>
+  <section id="panel" aria-live="polite"></section>
+  <div id="overlay"></div>
+  <div class="pop" id="pop"></div>
+</div>
+<script>
+/* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
+/* ============ PIXEL ART ============ */
+const PAL={k:'#1B1B24',w:'#FFFFFF',r:'#E8563F',R:'#B93A27',o:'#F2A93B',O:'#D98C1F',y:'#FFE66D',g:'#4CC96A',G:'#2E9A4B',b:'#4F8FE6',B:'#2F63B0',c:'#8ED0F5',p:'#F28CB1',n:'#8B5A2B',N:'#5C3A18',t:'#E6B98A',T:'#C9A06A',e:'#A7A7B3',d:'#5A5A6B',l:'#E4E4EC',m:'#C97B4A',M:'#8F4E2A',v:'#7B5CD6',i:'#2A2016',s:'#F5D6A8'};
+const MAPS={
+player0:[
+'....kkkk....','...kkkkkk...','...kttttk...','...ktktkt...','...kttttk...','....tttt....',
+'..kkkkkkkk..','.kTTTTTTTTk.','.kTToooTTTk.','.kTTTTTTTTk.','.kTTTTTTTTk.','..kkkkkkkk..',
+'....bbbb....','...kbbbbk...','...kNNNNk...','...kN..Nk...','...kN..Nk...','..kkk..kkk..'],
+player1:[
+'....kkkk....','...kkkkkk...','...kttttk...','...ktktkt...','...kttttk...','....tttt....',
+'..kkkkkkkk..','.kTTTTTTTTk.','.kTToooTTTk.','.kTTTTTTTTk.','.kTTTTTTTTk.','..kkkkkkkk..',
+'....bbbb....','...kbbbbk...','..kNNNNNNk..','..kN....Nk..','.kN......Nk.','kkk......kkk'],
+box:['.kkkkkkkkkk.','kTTTTTTTTTTk','kTTTkkkkTTTk','kTTTTTTTTTTk','kTTooooTTTTk','kTTTTTTTTTTk','kTTTTTTTTTTk','.kkkkkkkkkk.'],
+coin:['..kkkk..','.kyyyyk.','kyyooyyk','kyoyyoyk','kyoyyoyk','kyyooyyk','.kyyyyk.','..kkkk..'],
+star:['...kk...','..kyyk..','..kyyk..','kkyyyykk','kyyyyyyk','.kyyyyk.','.kyykyk.','.kk..kk.'],
+bottle:['......kkkk......','.....kMMMMk.....','.....kMMMMk.....','......kmmk......','.....kmmmmk.....','....kmmmmmmk....','...kmmmmmmmmk...','...kmmwmmmmmk...','...kmmwmmmmmk...','...kmmwmmmmmk...','...kmmmmmmmmk...','...kmmmmmmmmk...','...kmmmmmmmmk...','...kMmmmmmMMk...','....kMMMMMMk....','.....kkkkkk.....'],
+spice:['.....kkkkkk.....','....kNNNNNNk....','....kNNNNNNk....','.....kkkkkk.....','...kkllllllkk...','..kllrrrrrrllk..','..klrrrrrrrrlk..','..klrrrrrrrrlk..','..kwwwwwwwwwwk..','..kwwyoooywwwk..','..kwwoorrooywk..','..kwwwwwwwwwwk..','..klrrrrrrrrlk..','..klrrrrrrrrlk..','..kkllllllllkk..','...kkkkkkkkkk...'],
+toy:['.......kk.......','......kyyk......','.......kk.......','.....kkkkkk.....','....krrrrrrk....','...kkkkkkkkkk...','...kooooooook...','..kkkkkkkkkkkk..','..kyyyyyyyyyyk..','.kkkkkkkkkkkkkk.','.kggggggggggggk.','kkkkkkkkkkkkkkkk','kbbbbbbbbbbbbbbk','kkkkkkkkkkkkkkkk','.kNNNNNNNNNNNNk.','..kkkkkkkkkkkk..'],
+throw:['................','................','..kkkkkkkkkkkk..','.kcccccccccccck.','.kcccccccccccck.','.kwwwwwwwwwwwwk.','.kcccccccccccck.','.kkkkkkkkkkkkkk.','.kppppppppppppk.','.kwwwwwwwwwwwwk.','.kppppppppppppk.','.kkkkkkkkkkkkkk.','..kkkkkkkkkkkk..','....k.k.k.k.....','....k.k.k.k.....','................'],
+heart:['..kk..kk..','.krrkkrrk.','krrrrrrrrk','krrwrrrrrk','krrrrrrrrk','.krrrrrrk.','..krrrrk..','...krrk...','....kk....'],
+};
+function drawMap(ctx,map,x,y,s){s=s||1;for(let r=0;r<map.length;r++){const row=map[r];for(let c=0;c<row.length;c++){const ch=row[c];if(ch==='.')continue;ctx.fillStyle=PAL[ch]||ch;ctx.fillRect(x+c*s,y+r*s,s,s);}}}
+
+/* Icon DSL: ops separated by ';'  R x y w h col | O x y w h col | C cx cy r col | L x1 y1 x2 y2 col | T x y col text | M name x y (map) */
+const ICONS={
+factory:'R1 7 14 8 e;O1 7 14 8 k;L1 7 4 3 k;L4 3 4 7 k;L5 7 8 3 k;L8 3 8 7 k;L9 7 12 3 k;L12 3 12 7 k;R2 4 2 3 e;R6 4 2 3 e;R10 4 2 3 e;R3 1 2 4 d;R4 10 2 2 y;R8 10 2 2 y;R11 10 2 3 N',
+chat:'R2 2 12 8 w;O2 2 12 8 k;R3 10 3 1 k;R3 11 2 1 k;R3 12 1 1 k;R4 5 2 2 k;R7 5 2 2 k;R10 5 2 2 k',
+doc:'R3 1 10 14 w;O3 1 10 14 k;R5 4 6 1 e;R5 6 6 1 e;R5 8 6 1 e;R5 11 3 1 b;R6 12 2 1 b',
+sign:'R3 1 10 14 w;O3 1 10 14 k;R5 4 6 1 e;R5 6 6 1 e;R5 8 6 1 e;R5 11 4 1 b;L9 14 14 9 O;L10 14 15 9 O;R13 8 2 2 k',
+shrug:'C8 8 6 t;R4 3 8 2 k;R6 7 1 1 k;R9 7 1 1 k;R6 10 4 1 k;T11 4 k ?',
+tm:'C8 8 7 o;C8 8 5 y;T3 6 k TM',
+clock:'C8 8 7 w;R8 4 1 4 k;R8 8 3 1 k;R2 8 1 1 k;R13 8 1 1 k;R8 2 1 1 k;R8 13 1 1 k',
+stamp:'R4 1 8 4 n;O4 1 8 4 k;R6 5 4 3 N;R2 8 12 4 k;R3 12 10 2 r',
+lock:'R4 7 8 8 o;O4 7 8 8 k;R5 4 1 3 k;R10 4 1 3 k;R5 3 6 1 k;R7 10 2 2 k;R7 12 1 2 k',
+bank:'R1 6 14 1 k;L1 6 8 1 k;L8 1 15 6 k;R3 2 10 4 w;R2 7 12 6 w;R3 7 2 6 e;R7 7 2 6 e;R11 7 2 6 e;R1 13 14 2 k;R4 3 8 1 e',
+briefcase:'R2 5 12 9 n;O2 5 12 9 k;R6 3 4 1 k;R6 4 1 1 k;R9 4 1 1 k;R2 9 12 1 N;R7 8 2 3 y',
+piggy:'C8 9 5 p;R12 8 3 3 p;O12 8 3 3 k;R6 7 1 1 k;R5 13 2 2 p;R9 13 2 2 p;R7 3 3 1 k;R8 4 1 1 k',
+shop:'R1 3 14 3 r;R3 3 2 3 w;R7 3 2 3 w;R11 3 2 3 w;O1 3 14 3 k;R2 6 12 8 l;O2 6 12 8 k;R6 9 4 5 n;R3 8 2 2 c;R11 8 2 2 c',
+cardok:'R1 4 14 9 w;O1 4 14 9 k;R3 6 3 4 t;R7 7 5 1 e;R7 9 5 1 e;R9 11 1 1 g;R10 12 1 1 g;R11 11 1 1 g;R12 10 1 1 g;R13 9 1 1 g',
+cardx:'R1 4 14 9 w;O1 4 14 9 k;R3 6 3 4 t;R7 7 5 1 e;R7 9 5 1 e;L9 9 13 13 r;L13 9 9 13 r;L10 9 14 13 r',
+tick:'R2 2 12 12 w;O2 2 12 12 k;L4 8 7 11 G;L5 8 8 11 G;L7 11 12 5 G;L8 11 13 5 G',
+untick:'R2 2 12 12 w;O2 2 12 12 k',
+fax:'R1 7 14 7 e;O1 7 14 7 k;R4 1 8 7 w;O4 1 8 7 k;R6 3 4 1 e;R6 5 4 1 e;R3 10 2 1 k;R6 10 2 1 k;R9 10 4 2 d',
+sticker:'R1 4 14 10 T;O1 4 14 10 k;C8 9 3 w;C8 9 2 y;L2 5 4 5 e',
+print:'R1 4 14 10 T;O1 4 14 10 k;R4 8 8 2 o;R4 11 5 1 O;R2 5 12 1 e',
+plainbox:'R1 4 14 10 T;O1 4 14 10 k;R7 4 2 10 e;R2 5 12 1 e',
+camera:'R1 5 14 9 d;O1 5 14 9 k;C8 9 3 c;C8 9 1 w;R3 3 4 2 d;O3 3 4 2 k;R11 3 2 2 r',
+guard:'C8 5 3 t;R4 1 8 2 B;R3 3 10 1 B;R4 8 8 7 B;O4 8 8 7 k;R7 10 2 2 y;R6 6 1 1 k;R9 6 1 1 k',
+barcode:'R1 3 14 10 w;O1 3 14 10 k;R3 5 1 6 k;R5 5 1 6 k;R6 5 2 6 k;R9 5 1 6 k;R11 5 1 6 k;R12 5 2 6 k',
+barcode2:'R1 3 14 10 w;O1 3 14 10 k;R3 5 1 6 k;R5 5 1 6 k;R6 5 2 6 k;R9 5 1 6 k;R11 5 1 6 k;R12 5 2 6 k;R8 9 8 6 r;T9 10 w ₹',
+lab:'R6 1 1 6 k;R10 1 1 6 k;R5 1 7 1 k;L6 7 3 13 k;L10 7 13 13 k;R3 13 11 2 k;R5 10 7 3 g;R4 12 9 1 g;R7 11 1 1 w;R6 8 5 1 c',
+labelok:'R2 1 12 14 w;O2 1 12 14 k;R4 3 8 1 k;R4 5 5 1 e;R4 7 8 4 l;O4 7 8 4 k;R5 8 6 1 e;R5 9 4 1 e;R4 12 3 1 o;R7 12 2 1 w;R9 12 3 1 g',
+labelbad:'R2 1 12 14 w;O2 1 12 14 k;R4 3 8 1 e;R4 5 3 1 e;L7 8 12 13 r;L8 8 13 13 r;L12 8 7 13 r;L13 8 8 13 r',
+coo:'R2 4 12 3 o;R2 7 12 3 w;R2 10 12 3 g;O2 4 12 9 k;C8 8 1 b;R1 2 1 13 N',
+agent:'C8 5 3 t;R5 1 6 2 k;R4 8 8 7 d;O4 8 8 7 k;R7 8 2 6 r;R6 6 1 1 k;R9 6 1 1 k',
+broker:'C8 5 3 t;R5 1 6 2 n;R4 8 8 7 B;O4 8 8 7 k;R7 8 2 6 y;R6 5 2 2 k;R9 5 2 2 k;R6 6 1 1 w;R9 6 1 1 w',
+cert:'R2 1 12 12 w;O2 1 12 12 k;R4 3 8 1 e;R4 5 8 1 e;R4 7 5 1 e;C11 11 2 r;R10 12 1 4 r;R12 12 1 4 r',
+search:'C6 6 5 w;C6 6 4 c;C6 6 5 k;C6 6 4 w;C6 6 3 c;L10 10 14 14 k;L11 10 15 14 k',
+page:'R2 1 12 14 w;O2 1 12 14 k;R4 3 8 5 c;O4 3 8 5 k;R5 6 2 2 g;R4 10 8 1 e;R4 12 6 1 e;T9 4 k A+',
+plane:'R3 7 10 3 l;O3 7 10 3 k;R12 8 3 1 l;R5 4 3 3 l;O5 4 3 3 k;R6 10 5 2 l;O6 10 5 2 k;R7 8 1 1 b;R9 8 1 1 b;R11 8 1 1 b',
+ship:'R2 9 12 5 R;O2 9 12 5 k;R4 7 8 2 w;O4 7 8 2 k;R6 4 4 3 w;O6 4 4 3 k;R8 2 2 2 k;R4 6 2 1 o;R7 6 2 1 g;R10 6 2 1 b;R1 14 3 1 c;R6 15 3 1 c;R11 14 3 1 c',
+parcels:'R1 9 5 5 T;O1 9 5 5 k;R7 9 5 5 T;O7 9 5 5 k;R4 3 5 5 T;O4 3 5 5 k;R12 6 3 3 T;O12 6 3 3 k',
+warehouse:'R0 3 16 2 d;R1 5 14 10 e;O1 5 14 10 k;R3 9 3 6 d;R7 9 3 6 d;R11 9 3 6 d;T2 6 k FBA',
+me:'C8 8 5 t;R4 3 8 2 k;R3 4 1 3 k;R12 4 1 3 k;R6 7 1 1 k;R9 7 1 1 k;R6 10 4 1 k;R5 9 1 1 k;R10 9 1 1 k',
+gate:'R2 3 2 12 d;O2 3 2 12 k;R1 14 5 2 d;R3 6 12 2 w;O3 6 12 2 k;R5 6 2 2 r;R9 6 2 2 r;R13 6 2 2 r',
+megaphone:'R2 6 2 5 o;O2 6 2 5 k;R4 5 5 7 o;O4 5 5 7 k;R9 3 2 11 O;O9 3 2 11 k;R12 6 2 1 k;R12 8 3 1 k;R12 10 2 1 k',
+vine:'C8 7 5 g;C8 7 5 G;C8 7 4 g;R8 8 1 7 G;L5 10 11 4 G;R2 12 2 1 g;R12 12 2 1 g',
+fakestars:'R4 1 8 14 d;O4 1 8 14 k;R5 3 6 9 w;R6 4 1 1 y;R8 4 1 1 y;R10 4 1 1 y;R6 6 1 1 y;R8 6 1 1 y;R10 6 1 1 y;R6 8 1 1 y;R8 8 1 1 y;R10 8 1 1 y;L1 1 15 15 r;L2 1 15 14 r;L15 1 1 15 r',
+reqreview:'R1 5 14 9 w;O1 5 14 9 k;L1 5 8 11 k;L8 11 15 5 k;M star 5 0',
+house:'L1 8 8 1 k;L8 1 15 8 k;R3 5 10 3 r;R3 8 10 7 l;O3 8 10 7 k;R7 11 3 4 n;R4 9 2 2 c;R10 9 2 2 c;R1 15 14 1 k',
+dollar:'C8 8 7 y;C8 8 6 o;C8 8 5 y;T5 5 G $',
+rupee:'C8 8 7 y;C8 8 6 o;C8 8 5 y;T5 5 G ₹',
+receipt:'R3 1 10 12 w;O3 1 10 12 k;R5 3 6 1 e;R5 5 6 1 e;R5 7 4 1 e;R5 9 6 1 g;R3 13 2 1 k;R6 13 2 1 k;R9 13 2 1 k;R12 13 1 1 k',
+monitor:'R1 2 14 10 d;O1 2 14 10 k;R3 4 10 6 c;L5 7 7 9 G;L7 9 11 5 G;L6 7 8 9 G;R6 12 4 1 k;R4 13 8 1 k',
+check:'L2 8 6 12 g;L3 8 7 12 g;L4 8 8 12 g;L6 12 14 4 g;L7 12 15 4 g;L8 12 15 5 g',
+cross:'L3 3 13 13 r;L4 3 14 13 r;L2 3 12 13 r;L13 3 3 13 r;L14 3 4 13 r;L12 3 2 13 r',
+walk:'R2 7 9 2 k;L9 3 13 8 k;L9 12 13 7 k;L10 3 14 8 k;L10 12 14 7 k',
+wallet:'R1 4 14 10 n;O1 4 14 10 k;R1 7 14 1 N;R10 8 5 4 N;O10 8 5 4 k;R12 9 2 2 y',
+stampbook:'R2 1 12 14 R;O2 1 12 14 k;R4 3 8 10 w;C8 8 3 r;R4 1 1 14 k',
+note:'R9 2 2 9 k;R9 2 5 2 k;R13 2 1 4 k;C7 12 3 k;C12 10 2 k',
+mute:'R9 2 2 9 e;R9 2 5 2 e;C7 12 3 e;L2 2 14 14 r;L3 2 15 14 r',
+refund:'R2 6 12 9 c;O2 6 12 9 k;R4 4 8 2 l;O4 4 8 2 k;M coin 4 8;R7 1 2 3 k',
+timer:'C8 9 6 w;C8 9 6 k;C8 9 5 w;R7 1 2 2 k;R8 5 1 4 k;R8 9 3 1 k;R4 11 8 1 r',
+key:'C5 6 3 y;C5 6 3 k;C5 6 2 y;R7 5 8 2 y;O7 5 8 2 k;R12 7 1 2 y;R14 7 1 3 y',
+map:'R1 2 14 12 s;O1 2 14 12 k;L3 4 6 8 b;L6 8 10 6 b;L10 6 13 11 b;R4 10 2 2 g;R9 4 2 2 r',
+};
+const iconCache={};
+function px(ctx,x,y,c){ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}
+function line(ctx,x1,y1,x2,y2,c){let dx=Math.abs(x2-x1),dy=-Math.abs(y2-y1),sx=x1<x2?1:-1,sy=y1<y2?1:-1,err=dx+dy;for(;;){px(ctx,x1,y1,c);if(x1===x2&&y1===y2)break;const e2=2*err;if(e2>=dy){err+=dy;x1+=sx;}if(e2<=dx){err+=dx;y1+=sy;}}}
+function circle(ctx,cx,cy,r,c){ctx.fillStyle=PAL[c]||c;for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){if(x*x+y*y<=r*r+r*0.6)ctx.fillRect(cx+x,cy+y,1,1);}}
+function drawIcon(ctx,name,ox,oy){const def=ICONS[name];if(!def){if(MAPS[name]){drawMap(ctx,MAPS[name],ox,oy,1);}return;}
+  def.split(';').forEach(op=>{op=op.trim();if(!op)return;const t=op[0];const a=op.slice(1).trim().split(' ');
+    if(t==='R'){ctx.fillStyle=PAL[a[4]]||a[4];ctx.fillRect(ox+ +a[0],oy+ +a[1],+a[2],+a[3]);}
+    else if(t==='O'){const x=ox+ +a[0],y=oy+ +a[1],w=+a[2],h=+a[3],c=a[4];ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,w,1);ctx.fillRect(x,y+h-1,w,1);ctx.fillRect(x,y,1,h);ctx.fillRect(x+w-1,y,1,h);}
+    else if(t==='C'){circle(ctx,ox+ +a[0],oy+ +a[1],+a[2],a[3]);}
+    else if(t==='L'){line(ctx,ox+ +a[0],oy+ +a[1],ox+ +a[2],oy+ +a[3],a[4]);}
+    else if(t==='T'){ctx.fillStyle=PAL[a[2]]||a[2];ctx.font='6px "Press Start 2P",monospace';ctx.textBaseline='top';ctx.fillText(a.slice(3).join(' '),ox+ +a[0],oy+ +a[1]);}
+    else if(t==='M'){drawMap(ctx,MAPS[a[0]],ox+ +a[1],oy+ +a[2],1);}
+  });}
+function iconCanvas(name,scale){scale=scale||3;const key=name+'@'+scale;if(iconCache[key])return iconCache[key];
+  const c=document.createElement('canvas');c.width=16*scale;c.height=16*scale;const x=c.getContext('2d');x.imageSmoothingEnabled=false;
+  const off=document.createElement('canvas');off.width=16;off.height=16;const o=off.getContext('2d');
+  if(MAPS[name]&&!ICONS[name]){const m=MAPS[name];const w=m[0].length,h=m.length;drawMap(o,m,Math.floor((16-w)/2),Math.floor((16-h)/2),1);}else drawIcon(o,name,0,0);
+  x.drawImage(off,0,0,16*scale,16*scale);iconCache[key]=c;return c;}
+function iconEl(name,scale){const src=iconCanvas(name,scale||3);const c=document.createElement('canvas');c.width=src.width;c.height=src.height;c.getContext('2d').drawImage(src,0,0);c.setAttribute('aria-hidden','true');return c;}
+/* product photo thumbnails for the listing station */
+function photoCanvas(product,style){const c=document.createElement('canvas');c.width=48;c.height=48;const x=c.getContext('2d');x.imageSmoothingEnabled=false;
+  if(style==='white'){x.fillStyle='#fff';x.fillRect(0,0,48,48);const off=document.createElement('canvas');off.width=16;off.height=16;drawMap(off.getContext('2d'),MAPS[product],0,0,1);x.drawImage(off,4,4,40,40);}
+  else if(style==='clutter'){x.fillStyle='#8B5A2B';x.fillRect(0,0,48,48);x.fillStyle='#5C3A18';x.fillRect(0,30,48,18);const junk=['#E8563F','#4F8FE6','#A7A7B3','#FFE66D','#2E9A4B'];for(let i=0;i<9;i++){x.fillStyle=junk[i%5];x.fillRect((i*13)%44,(i*17)%40,9,7);}const off=document.createElement('canvas');off.width=16;off.height=16;drawMap(off.getContext('2d'),MAPS[product],0,0,1);x.drawImage(off,18,20,16,16);}
+  else{x.fillStyle='#F5EEDC';x.fillRect(0,0,48,48);x.strokeStyle='#5A5A6B';x.lineWidth=2;x.setLineDash([3,3]);x.strokeRect(10,8,28,32);x.beginPath();x.moveTo(12,40);x.lineTo(36,12);x.stroke();x.font='8px "Press Start 2P"';x.fillStyle='#5A5A6B';x.fillText('?',20,28);}
+  x.strokeStyle='#1B1B24';x.lineWidth=2;x.setLineDash([]);x.strokeRect(1,1,46,46);return c;}
+document.fonts&&document.fonts.ready.then(()=>{for(const k in iconCache)delete iconCache[k];document.querySelectorAll('canvas[data-icon]').forEach(c=>{const s=iconCanvas(c.dataset.icon,3);c.width=s.width;c.height=s.height;c.getContext('2d').drawImage(s,0,0);});});
+document.querySelectorAll('canvas[data-icon]').forEach(c=>{const s=iconCanvas(c.dataset.icon,3);c.width=s.width;c.height=s.height;c.getContext('2d').drawImage(s,0,0);});
+
+
+/* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
+/* ============ AUDIO (generative chiptune, all synthesized) ============ */
+const AudioKit=(()=>{
+  let ctx=null,master=null,musicG=null,leadBus=null,sfxG=null,muted=false,timer=null,song=null,songName='',pending=null;
+  let step=0,nextT=0,phrase=0,mel=[],arp=[],bass=[],seed=7;
+  const f=n=>440*Math.pow(2,(n-69)/12);
+  const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+  function init(){if(ctx)return true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;ctx=new AC();
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=6500;lp.connect(ctx.destination);
+    master=ctx.createGain();master.gain.value=muted?0:0.6;master.connect(lp);
+    musicG=ctx.createGain();musicG.gain.value=0.5;musicG.connect(master);
+    leadBus=ctx.createGain();leadBus.gain.value=1;leadBus.connect(musicG);
+    const dl=ctx.createDelay(1);dl.delayTime.value=0.31;const fb=ctx.createGain();fb.gain.value=0.3;const wet=ctx.createGain();wet.gain.value=0.22;
+    leadBus.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(musicG);
+    sfxG=ctx.createGain();sfxG.gain.value=0.7;sfxG.connect(master);
+    document.addEventListener('visibilitychange',()=>{if(!ctx)return;if(document.hidden)ctx.suspend();else ctx.resume();});return true;}
+  function tone(t,dur,note,type,gain,dest,slide,vib){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(f(note),t);if(slide)o.frequency.exponentialRampToValueAtTime(f(note+slide),t+dur);
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=5.5;lg.gain.value=f(note)*0.004;l.connect(lg);lg.connect(o.frequency);l.start(t+0.08);l.stop(t+dur+0.05);}
+    g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(gain,t+0.012);g.gain.exponentialRampToValueAtTime(Math.max(gain*0.35,0.0002),t+dur*0.85);g.gain.linearRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+0.05);}
+  function noise(t,dur,gain,dest,freq,type){const len=Math.max(1,Math.floor(ctx.sampleRate*dur));const buf=ctx.createBuffer(1,len,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);const s=ctx.createBufferSource();s.buffer=buf;const g=ctx.createGain();g.gain.value=gain;const fl=ctx.createBiquadFilter();fl.type=type||'highpass';fl.frequency.value=freq||6000;s.connect(fl);fl.connect(g);g.connect(dest);s.start(t);}
+  function kick(t,g){const o=ctx.createOscillator(),gn=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(42,t+0.12);gn.gain.setValueAtTime(g,t);gn.gain.exponentialRampToValueAtTime(0.0005,t+0.2);o.connect(gn);gn.connect(musicG);o.start(t);o.stop(t+0.22);}
+  function snare(t,g){noise(t,0.11,g,musicG,1800,'bandpass');tone(t,0.07,55,'triangle',g*0.5,musicG,-10,false);}
+  function tin(t,g){tone(t,0.09,79,'sine',g,musicG,-2,false);}
+  const SONGS={
+    town:{bpm:124,swing:0.09,root:62,scale:[0,2,4,5,7,9,10],chords:[[0],[6],[3],[0],[0],[3],[4],[0]],lead:'square',leadGain:0.10,bassW:'triangle',drums:'tabla',arpStyle:'pluck',
+      hook:[74,0,0,72,0,69,0,72,74,0,0,77,0,74,0,72,69,0,0,67,0,69,0,72,69,0,0,0,0,0,65,67]},
+    sea:{bpm:82,swing:0,root:57,scale:[0,2,3,5,7,9,10],chords:[[0],[3],[6],[4],[0],[2],[3],[4]],lead:'triangle',leadGain:0.15,bassW:'sine',drums:'soft',arpStyle:'flow',
+      hook:[69,0,0,0,72,0,0,0,76,0,0,0,0,0,0,0,74,0,0,0,72,0,0,0,69,0,0,0,0,0,0,0]},
+    usa:{bpm:136,swing:0.07,root:67,scale:[0,2,4,5,7,9,11],chords:[[0],[4],[5],[3],[0],[4],[3],[4]],lead:'square',leadGain:0.09,bassW:'square',drums:'rock',arpStyle:'pump',
+      hook:[79,0,79,0,81,0,83,0,79,0,0,0,76,0,0,0,74,0,76,0,79,0,76,0,74,0,0,0,71,0,0,0]}
+  };
+  const deg=(d,oct)=>song.root+song.scale[((d%7)+7)%7]+12*Math.floor(d/7)+12*(oct||0);
+  function nearestDeg(m){let best=7,bd=99;for(let d=0;d<24;d++){const dist=Math.abs(deg(d,0)-m);if(dist<bd){bd=dist;best=d;}}return best;}
+  const RH=[[1,0,1,0,1,0,0,0,1,0,1,0,1,0,0,0],[1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0],[1,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],[1,0,0,0,1,0,1,0,1,0,0,0,1,0,1,0],[1,0,1,1,0,1,0,0,1,0,1,0,0,0,0,0],[0,0,1,0,1,0,1,0,0,0,1,0,1,0,1,0],[1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0]];
+  function genPhrase(){mel=new Array(128).fill(0);arp=new Array(128).fill(0);bass=new Array(128).fill(0);let prev=7;const hookOn=phrase%2===0;const lift=phrase%4===3?7:0;
+    for(let b=0;b<8;b++){const cd=song.chords[b][0],tones=[cd,cd+2,cd+4];
+      for(let s=0;s<16;s++){const st=b*16+s;
+        if(song.drums==='rock'){if(s%2===0)bass[st]=deg(cd,-1)+((s%8===6)?12:0);}
+        else if(song.drums==='soft'){if(s===0)bass[st]=deg(cd,-1);if(s===8)bass[st]=deg(cd+4,-1);}
+        else{if(s===0||s===6||s===8||s===12)bass[st]=deg(s===12?cd+4:cd,-1);}
+        const pat=song.arpStyle==='flow'?[0,1,2,1]:song.arpStyle==='pump'?[0,0,1,2]:[0,2,1,2];
+        if(song.arpStyle==='flow'||s%2===0){arp[st]=deg(tones[pat[(song.arpStyle==='flow'?s:s>>1)%4]],0)+(phrase%3===1?12:0);}}
+      if(hookOn&&b<2){for(let s=0;s<16;s++)mel[b*16+s]=song.hook[b*16+s]?song.hook[b*16+s]+lift:0;prev=nearestDeg(song.hook[31]||song.hook[28]||song.root+12);continue;}
+      const rh=RH[Math.floor(rnd()*RH.length)];
+      for(let s=0;s<16;s++){if(!rh[s])continue;let d;
+        if(s===0||s===8||rnd()<0.35){let best=tones[0],bd=99;for(const t of tones)for(const o of [0,7,14]){const c=t+o,dist=Math.abs(c-prev);if(dist<bd){bd=dist;best=c;}}d=best;if(rnd()<0.25)d=best+(rnd()<0.5?7:-7);}
+        else{d=prev+[-2,-1,-1,1,1,2,3][Math.floor(rnd()*7)];}
+        d=Math.max(5,Math.min(16,d));prev=d;mel[b*16+s]=deg(d,0)+lift;}
+      if(b===7){for(let s=9;s<16;s++)mel[b*16+s]=0;mel[b*16+8]=deg(rnd()<0.6?7:11,0)+lift;prev=7;}}}
+  function drums(t,i,b,s){const d=song.drums;const lastBar=b===7;
+    if(d==='tabla'){if(s===0||s===8)kick(t,0.55);if(s===10&&b%2===1)kick(t,0.3);if(s===4||s===12)tin(t,0.18);if(s%2===1)noise(t,0.025,0.05,musicG,8000,'highpass');if(s===14)noise(t,0.05,0.08,musicG,6000,'highpass');}
+    else if(d==='soft'){if(s===0)kick(t,0.35);if(s===4||s===8||s===12)noise(t,0.03,0.05,musicG,7000,'highpass');if(s%4===2)noise(t,0.05,0.03,musicG,4000,'bandpass');}
+    else{if(s===0||s===8||(s===10&&b%2===1))kick(t,0.6);if(s===4||s===12)snare(t,0.3);if(s%2===0)noise(t,0.03,0.07,musicG,8000,'highpass');if(s===14)noise(t,0.09,0.06,musicG,6000,'highpass');}
+    if(lastBar&&s>=12&&d!=='soft')snare(t,0.18+(s-12)*0.04);}
+  function schedule(){if(!ctx||!song)return;while(nextT<ctx.currentTime+0.14){const i=step%128,b=Math.floor(i/16),s=i%16,st=60/song.bpm/4;
+      if(s===0&&pending){song=SONGS[pending]||SONGS.town;songName=pending;pending=null;step=0;phrase=0;genPhrase();continue;}
+      if(i===0){if(step>0)phrase++;genPhrase();}
+      const t=nextT+((s%2===1)?song.swing*st:0);
+      const m=mel[i];if(m){let len=1;while(len<6&&i+len<128&&!mel[i+len])len++;tone(t,st*len*0.92,m,song.lead,song.leadGain,leadBus,0,true);}
+      const bn=bass[i];if(bn)tone(t,st*1.7,bn,song.bassW,song.bassW==='square'?0.11:0.3,musicG,0,false);
+      const a=arp[i];if(a)tone(t,st*0.8,a,'square',0.035,leadBus,0,false);
+      drums(t,i,b,s);nextT+=st;step++;}}
+  function play(name){if(!init())return;if(ctx.state==='suspended')ctx.resume();if(!SONGS[name])name='town';if(songName===name)return;
+    if(!timer){song=SONGS[name];songName=name;step=0;phrase=0;seed=(Date.now()%100000)|1;genPhrase();nextT=ctx.currentTime+0.05;timer=setInterval(schedule,40);}else pending=name;}
+  function setMuted(m){muted=m;if(master&&ctx)master.gain.setTargetAtTime(m?0:0.6,ctx.currentTime,0.02);}
+  const sfx={
+    blip(){if(!ctx||muted)return;tone(ctx.currentTime,0.07,88,'square',0.16,sfxG,5,false);},
+    coin(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.07,83,'square',0.18,sfxG,0,false);tone(t+0.07,0.16,88,'square',0.18,sfxG,0,false);},
+    cash(){if(!ctx||muted)return;const t=ctx.currentTime;[76,80,83,88].forEach((n,i)=>tone(t+i*0.06,0.12,n,'square',0.16,sfxG,0,false));},
+    stamp(){if(!ctx||muted)return;const t=ctx.currentTime;noise(t,0.12,0.9,sfxG,900,'lowpass');tone(t,0.16,45,'sine',0.5,sfxG,-12,false);},
+    error(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.14,52,'sawtooth',0.14,sfxG,-3,false);tone(t+0.15,0.24,47,'sawtooth',0.14,sfxG,-5,false);},
+    win(){if(!ctx||muted)return;const t=ctx.currentTime;[72,76,79,84].forEach((n,i)=>tone(t+i*0.09,0.2,n,'square',0.15,sfxG,0,false));tone(t+0.4,0.5,88,'square',0.13,sfxG,0,true);},
+    step(){if(!ctx||muted)return;noise(ctx.currentTime,0.03,0.1,sfxG,1500,'lowpass');},
+    horn(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.7,41,'sawtooth',0.16,sfxG,0,false);tone(t,0.7,48,'square',0.07,sfxG,0,false);}
+  };
+  return {init,play,setMuted,sfx,isMuted:()=>muted};
+})();
+/* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
+/* ============ WORLD ============ */
+const H=220,GROUND=194;
+const REGIONS=[
+  {name:'town',  x0:0,x1:750,top:'#7EC8F2',bot:'#FFE2A8',far:'#C98C4C',far2:'#E7B478',ground:'#C9A46A',road:'#6B5A45',song:'town'},
+  {name:'street',x0:750,x1:1450,top:'#6FBDF0',bot:'#D6ECFA',far:'#7F8FA6',far2:'#AEBBCB',ground:'#B9B2A0',road:'#5A5A6B',song:'town'},
+  {name:'works', x0:1450,x1:2150,top:'#86B8E0',bot:'#E8E1CF',far:'#8C7B6B',far2:'#B9A896',ground:'#A8A08C',road:'#4E4E5C',song:'town'},
+  {name:'port',  x0:2150,x1:2500,top:'#F2A24E',bot:'#FFD9A0',far:'#3F5F86',far2:'#7A93B5',ground:'#8E8E8E',road:'#4E4E5C',song:'town'},
+  {name:'sea',   x0:2500,x1:3000,top:'#1B1F4C',bot:'#3A4A8C',far:'#111433',far2:'#25305F',ground:'#1F6FA8',road:'#155A8C',song:'sea'},
+  {name:'usa',   x0:3000,x1:3800,top:'#5EB2F0',bot:'#D8F0FF',far:'#5B6B85',far2:'#8F9DB5',ground:'#8FBF6A',road:'#40404E',song:'usa'},
+  {name:'home',  x0:3800,x1:4200,top:'#F58A5B',bot:'#FFD79A',far:'#8E4F3A',far2:'#C77E5C',ground:'#C9A46A',road:'#6B5A45',song:'town'}
+];
+function hex2(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+function lerpC(a,b,t){const A=hex2(a),B=hex2(b);return 'rgb('+Math.round(A[0]+(B[0]-A[0])*t)+','+Math.round(A[1]+(B[1]-A[1])*t)+','+Math.round(A[2]+(B[2]-A[2])*t)+')';}
+function regionAt(x){for(let i=0;i<REGIONS.length;i++)if(x<REGIONS[i].x1)return i;return REGIONS.length-1;}
+function paletteAt(x){const i=regionAt(x),r=REGIONS[i];const n=REGIONS[Math.min(i+1,REGIONS.length-1)];const d=r.x1-x;const t=d<160&&n!==r?1-d/160:0;
+  const k=key=>t?lerpC(r[key],n[key],t):r[key];return {top:k('top'),bot:k('bot'),far:k('far'),far2:k('far2'),ground:k('ground'),road:k('road'),name:r.name,t};}
+/* deterministic props */
+function rnd(seed){let s=seed*9301+49297;s=s%233280;return s/233280;}
+const PROPS=[];
+(function(){let id=0;for(const r of REGIONS){for(let x=r.x0+40;x<r.x1;x+=60){const v=rnd(id++);let type=null;
+  if(r.name==='town')type=v<.25?'palm':v<.4?'stall':v<.5?'rick':v<.6?'lamp':null;
+  else if(r.name==='street')type=v<.3?'tree':v<.45?'lamp':v<.55?'bench':null;
+  else if(r.name==='works')type=v<.25?'crate':v<.4?'lamp':v<.5?'tree':null;
+  else if(r.name==='port')type=v<.5?'container':v<.65?'crane':null;
+  else if(r.name==='usa')type=v<.3?'tree2':v<.42?'lamp':v<.5?'hydrant':null;
+  else if(r.name==='home')type=v<.3?'palm':v<.45?'lamp':null;
+  if(type)PROPS.push({x:x+Math.floor(v*30),type,v});}}})();
+const CLOUDS=[];for(let i=0;i<40;i++)CLOUDS.push({x:i*230+rnd(i)*120,y:14+rnd(i+7)*40,w:18+rnd(i+3)*22});
+
+function txt(ctx,s,x,y,col,size,align){ctx.font=(size||7)+'px "Press Start 2P",monospace';ctx.textBaseline='top';ctx.textAlign=align||'left';ctx.fillStyle=col;ctx.fillText(s,x,y);ctx.textAlign='left';}
+function sign(ctx,x,y,s,bg,fg){ctx.font='6px "Press Start 2P",monospace';const w=Math.ceil(ctx.measureText(s).width)+8;ctx.fillStyle=PAL.k;ctx.fillRect(x-w/2-1,y-1,w+2,11);ctx.fillStyle=bg;ctx.fillRect(x-w/2,y,w,9);txt(ctx,s,x,y+2,fg,6,'center');}
+function windows(ctx,x,y,w,h,cols,rows,col){const cw=Math.floor((w-6)/cols),ch=Math.floor((h-8)/rows);for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){ctx.fillStyle=PAL.k;ctx.fillRect(x+4+c*cw,y+5+r*ch,cw-3,ch-3);ctx.fillStyle=col;ctx.fillRect(x+5+c*cw,y+6+r*ch,cw-5,ch-5);}}
+function rect(ctx,x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h);}
+function outline(ctx,x,y,w,h){ctx.fillStyle=PAL.k;ctx.fillRect(x,y,w,1);ctx.fillRect(x,y+h-1,w,1);ctx.fillRect(x,y,1,h);ctx.fillRect(x+w-1,y,1,h);}
+
+function drawBuilding(ctx,sx,b,t){const w=b.w,h=b.h,x=sx-Math.floor(w/2),y=GROUND-h;
+  rect(ctx,x,y,w,h,b.wall);outline(ctx,x,y,w,h);
+  switch(b.type){
+    case 'shop':rect(ctx,x-3,y-2,w+6,6,b.accent);outline(ctx,x-3,y-2,w+6,6);for(let i=0;i<w+6;i+=6)rect(ctx,x-3+i,y-1,3,4,'#FFF');windows(ctx,x,y+8,w,h-30,2,1,'#8ED0F5');break;
+    case 'gov':rect(ctx,x-4,y-8,w+8,8,b.accent);outline(ctx,x-4,y-8,w+8,8);for(let i=0;i<4;i++){rect(ctx,x+4+i*Math.floor((w-8)/3.2),y+8,4,h-8,'#FFF');}rect(ctx,x-3,GROUND-3,w+6,3,PAL.d);break;
+    case 'factory':for(let i=0;i<w;i+=12){ctx.fillStyle=b.accent;ctx.beginPath();ctx.moveTo(x+i,y);ctx.lineTo(x+i,y-9);ctx.lineTo(x+i+12,y);ctx.fill();}rect(ctx,x+w-12,y-22,6,22,PAL.d);outline(ctx,x+w-12,y-22,6,22);windows(ctx,x,y+2,w,h-22,3,1,'#FFE66D');
+      const sm=(t*0.6)%1;for(let k=0;k<3;k++){const p=(sm+k/3)%1;rect(ctx,x+w-10+Math.sin(p*6)*3,y-24-p*20,4+p*4,3,'rgba(220,220,230,'+(0.7-p*0.6)+')');}break;
+    case 'cafe':rect(ctx,x,y-6,w,6,b.accent);outline(ctx,x,y-6,w,6);windows(ctx,x,y+4,w,h-26,2,1,'#2A2016');rect(ctx,x+6,y+9,6,4,'#8ED0F5');rect(ctx,x+w-12,y+9,6,4,'#8ED0F5');break;
+    case 'bank':rect(ctx,x-4,y-8,w+8,8,b.accent);outline(ctx,x-4,y-8,w+8,8);txt(ctx,'₹',sx,y-7,PAL.k,6,'center');for(let i=0;i<3;i++)rect(ctx,x+6+i*Math.floor((w-12)/2.4),y+8,5,h-8,'#FFF');break;
+    case 'lab':rect(ctx,x,y-5,w,5,b.accent);outline(ctx,x,y-5,w,5);windows(ctx,x,y+4,w,h-26,3,1,'#B9F1FF');rect(ctx,x+w-8,y-12,4,8,PAL.e);break;
+    case 'studio':rect(ctx,x,y-4,w,4,b.accent);windows(ctx,x,y+4,w,h-26,1,1,'#FFF');rect(ctx,x+6,y+12,w-12,2,PAL.k);break;
+    case 'shed':for(let i=0;i<w;i+=8)rect(ctx,x+i,y-6,4,6,b.accent);rect(ctx,x,y-1,w,2,PAL.k);rect(ctx,x+8,y+10,w-16,h-30,PAL.d);outline(ctx,x+8,y+10,w-16,h-30);break;
+    case 'gate':rect(ctx,x,y,w,h,b.wall);rect(ctx,x+w-6,y-10,4,h+10,PAL.d);rect(ctx,x-30,y+8,w+24,3,'#FFF');for(let i=0;i<w+24;i+=8)rect(ctx,x-30+i,y+8,4,3,PAL.r);outline(ctx,x-30,y+8,w+24,3);windows(ctx,x,y+4,w,h-24,1,1,'#8ED0F5');break;
+    case 'warehouse':rect(ctx,x-4,y-6,w+8,6,b.accent);outline(ctx,x-4,y-6,w+8,6);for(let i=0;i<3;i++){rect(ctx,x+6+i*Math.floor((w-12)/3),y+h-26,Math.floor((w-12)/3)-6,26,PAL.d);outline(ctx,x+6+i*Math.floor((w-12)/3),y+h-26,Math.floor((w-12)/3)-6,26);}break;
+    case 'house':ctx.fillStyle=b.accent;ctx.beginPath();ctx.moveTo(x-6,y);ctx.lineTo(sx,y-18);ctx.lineTo(x+w+6,y);ctx.fill();ctx.strokeStyle=PAL.k;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x-6,y+0.5);ctx.lineTo(sx,y-17.5);ctx.lineTo(x+w+6,y+0.5);ctx.stroke();rect(ctx,x+4,y+6,8,8,'#8ED0F5');outline(ctx,x+4,y+6,8,8);rect(ctx,x+w-12,y+6,8,8,'#8ED0F5');outline(ctx,x+w-12,y+6,8,8);rect(ctx,x+8,y-14,4,8,PAL.d);break;
+    case 'portal':rect(ctx,x,y-6,w,6,b.accent);outline(ctx,x,y-6,w,6);rect(ctx,x+8,y+8,w-16,14,PAL.k);rect(ctx,x+10,y+10,w-20,10,'#8ED0F5');txt(ctx,'e-BRC',sx,y+12,PAL.G,5,'center');break;
+  }
+  /* door */
+  const dw=b.dw||12,dh=b.dh||20;rect(ctx,sx-dw/2,GROUND-dh,dw,dh,b.door||'#5C3A18');outline(ctx,sx-dw/2,GROUND-dh,dw,dh);rect(ctx,sx+dw/2-4,GROUND-dh/2,2,2,'#FFE66D');
+  if(b.sign)sign(ctx,sx,y-(b.type==='gov'||b.type==='bank'||b.type==='warehouse'?22:b.type==='house'?32:b.type==='factory'?24:20),b.sign,b.signBg||'#FFF4DE',b.signFg||PAL.k);
+}
+function drawProp(ctx,x,p,t){switch(p.type){
+  case 'palm':rect(ctx,x,GROUND-34,3,34,PAL.n);for(let a=-2;a<=2;a++){const dx=a*7,dy=-Math.abs(a)*3;rect(ctx,x+1+dx-(a<0?8:0),GROUND-36+dy,9,3,PAL.G);rect(ctx,x+1+dx-(a<0?8:0),GROUND-34+dy,9,2,PAL.g);}break;
+  case 'tree':rect(ctx,x,GROUND-22,4,22,PAL.n);circle(ctx,x+2,GROUND-28,11,'G');circle(ctx,x+1,GROUND-30,8,'g');break;
+  case 'tree2':rect(ctx,x,GROUND-26,4,26,PAL.N);circle(ctx,x+2,GROUND-32,10,'#2E7D4B');circle(ctx,x+3,GROUND-36,7,'#4CC96A');break;
+  case 'lamp':rect(ctx,x,GROUND-40,2,40,PAL.d);rect(ctx,x-3,GROUND-44,8,5,PAL.k);rect(ctx,x-2,GROUND-43,6,3,'#FFE66D');break;
+  case 'stall':rect(ctx,x,GROUND-22,26,22,'#F2A93B');outline(ctx,x,GROUND-22,26,22);for(let i=0;i<26;i+=6)rect(ctx,x+i,GROUND-24,3,4,PAL.r);rect(ctx,x+3,GROUND-14,20,10,'#8B5A2B');for(let i=0;i<5;i++)rect(ctx,x+4+i*4,GROUND-13,3,3,[PAL.r,PAL.y,PAL.g,PAL.o,PAL.p][i]);break;
+  case 'rick':rect(ctx,x,GROUND-16,22,12,'#FFE66D');rect(ctx,x,GROUND-18,22,3,PAL.k);rect(ctx,x+2,GROUND-14,7,6,PAL.k);rect(ctx,x+12,GROUND-14,8,6,'#8ED0F5');rect(ctx,x+3,GROUND-4,4,4,PAL.k);rect(ctx,x+15,GROUND-4,4,4,PAL.k);rect(ctx,x+10,GROUND-4,4,4,PAL.k);break;
+  case 'bench':rect(ctx,x,GROUND-8,16,3,PAL.n);rect(ctx,x+1,GROUND-5,2,5,PAL.d);rect(ctx,x+13,GROUND-5,2,5,PAL.d);break;
+  case 'crate':rect(ctx,x,GROUND-10,10,10,PAL.T);outline(ctx,x,GROUND-10,10,10);rect(ctx,x+12,GROUND-8,8,8,PAL.T);outline(ctx,x+12,GROUND-8,8,8);break;
+  case 'container':{const cols=[PAL.r,PAL.b,PAL.o,PAL.g,PAL.v];const n=1+Math.floor(p.v*3);for(let i=0;i<n;i++){rect(ctx,x,GROUND-12*(i+1),34,12,cols[(Math.floor(p.v*10)+i)%5]);outline(ctx,x,GROUND-12*(i+1),34,12);for(let k=4;k<34;k+=6)rect(ctx,x+k,GROUND-12*(i+1)+2,1,8,'rgba(0,0,0,.18)');}break;}
+  case 'crane':rect(ctx,x,GROUND-70,5,70,PAL.o);outline(ctx,x,GROUND-70,5,70);rect(ctx,x-30,GROUND-70,70,4,PAL.o);outline(ctx,x-30,GROUND-70,70,4);rect(ctx,x+30,GROUND-66,1,20+Math.sin(t)*6,PAL.k);rect(ctx,x+26,GROUND-46+Math.sin(t)*6,9,6,PAL.b);break;
+  case 'hydrant':rect(ctx,x,GROUND-8,4,8,PAL.r);rect(ctx,x-1,GROUND-9,6,2,PAL.r);break;
+}}
+function drawFar(ctx,camX,W,pal,name){const p=0.35;const off=Math.floor(camX*p);ctx.fillStyle=pal.far2;
+  if(name==='town'||name==='home'){for(let i=Math.floor(off/60)-1;i<(off+W)/60+1;i++){const bx=i*60-off;const hh=20+rnd(i+100)*22;ctx.fillStyle=pal.far2;ctx.fillRect(bx,GROUND-hh,42,hh);if(rnd(i)>.6){ctx.fillStyle=pal.far;circle(ctx,bx+21,GROUND-hh-4,9,pal.far);ctx.fillRect(bx+20,GROUND-hh-16,2,6);}else{ctx.fillStyle=pal.far;ctx.fillRect(bx+8,GROUND-hh-8,26,8);}}}
+  else if(name==='sea'){for(let i=0;i<60;i++){const sx=(i*137+13)%(W+200)-100,sy=(i*61)%(GROUND-60);ctx.fillStyle=(Math.floor(i+performance.now()/400)%7===0)?'#FFF':'#B9C4FF';ctx.fillRect(sx,sy,1,1);}circle(ctx,W-40,28,9,'#FFF1B0');}
+  else if(name==='port'){for(let i=Math.floor(off/90)-1;i<(off+W)/90+1;i++){const bx=i*90-off;ctx.fillStyle=pal.far;ctx.fillRect(bx,GROUND-58,4,58);ctx.fillRect(bx-24,GROUND-58,60,3);ctx.fillRect(bx+20,GROUND-40,6,40);}}
+  else{for(let i=Math.floor(off/34)-1;i<(off+W)/34+1;i++){const bx=i*34-off;const hh=(name==='usa'?40:22)+rnd(i+300)*(name==='usa'?60:26);ctx.fillStyle=(i%2)?pal.far:pal.far2;ctx.fillRect(bx,GROUND-hh,30,hh);ctx.fillStyle='rgba(255,255,220,.35)';for(let r=0;r<hh-6;r+=8)for(let c=0;c<3;c++)if(rnd(i*7+r+c)>.5)ctx.fillRect(bx+4+c*9,GROUND-hh+4+r,4,4);}}}
+function drawSea(ctx,camX,W,t){rect(ctx,0,GROUND-30,W,H-GROUND+30,'#1F6FA8');for(let i=0;i<W+20;i+=10){const y=GROUND-26+Math.sin((i+camX)/12+t*3)*2;rect(ctx,i-((camX)%10),y,6,2,'#63B3E4');}for(let i=0;i<W+20;i+=14){const y=GROUND-8+Math.sin((i+camX)/9+t*2.4)*2;rect(ctx,i-((camX*1.2)%14),y,8,2,'#3F8FC8');}}
+function drawShip(ctx,x,y){rect(ctx,x,y,96,22,PAL.R);outline(ctx,x,y,96,22);rect(ctx,x-6,y+4,8,18,PAL.R);rect(ctx,x+10,y-6,70,6,PAL.l);outline(ctx,x+10,y-6,70,6);rect(ctx,x+60,y-24,20,18,PAL.l);outline(ctx,x+60,y-24,20,18);rect(ctx,x+64,y-20,4,4,'#8ED0F5');rect(ctx,x+72,y-20,4,4,'#8ED0F5');rect(ctx,x+68,y-32,6,8,PAL.k);rect(ctx,x+67,y-27,8,2,PAL.r);const cols=[PAL.o,PAL.g,PAL.b,PAL.v];for(let i=0;i<4;i++){rect(ctx,x+14+i*11,y-14,10,8,cols[i]);outline(ctx,x+14+i*11,y-14,10,8);}for(let i=0;i<3;i++){rect(ctx,x+20+i*11,y-22,10,8,cols[(i+2)%4]);outline(ctx,x+20+i*11,y-22,10,8);}}
+function drawClouds(ctx,camX,W){const off=camX*0.15;for(const c of CLOUDS){const x=((c.x-off)%(W+400)+W+400)%(W+400)-200;rect(ctx,x,c.y,c.w,6,'rgba(255,255,255,.85)');rect(ctx,x+4,c.y-4,c.w-8,4,'rgba(255,255,255,.85)');rect(ctx,x-3,c.y+2,c.w+6,3,'rgba(255,255,255,.85)');}}
+
+/* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
+/* ============ CONTENT ============ */
+const UNITS=300,FX=84;
+const PRODUCTS={
+  bottle:{name:'Copper bottle',sprite:'bottle',price:24.99,cost:350,fba:5.5,duty:0.03,compliance:'coo',tag:'Light, tough, India-famous',kwOk:'copper water bottle',kwBad:['tamba bottle','jal patra']},
+  spice:{name:'Spice blend',sprite:'spice',price:12.99,cost:120,fba:3.9,duty:0.02,compliance:'fda',tag:'Cheap to make, food rules apply',kwOk:'garam masala seasoning',kwBad:['masala powder packet','desi masala']},
+  toy:{name:'Wooden toy',sprite:'toy',price:19.99,cost:220,fba:5.0,duty:0.0,compliance:'toy',tag:'Loved abroad, safety tests apply',kwOk:'wooden stacking toy',kwBad:['lattu khilona','kids wood item']},
+  throw:{name:'Cotton throw',sprite:'throw',price:34.99,cost:600,fba:7.2,duty:0.09,compliance:'textile',tag:'Good price, bulky to ship',kwOk:'cotton throw blanket',kwBad:['chaddar','razai cover']}
+};
+const STAMPS={
+  SAMPLE:['Golden sample','The one approved piece. Every unit must match it.'],
+  DESIGN:['Design paper','Written proof the design and moulds are yours.'],
+  TM:['Trademark','Your brand name booked in the USA. Pending is enough for Amazon.'],
+  IEC:['IEC','India’s 10-digit exporter ID. Confirm it every year.'],
+  GST:['GST number','Business tax number. Needed to export as a business.'],
+  LUT:['LUT','Promise letter: export now, skip 18% tax upfront.'],
+  ADC:['AD Code','Your bank’s code with customs, so foreign money can land.'],
+  SELLER:['Seller account','Your shop on Amazon USA.'],
+  EIN:['EIN','Free US tax number for your business.'],
+  W8:['W-8BEN','Says you live outside the US. No 30% cut on payouts.'],
+  BATCH:['First batch','300 units, brand printed on.'],
+  BR:['Brand Registry','Amazon agrees the brand is yours. Unlocks A+, Vine, protection.'],
+  GS1:['GS1 barcode','Genuine barcode numbers for your listing.'],
+  FDA:['FDA registered','Factory on the US food authority’s list, with a US agent.'],
+  CPC:['CPC','Toy lab-tested to the US standard, certificate written.'],
+  LABEL:['US label','Fibre, care and origin, written the American way.'],
+  COO:['Made in India','Country of origin marked for good. Every import needs it.'],
+  LIST:['Listing live','Photos, words and A+ ready.'],
+  SB:['Shipping bill','Customs proof the goods left India. Open until paid.'],
+  IOR:['Importer of Record','The name that answers to US customs. Never Amazon.'],
+  FBA:['In FBA','Stock inside Amazon’s warehouse.'],
+  LAUNCH:['Launched','Ads on, honest reviews coming.'],
+  FIRA:['FIRA','Bank receipt: the dollars arrived.'],
+  EBRC:['e-BRC','Official closing certificate. Promise kept.']
+};
+const prodCost=s=>UNITS*PRODUCTS[s.product].cost;
+const dutyINR=s=>Math.round(prodCost(s)*PRODUCTS[s.product].duty);
+const STATIONS=[
+ {id:'bazaar',x:150,name:'Bazaar',icon:'shop',title:'Pick your product',sub:'What will your box carry?',
+  building:{type:'shop',w:60,h:44,wall:'#F7D9A6',accent:'#E8563F',sign:'BAZAAR'},
+  detail:'Pick something people abroad already buy and India makes well. Small, light, hard to break, not too cheap.',
+  steps:[{kind:'product'}]},
+ {id:'maker',x:350,name:'Workshop',icon:'factory',title:'Find your maker',sub:'Three workshops. Samples first.',
+  building:{type:'factory',w:70,h:46,wall:'#C9A46A',accent:'#8B5A2B',sign:'WORKSHOP'},
+  detail:'India makes things in clusters: brass in Moradabad, toys in Channapatna, textiles in Panipat. Get samples from three makers before choosing.',
+  steps:[
+   {prompt:'Which maker gets the order?',choices:[
+     {label:'Maker A',icon:'factory',meta:[['star',3],['coin',3],['chat',1]],ok:'meh',cost:6000,weeks:2,say:'Great quality, pricey, slow to reply. It works, but budget more per unit.',set:{makerPremium:true},stamp:'SAMPLE'},
+     {label:'Maker B',icon:'factory',meta:[['star',2],['coin',2],['chat',3]],ok:true,cost:6000,weeks:1,say:'Good quality, fair price, replies fast. The one you can build a brand on.',stamp:'SAMPLE'},
+     {label:'Maker C',icon:'factory',meta:[['star',1],['coin',1],['chat',1]],ok:false,cost:3000,say:'Cheapest, no samples. The trial batch came back cracked. Try again.'}]},
+   {prompt:'Who owns the design?',choices:[
+     {label:'Sign a paper',icon:'sign',ok:true,cost:2000,say:'In writing: design, moulds and artwork are yours.',stamp:'DESIGN'},
+     {label:'Handshake',icon:'shrug',ok:false,say:'Without paper, the maker can legally sell your design to the next buyer. Sign it.'}]}]},
+ {id:'tm',x:575,name:'Cyber Café',icon:'tm',title:'Claim your brand name in the USA',sub:'Name it, check it is free, file it.',
+  building:{type:'cafe',w:56,h:44,wall:'#8ED0F5',accent:'#2F63B0',sign:'CYBER CAFE',signBg:'#2F63B0',signFg:'#FFF'},
+  detail:'A trademark is the government writing down that a name is yours, country by country. An Indian one means nothing in the USA. Amazon accepts a filed, still-pending application.',
+  steps:[
+   {kind:'brand',prompt:'Type your brand name'},
+   {prompt:'File it in the US trademark office?',choices:[
+     {label:'File now',icon:'tm',meta:[['coin',3]],ok:true,cost:45000,weeks:1,say:'Filed through a US attorney. You get a serial number today. Registration takes a year, but pending is enough.',stamp:'TM'},
+     {label:'Later, save money',icon:'clock',ok:'meh',say:'Saved for now. Remember this moment.',set:{tmLater:true}}]}]},
+ {id:'dgft',x:850,name:'DGFT',icon:'doc',title:'Get your exporter ID',sub:'Ten digits. Yours for life.',
+  building:{type:'gov',w:80,h:50,wall:'#E4E4EC',accent:'#F2A93B',sign:'DGFT'},
+  detail:'The Importer Exporter Code is India’s permission slip. Online, small fee, linked to your PAN. Re-confirm it every year or it switches off.',
+  steps:[{prompt:'Apply online and stamp it.',one:true,choices:[{label:'Stamp my IEC',icon:'stamp',ok:true,cost:500,weeks:1,say:'Done. Every shipping document from now on carries this number.',stamp:'IEC'}]}]},
+ {id:'gst',x:1040,name:'GST Office',icon:'lock',title:'Skip the upfront tax',sub:'Register, then sign a promise letter.',
+  building:{type:'gov',w:80,h:50,wall:'#E4E4EC',accent:'#4CC96A',sign:'GST OFFICE'},
+  detail:'Exports are tax-free, but the default makes you pay 18% first and claim it back months later. The Letter of Undertaking is a promise to bring the money home, so you skip paying. Renew every April.',
+  steps:[
+   {prompt:'Register your business for GST.',one:true,choices:[{label:'Register (via CA)',icon:'doc',ok:true,cost:2000,weeks:1,say:'You now have a GST number.',stamp:'GST'}]},
+   {prompt:'How will you handle export tax?',choices:[
+     {label:'Sign the promise letter',icon:'sign',ok:true,say:'LUT signed. No tax paid upfront. You promised to bring the money home within 9 months.',stamp:'LUT'},
+     {label:'Pay 18% now, claim later',icon:'refund',ok:'meh',cost:s=>Math.round(prodCost(s)*0.18),say:'Legal, but that cash is now stuck in a refund queue for months.',set:{taxLocked:true}}]}]},
+ {id:'bank',x:1230,name:'Bank',icon:'bank',title:'Give customs your bank code',sub:'So foreign money knows where to land.',
+  building:{type:'bank',w:76,h:50,wall:'#FFF4DE',accent:'#2F63B0',sign:'BANK'},
+  detail:'The AD Code is a 14-digit code from the branch holding your business account. You register it on the customs portal once per port. Without it the port cannot create your shipping bill.',
+  steps:[
+   {prompt:'Which account?',choices:[
+     {label:'Business current a/c',icon:'briefcase',ok:true,say:'Right one. Separate business money means clean bank proofs later.'},
+     {label:'Personal savings',icon:'piggy',ok:false,say:'Bank says no. Export money needs a business account.'}]},
+   {prompt:'Register the code with customs.',one:true,choices:[{label:'Register AD Code',icon:'key',ok:true,weeks:1,say:'Registered on the customs portal. The port can now issue your papers.',stamp:'ADC'}]}]},
+ {id:'seller',x:1410,name:'Seller Central',icon:'shop',title:'Open your Amazon USA shop',sub:'ID check, then the US tax office.',
+  building:{type:'cafe',w:56,h:44,wall:'#FFE9B8',accent:'#F2A93B',sign:'SELLER CENTRAL'},
+  detail:'Indian residents sign up through Amazon Global Selling with PAN, ID, bank account and IEC. For the USA add a free tax number (EIN) and a form that says you live outside the US, so Amazon does not keep 30% of your payouts.',
+  steps:[
+   {prompt:'Amazon checks your documents.',choices:[
+     {label:'Names match everywhere',icon:'cardok',ok:true,cost:10200,weeks:2,say:'Verified on video call. Seller plan paid for 3 months.',stamp:'SELLER'},
+     {label:'Ravi K. on one, Ravi Kumar on another',icon:'cardx',ok:false,say:'Rejected. Every document must match, letter for letter.'}]},
+   {prompt:'Tax interview: do you live outside the USA?',choices:[
+     {label:'Yes, sign W-8BEN',icon:'tick',ok:true,say:'No US tax will be held back from your payouts.',stamp:'W8'},
+     {label:'Skip the form',icon:'untick',ok:false,say:'Amazon would keep up to 30% of every payout. Sign it.'}]},
+   {prompt:'Get a free US tax number.',one:true,choices:[{label:'Fax form to the IRS',icon:'fax',ok:true,weeks:3,say:'EIN arrived by fax. Free, and no US company needed.',stamp:'EIN'}]}]},
+ {id:'batch',x:1600,name:'Factory',icon:'print',title:'Make 300 units, brand on them',sub:'The name must be part of the product.',
+  building:{type:'factory',w:96,h:52,wall:'#A7A7B3',accent:'#5A5A6B',sign:'FACTORY'},
+  detail:'Amazon’s brand programme wants real photos of the brand printed, engraved or woven on, not a sticker and not a design file. So the first run comes before you can finish registering the brand.',
+  steps:[
+   {prompt:'How does your brand go on?',choices:[
+     {label:'Printed and engraved',icon:'print',ok:true,cost:s=>prodCost(s)+9000,weeks:4,say:'Permanent. Exactly what Amazon wants to see.',stamp:'BATCH'},
+     {label:'Paper sticker',icon:'sticker',ok:'meh',cost:s=>prodCost(s)+1500,weeks:3,say:'Cheaper today. Stickers peel, and Amazon knows it.',set:{sticker:true},stamp:'BATCH'},
+     {label:'No brand, plain',icon:'plainbox',ok:false,say:'Then it is nobody’s product. Anyone can copy the listing.'}]},
+   {prompt:'Check the batch before it leaves?',choices:[
+     {label:'Hire an inspector',icon:'search',ok:true,cost:8000,say:'Inspector found 6 bad units. Fixed before shipping.'},
+     {label:'Trust the maker',icon:'shrug',ok:'meh',say:'Saved a little. You will find out in the reviews.',set:{noInspect:true}}]},
+   {prompt:'Photograph product and box with the brand.',one:true,choices:[{label:'Take the photos',icon:'camera',ok:true,say:'Plain table, good light, brand visible. Saved.'}]}]},
+ {id:'br',x:1760,name:'Brand Registry',icon:'guard',title:'Prove the brand is yours',sub:'The guard checks two things.',
+  building:{type:'cafe',w:56,h:44,wall:'#DEE8F8',accent:'#2F63B0',sign:'BRAND REGISTRY'},
+  detail:'Brand Registry is free and unlocks rich pages, better ads and copycat takedowns. It needs a trademark that is filed or registered, and photos of the brand permanently on the product.',
+  steps:s=>{const st=[];
+   if(s.tmLater)st.push({prompt:'Guard: no trademark, no entry.',one:true,choices:[{label:'File it now',icon:'tm',ok:true,cost:45000,weeks:3,say:'Filed. Three weeks lost waiting for the serial number. Next time, file first.',stamp:'TM'}]});
+   if(s.sticker)st.push({prompt:'Guard: a sticker? Rejected.',one:true,choices:[{label:'Reprint the boxes',icon:'print',ok:true,cost:9000,weeks:2,say:'Boxes reprinted with the brand on. Two weeks and ₹9,000 gone.'}]});
+   st.push({prompt:'Upload the real photos and the serial number.',one:true,choices:[{label:'Submit',icon:'camera',ok:true,weeks:1,say:'Approved. Your listings are now locked to you.',stamp:'BR'}]});
+   st.push({prompt:'Barcodes for the listing.',choices:[
+     {label:'GS1 official',icon:'barcode',ok:true,cost:4500,say:'Genuine numbers, accepted first time.',stamp:'GS1'},
+     {label:'Cheap ones on Telegram',icon:'barcode2',ok:false,say:'Rejected. Resold barcodes belong to someone else.'}]});
+   return st;}},
+ {id:'rules',x:1920,name:'Rules Lab',icon:'lab',title:'Pass the US product rules',sub:'India’s rules do not travel with the goods.',
+  building:{type:'lab',w:70,h:48,wall:'#DDF2E4',accent:'#2E9A4B',sign:'RULES LAB'},
+  detail:'Every country decides what is safe and honestly labelled. Food, skin products and children’s items have real checklists. Everything needs a permanent Made in India mark.',
+  steps:s=>{const p=PRODUCTS[s.product],st=[];
+   if(p.compliance==='fda'){st.push({prompt:'Food going to the USA.',one:true,choices:[{label:'Register factory with FDA',icon:'agent',ok:true,cost:25000,weeks:2,say:'Factory registered, US agent named. Each shipment gets announced in advance.',stamp:'FDA'}]});
+     st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Nutrition panel, allergens',icon:'labelok',ok:true,cost:6000,say:'Correct format. Ingredients in order, allergens named.',stamp:'LABEL'},{label:'Plain Hindi label',icon:'labelbad',ok:false,say:'Customs can hold or destroy this. Redo it.'}]});}
+   else if(p.compliance==='toy'){st.push({prompt:'A toy needs a lab test.',one:true,choices:[{label:'Send to approved lab',icon:'lab',ok:true,cost:60000,weeks:3,say:'Passed the US toy standard. Certificate written. Amazon opens the toy category.',stamp:'CPC'}]});
+     st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Tracking label, age mark',icon:'labelok',ok:true,cost:3000,say:'Permanent tracking label on every toy.',stamp:'LABEL'},{label:'No label',icon:'labelbad',ok:false,say:'Every children’s item needs one. Redo it.'}]});}
+   else if(p.compliance==='textile'){st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Fibre, care, origin',icon:'labelok',ok:true,cost:3000,say:'100% cotton, wash cold, Made in India. Sewn in.',stamp:'LABEL'},{label:'Brand name only',icon:'labelbad',ok:false,say:'US law wants fibre content and care instructions. Redo it.'}]});}
+   else{st.push({prompt:'Any claims on the box?',choices:[{label:'Keeps water cool',icon:'labelok',ok:true,say:'A plain, true claim. Fine.'},{label:'Cures 40 diseases',icon:'labelbad',ok:false,say:'A health claim needs approval. Amazon will pull the listing.'}]});}
+   st.push({prompt:'Country of origin mark.',choices:[{label:'Made in India, permanent',icon:'coo',ok:true,say:'Marked. US customs checks every import for this.',stamp:'COO'},{label:'Skip it',icon:'plainbox',ok:false,say:'Not optional. Shipments without it get held.'}]});
+   return st;}},
+ {id:'studio',x:2075,name:'Photo Studio',icon:'camera',title:'Build the listing',sub:'Photos sell. Words get found.',
+  building:{type:'studio',w:60,h:44,wall:'#3A3446',accent:'#F28CB1',sign:'PHOTO STUDIO',signBg:'#F28CB1'},
+  detail:'Shoppers decide from the first photo: pure white background, product filling the frame. Lower on the page, brand owners add picture-rich A+ content. Use the words Americans type, not the Hindi ones.',
+  steps:s=>{const p=PRODUCTS[s.product];const kws=[{label:p.kwOk,icon:'search',ok:true,say:'That is what they type. Title, bullets, hidden keywords.'}].concat(p.kwBad.map(k=>({label:k,icon:'search',ok:false,say:'Nobody in Ohio searches that. Try again.'})));
+   for(let i=kws.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[kws[i],kws[j]]=[kws[j],kws[i]];}
+   return [
+    {prompt:'Pick the main photo.',choices:[
+      {label:'White background, big',photo:'white',ok:true,cost:15000,weeks:1,say:'Amazon’s rule and the shopper’s favourite.'},
+      {label:'On the kitchen table',photo:'clutter',ok:false,say:'Rejected as a main image. Too busy, product too small.'},
+      {label:'A drawing of it',photo:'draw',ok:false,say:'Mock-ups are not allowed. Real photos only.'}]},
+    {prompt:'Americans search for…',choices:kws},
+    {prompt:'Add the picture-rich section.',one:true,choices:[{label:'Build A+ content',icon:'page',ok:true,say:'Banners, a comparison chart, the artisan’s story. Listing is live.',stamp:'LIST'}]}];}},
+ {id:'port',x:2325,name:'Port',icon:'ship',title:'Ship the boxes',sub:'And decide who answers to US customs.',
+  building:{type:'shed',w:100,h:46,wall:'#7F8FA6',accent:'#F2A93B',sign:'PORT · CUSTOMS'},
+  detail:'A freight forwarder is a travel agent for cargo. Sea is cheap and slow, air is fast and pricey. On the US side someone must sign the customs entry and pay duty. Amazon refuses that role.',
+  steps:[
+   {prompt:'How do 300 units cross?',choices:[
+     {label:'Ship',icon:'ship',meta:[['coin',1],['clock',3]],ok:true,cost:35000,weeks:7,say:'Cheap. About 7 weeks door to door.'},
+     {label:'Plane',icon:'plane',meta:[['coin',3],['clock',1]],ok:'meh',cost:90000,weeks:1,set:{air:true},say:'There in a week, at nearly three times the price. Fine for a first small batch.'},
+     {label:'300 small parcels',icon:'parcels',ok:false,say:'The duty-free parcel shortcut ended in 2025. Each one gets stopped. No.'}]},
+   {prompt:'Who signs at US customs?',choices:[
+     {label:'Amazon',icon:'warehouse',ok:false,say:'Amazon never acts as importer. The boxes would sit at the port.'},
+     {label:'Me, with a customs bond',icon:'me',ok:true,cost:20000,say:'You are the importer, from India. Bond bought with your EIN.',stamp:'IOR'},
+     {label:'A customs broker',icon:'broker',ok:true,cost:25000,say:'The broker imports in your name and files everything.',stamp:'IOR'}]},
+   {prompt:'Customs issues the export paper.',one:true,choices:[{label:'Get the shipping bill',icon:'doc',ok:true,say:'Goods have officially left India. This paper stays open until the money comes home.',stamp:'SB'}]}]},
+ {id:'usgate',x:3110,name:'US Customs',icon:'gate',title:'Welcome to America',sub:'Duty first, then the road opens.',
+  building:{type:'gate',w:40,h:40,wall:'#E4E4EC',accent:'#4F8FE6',sign:'US CUSTOMS'},
+  detail:'Duty depends on your product code and it changed several times in 2025 and 2026. Check the current rate before you set a price.',
+  steps:[{prompt:'Pay the import duty.',one:true,choices:[{label:'Pay duty',icon:'dollar',ok:true,cost:s=>dutyINR(s),weeks:1,say:'Cleared. The truck rolls to the warehouse.'}]}]},
+ {id:'fba',x:3340,name:'FBA Warehouse',icon:'warehouse',title:'Stock in, launch on',sub:'Amazon stores, packs and ships for you.',
+  building:{type:'warehouse',w:130,h:56,wall:'#B9C4D0',accent:'#F2A93B',sign:'FBA WAREHOUSE'},
+  detail:'A new listing has no reviews, so search barely shows it. Ads buy the first visits. Amazon Vine gives free units to trusted reviewers for honest reviews. Fake reviews end accounts.',
+  steps:[
+   {prompt:'Boxes arrive with Amazon’s labels.',one:true,choices:[{label:'Check them in',icon:'parcels',ok:true,say:'Stock live. Amazon now packs every order and handles returns.',stamp:'FBA'}]},
+   {prompt:'First month of ads?',choices:[
+     {label:'Small budget',icon:'megaphone',meta:[['coin',1]],ok:'meh',cost:15000,say:'Slow start. Fewer visits, fewer sales.'},
+     {label:'Steady budget',icon:'megaphone',meta:[['coin',2]],ok:true,cost:40000,say:'Enough clicks to learn which words sell.'},
+     {label:'Everything',icon:'megaphone',meta:[['coin',3]],ok:'meh',cost:90000,say:'Money burns fast on a page with no reviews yet.'}]},
+   {prompt:'How do you get the first reviews?',choices:[
+     {label:'Amazon Vine',icon:'vine',ok:true,cost:17000,weeks:3,say:'Honest reviews from vetted reviewers. Sales begin.',stamp:'LAUNCH'},
+     {label:'Request a Review button',icon:'reqreview',ok:true,weeks:4,say:'Free and allowed. Slower, but it adds up.',stamp:'LAUNCH'},
+     {label:'Buy 50 five-star reviews',icon:'fakestars',ok:false,penalty:20000,say:'Account suspended. Money frozen. Appeal cost ₹20,000 and a month. Never again.',weeks:4}]}]},
+ {id:'home',x:3590,name:'Customer',icon:'house',title:'Delivered',sub:'Someone in Ohio just paid for your box.',
+  building:{type:'house',w:56,h:36,wall:'#FFF4DE',accent:'#B93A27',sign:'CUSTOMER'},
+  detail:'The customer pays Amazon in dollars. Amazon keeps its fees and pays you every two weeks.',
+  steps:[{prompt:'Ring the bell.',one:true,choices:[{label:'Deliver',icon:'heart',ok:true,say:'Five stars. Now the money has to come home.'}]}]},
+ {id:'bank2',x:3910,name:'Your Bank',icon:'bank',title:'The money lands',sub:'Dollars in, rupees out, one receipt.',
+  building:{type:'bank',w:76,h:50,wall:'#FFF4DE',accent:'#2F63B0',sign:'YOUR BANK'},
+  detail:'Amazon pays roughly every 14 days. Dollars become rupees on the way. Each time, ask the bank for the receipt proving foreign money arrived.',
+  steps:[{prompt:'Payout arrived. Ask for the receipt.',one:true,choices:[{label:'Collect FIRA',icon:'receipt',ok:true,say:'Receipt in your name, amount in dollars. Keep every one.',stamp:'FIRA'}]}]},
+ {id:'portal',x:4075,name:'DGFT Portal',icon:'monitor',title:'Keep the promise',sub:'Match the receipt to the shipping bill.',
+  building:{type:'portal',w:60,h:44,wall:'#E4E4EC',accent:'#F2A93B',sign:'DGFT PORTAL'},
+  detail:'The bank receipt plus the shipping bill make the e-BRC, the government’s proof that the goods left and the money came home. It closes the LUT promise and unlocks export cash-back.',
+  steps:[{prompt:'Generate the closing certificate.',one:true,choices:[{label:'Match and close',icon:'monitor',ok:true,say:'e-BRC issued. Promise kept. Shipment closed.',stamp:'EBRC'}]},{kind:'end'}]}
+];
+
+
+/* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
+/* ============ GAME STATE + UI ============ */
+const $=s=>document.querySelector(s);
+const panel=$('#panel'),overlay=$('#overlay'),toastEl=$('#toast'),popEl=$('#pop'),hintEl=$('#hint'),view=$('#view'),trackEl=$('#track');
+const canvas=$('#game'),ctx=canvas.getContext('2d');
+const SAVE_KEY='one-box-save-v2',GUIDE_URL='https://games.edock.io/amyra-ind-usa-export/guide/';
+const START_WALLET=500000,SEA0=2500,SEA1=3000,WORLD_W=4200,START_X=30;
+const fmtINR=n=>{const neg=n<0;n=Math.abs(Math.round(n));let s=String(n);if(s.length>3){const last=s.slice(-3);let rest=s.slice(0,-3);rest=rest.replace(/\B(?=(\d{2})+(?!\d))/g,',');s=rest+','+last;}return (neg?'\u2212':'')+'\u20B9'+s;};
+const fmtUSD=n=>'$'+(Math.abs(n)>=1000?Math.round(n).toLocaleString('en-US'):n.toFixed(2));
+const both=n=>fmtUSD(n)+' ('+fmtINR(n*FX)+')';
+let S=null,steps=[],walking=false,hurry=false,manual=0,arrived=false,toastT=null,applied=null,trackBuilt=false;
+function fresh(){return {product:null,brand:'',wallet:START_WALLET,spent:0,weeks:1,stamps:[],station:0,stepIdx:0,px:START_X,done:false,started:false};}
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}}
+function load(){try{const j=localStorage.getItem(SAVE_KEY);return j?JSON.parse(j):null;}catch(e){return null;}}
+function getMuted(){try{return localStorage.getItem('one-box-muted')==='1';}catch(e){return false;}}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function hud(){$('#hud-spent').textContent=fmtINR(S.spent);$('#hud-week').textContent=String(S.weeks);$('#hud-week').nextElementSibling.textContent=S.weeks===1?'week':'weeks';$('#hud-wallet').textContent=fmtINR(S.wallet);$('#hud-stamps').textContent=S.stamps.length;updateTrack();}
+function buildTrack(){trackEl.innerHTML='';STATIONS.forEach((st,i)=>{const b=el('button','tk');b.title=(i+1)+'. '+st.name;b.setAttribute('aria-label',b.title);b.appendChild(iconEl(st.icon,2));b.addEventListener('click',()=>{const status=i<S.station?'done':i===S.station?(arrived?'you are here':'next stop'):'later';toast((i+1)+'. '+st.name.toUpperCase()+' \u00B7 '+status.toUpperCase(),2200);AudioKit.sfx.blip();});trackEl.appendChild(b);});trackBuilt=true;}
+function updateTrack(){if(!trackBuilt)return;const ks=trackEl.children;for(let i=0;i<ks.length;i++)ks[i].className='tk'+(i<S.station?' done':i===S.station?' cur':'');}
+function toast(msg,ms){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove('show'),ms||1800);}
+function spend(n){if(!n)return;S.wallet-=n;S.spent+=n;hud();const w=$('#hud-spent');w.style.color='#FFF';setTimeout(()=>w.style.color='',450);}
+function addWeeks(n){if(!n)return;S.weeks+=n;hud();}
+function earn(id){if(!STAMPS[id]||S.stamps.includes(id))return false;S.stamps.push(id);hud();AudioKit.sfx.stamp();popEl.innerHTML='';popEl.appendChild(el('div',null,STAMPS[id][0].toUpperCase()));popEl.appendChild(el('small',null,'stamp earned'));popEl.classList.remove('show');void popEl.offsetWidth;popEl.classList.add('show');setTimeout(()=>popEl.classList.remove('show'),1500);return true;}
+function computeSteps(){const st=STATIONS[S.station];steps=typeof st.steps==='function'?st.steps(S):st.steps;}
+
+/* ---- cards ---- */
+function cardShell(st){panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl(st.icon,3));const tt=el('div');tt.appendChild(el('div','card-title',st.title));tt.appendChild(el('div','card-sub',st.sub));head.appendChild(tt);c.appendChild(head);panel.appendChild(c);panel.scrollTop=0;return c;}
+function banner(c,st){if(!st.detail)return;const d=el('div','detail',st.detail);const b=el('button','more','Hide the explanation');b.addEventListener('click',()=>{d.hidden=!d.hidden;b.textContent=d.hidden?'Show the explanation':'Hide the explanation';AudioKit.sfx.blip();});c.appendChild(d);c.appendChild(b);}
+function sayBox(c,text,kind,cost,weeks){let s=c.querySelector('.say');if(!s){s=el('div','say');c.appendChild(s);}s.className='say '+kind;s.innerHTML='';s.appendChild(iconEl(kind==='bad'?'cross':kind==='meh'?'clock':'check',3));const d=el('div');d.appendChild(el('div',null,text));const bits=[];if(cost)bits.push('\u2212'+fmtINR(cost));if(weeks)bits.push('+'+weeks+(weeks===1?' week':' weeks'));if(bits.length)d.appendChild(el('div','bits',bits.join('   \u00B7   ')));s.appendChild(d);s.scrollIntoView({block:'nearest',behavior:'smooth'});}
+function actions(c,list){let a=c.querySelector('.actions');if(a)a.remove();a=el('div','actions');list.forEach(([label,cls,fn,icon])=>{const b=el('button','btn '+(cls||''));if(icon)b.appendChild(iconEl(icon,2));b.appendChild(document.createTextNode(label));b.addEventListener('click',()=>{AudioKit.sfx.blip();fn();});a.appendChild(b);});c.appendChild(a);return a;}
+
+function renderStep(){const st=STATIONS[S.station];const step=steps[S.stepIdx];applied=null;if(!step){finishStation();return;}
+  const c=cardShell(st);banner(c,st);
+  if(step.kind==='product'){c.appendChild(el('div','card-line','Tap the one your box will carry. You can change your mind before Next.'));const g=el('div','products');Object.keys(PRODUCTS).forEach(k=>{const p=PRODUCTS[k];const b=el('button','prod'+(S.product===k?' sel':''));b.appendChild(iconEl(p.sprite,4));b.appendChild(el('div','lbl',p.name));b.appendChild(el('div','price',both(p.price)));b.appendChild(el('div','tag',p.tag));
+      b.addEventListener('click',()=>{S.product=k;AudioKit.sfx.coin();g.querySelectorAll('.prod').forEach(x=>x.classList.toggle('sel',x===b));sayBox(c,p.name+'. Factory cost about '+fmtINR(p.cost)+' a piece, sells for '+both(p.price)+' on Amazon USA.','good');actions(c,[['Next','go',next]]);save();});g.appendChild(b);});c.appendChild(g);
+    if(S.product){const p=PRODUCTS[S.product];sayBox(c,p.name+'. Factory cost about '+fmtINR(p.cost)+' a piece, sells for '+both(p.price)+' on Amazon USA.','good');actions(c,[['Next','go',next]]);}return;}
+  if(step.kind==='brand'){c.appendChild(el('div','card-line','Name your brand. It goes on every box.'));const row=el('div','brand-in');const inp=el('input');inp.id='brand-input';inp.maxLength=14;inp.placeholder='BRAND NAME';inp.value=S.brand||['KARIGAR','MITTI','SAFAR','DESI ROOTS'][Math.floor(Math.random()*4)];row.appendChild(inp);c.appendChild(row);
+    const go=()=>{const v=inp.value.trim().toUpperCase().slice(0,14);if(!v){inp.focus();return;}S.brand=v;inp.disabled=true;AudioKit.sfx.coin();sayBox(c,'Searched the US trademark database: '+v+' is free in your class.','good');actions(c,[['Rename','sec',()=>{inp.disabled=false;inp.focus();const s=c.querySelector('.say');if(s)s.remove();actions(c,[['Name it','',go]]);}],['Next','go',next]]);save();};
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!inp.disabled)go();});actions(c,[['Name it','',go]]);return;}
+  if(step.kind==='end'){showEnd(true);doneCard();return;}
+  c.appendChild(el('div','card-line',step.prompt));
+  const grid=el('div','choices'+(step.one||step.choices.length===1?' one':''));
+  step.choices.forEach(ch=>{const b=el('button','choice');if(ch.photo)b.appendChild(photoCanvas(PRODUCTS[S.product].sprite,ch.photo));else b.appendChild(iconEl(ch.icon||'doc',3));b.appendChild(el('div','lbl',ch.label));
+    if(ch.meta){const m=el('div','meta');ch.meta.forEach(([ic,n])=>{const w=el('span');for(let i=0;i<n;i++)w.appendChild(iconEl(ic,1));m.appendChild(w);});b.appendChild(m);}
+    b.addEventListener('click',()=>pick(c,grid,step,ch,b));grid.appendChild(b);});
+  c.appendChild(grid);}
+function pick(c,grid,step,ch,btn){const cost=typeof ch.cost==='function'?ch.cost(S):(ch.cost||0);
+  if(ch.ok===false){AudioKit.sfx.error();btn.classList.add('bad');btn.disabled=true;if(ch.penalty)spend(ch.penalty);if(ch.weeks)addWeeks(ch.weeks);sayBox(c,ch.say,'bad',ch.penalty||0,ch.weeks||0);c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');save();return;}
+  grid.querySelectorAll('.choice').forEach(x=>x.disabled=true);btn.classList.add(ch.ok===true?'ok':'meh');
+  const prev={};if(ch.set)for(const k in ch.set){prev[k]=S[k];S[k]=ch.set[k];}
+  if(cost)spend(cost);if(ch.weeks)addWeeks(ch.weeks);
+  const newStamp=(ch.stamp&&earn(ch.stamp))?ch.stamp:null;
+  applied={cost,weeks:ch.weeks||0,prev,set:ch.set,stamp:newStamp};
+  AudioKit.sfx[ch.ok===true?'coin':'blip']();sayBox(c,ch.say,ch.ok===true?'good':'meh',cost,ch.weeks||0);
+  const last=S.stepIdx>=steps.length-1;actions(c,[['Change','sec',()=>undo(c,grid)],[last?'Done here':'Next','go',next]]);save();}
+function undo(c,grid){if(!applied)return;const a=applied;applied=null;if(a.cost){S.wallet+=a.cost;S.spent-=a.cost;}if(a.weeks)S.weeks-=a.weeks;if(a.set)for(const k in a.set){if(a.prev[k]===undefined)delete S[k];else S[k]=a.prev[k];}if(a.stamp){const i=S.stamps.indexOf(a.stamp);if(i>-1)S.stamps.splice(i,1);}
+  hud();grid.querySelectorAll('.choice').forEach(x=>{if(!x.classList.contains('bad'))x.disabled=false;x.classList.remove('ok','meh');});const s=c.querySelector('.say');if(s)s.remove();const ac=c.querySelector('.actions');if(ac)ac.remove();save();}
+function next(){applied=null;S.stepIdx++;if(S.stepIdx>=steps.length)finishStation();else renderStep();save();}
+function finishStation(){S.station++;S.stepIdx=0;arrived=false;hud();save();if(S.station>=STATIONS.length){showEnd(true);doneCard();return;}travelCard();}
+function travelCard(){const nxt=STATIONS[S.station];panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl('walk',3));const tt=el('div');tt.appendChild(el('div','card-title','Next stop: '+nxt.name));tt.appendChild(el('div','card-sub',nxt.title));head.appendChild(tt);c.appendChild(head);
+  const inSea=S.px<SEA0&&nxt.x>SEA1;c.appendChild(el('div','card-line',inSea?'The boxes board the ship. Long crossing ahead.':'Walk on. Hold the right side of the picture, or tap the button.'));
+  const a=el('div','actions');const b=el('button','btn walk');b.appendChild(iconEl('walk',2));b.appendChild(document.createTextNode(inSea?'Set sail':'Walk'));
+  b.addEventListener('click',()=>{AudioKit.sfx.blip();if(!walking){walking=true;hurry=false;b.textContent='Hurry!';if(inSea)AudioKit.sfx.horn();}else{hurry=true;b.textContent='Hurrying\u2026';}});
+  a.appendChild(b);c.appendChild(a);panel.appendChild(c);panel.scrollTop=0;hintEl.classList.add('show');setTimeout(()=>hintEl.classList.remove('show'),3500);}
+function arrive(){arrived=true;walking=false;hurry=false;const st=STATIONS[S.station];S.px=st.x-6;computeSteps();S.stepIdx=Math.min(S.stepIdx,steps.length-1);toast(st.name.toUpperCase());AudioKit.sfx.blip();hud();renderStep();save();}
+function doneCard(){panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl('heart',3));const tt=el('div');tt.appendChild(el('div','card-title','Journey complete'));tt.appendChild(el('div','card-sub',(S.brand||'Your brand')+' went from a workshop in India to a home in America and the money came back.'));head.appendChild(tt);c.appendChild(head);
+  c.appendChild(el('div','card-line','The results stay here. Close them, reopen them, or start over with another product.'));
+  actions(c,[['See results','sec',()=>showEnd(false),'rupee'],['Passport','sec',showPassport,'stampbook'],['Play again, new product','go',restart,'walk']]);panel.appendChild(c);}
+function restart(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}closeOv();start(null);}
+
+/* ---- overlays ---- */
+function ov(closable){overlay.innerHTML='';const box=el('div','ov');if(closable){const x=el('button','x','\u2715');x.title='Close';x.setAttribute('aria-label','Close');x.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});box.appendChild(x);}overlay.appendChild(box);overlay.classList.add('show');overlay.scrollTop=0;return box;}
+function closeOv(){overlay.classList.remove('show');overlay.innerHTML='';}
+function logoCanvas(){const c=document.createElement('canvas');c.width=192;c.height=72;const x=c.getContext('2d');x.imageSmoothingEnabled=false;const g=x.createLinearGradient(0,0,0,72);g.addColorStop(0,'#7EC8F2');g.addColorStop(1,'#FFE2A8');x.fillStyle=g;x.fillRect(0,0,192,72);x.fillStyle='#C9A46A';x.fillRect(0,56,192,16);x.fillStyle='#6B5A45';x.fillRect(0,62,192,10);for(let i=0;i<192;i+=12){x.fillStyle='#FFE66D';x.fillRect(i,66,6,1);}
+  x.save();x.translate(0,56-GROUND);drawBuilding(x,30,{type:'shop',w:40,h:30,wall:'#F7D9A6',accent:'#E8563F'},0);x.restore();drawMap(x,MAPS.player0,86,38,1);drawShip(x,120,44);x.fillStyle='rgba(31,111,168,.9)';x.fillRect(110,58,82,14);txt(x,'THE JOURNEY',96,8,'#1B1B24',8,'center');txt(x,'OF ONE BOX',96,20,'#B93A27',8,'center');return c;}
+function showTitle(saved){const b=ov(false);const lg=logoCanvas();lg.className='logo';b.appendChild(lg);b.appendChild(el('h1',null,'From an Indian workshop to an American doorstep'));b.appendChild(el('p',null,'Carry one box through 17 stops. Tap, pick, stamp. Every price is in dollars and rupees. Music plays, so turn the sound up or tap the speaker to mute.'));
+  const a=el('div','actions');const hasSave=saved&&saved.product&&!saved.done;
+  if(hasSave){const c=el('button','btn go','Continue');c.addEventListener('click',()=>start(saved));a.appendChild(c);}
+  const n=el('button','btn'+(hasSave?' sec':''),hasSave?'New game':'Tap to start');n.addEventListener('click',()=>start(null));a.appendChild(n);b.appendChild(a);
+  b.appendChild(el('div','credits','A plain-words game about exporting from India and selling on Amazon USA. Example numbers at \u20B984 per dollar, not advice. Free and open source under the MIT license.'));}
+function showPassport(){const b=ov(true);b.appendChild(el('h2',null,'Passport \u00B7 '+S.stamps.length+' / '+Object.keys(STAMPS).length+' stamps'));b.appendChild(el('p',null,'Tap a stamp to see what it means.'));const g=el('div','pass');
+  Object.keys(STAMPS).forEach((id,i)=>{const got=S.stamps.includes(id);const s=el('div','stamp'+(got?' got':''));s.style.setProperty('--rot',((i*37)%9-4)+'deg');const seal=el('div','seal');seal.style.color=got?['#B93A27','#2F63B0','#2E9A4B','#D98C1F'][i%4]:'';seal.appendChild(document.createTextNode(id));seal.appendChild(el('small',null,STAMPS[id][0]));s.appendChild(seal);s.tabIndex=0;const show=()=>{$('#stamp-say').textContent=(got?'':'Not yet. ')+STAMPS[id][0]+': '+STAMPS[id][1];AudioKit.sfx.blip();};s.addEventListener('click',show);s.addEventListener('keydown',e=>{if(e.key==='Enter')show();});g.appendChild(s);});
+  b.appendChild(g);const say=el('div');say.id='stamp-say';say.textContent='Every official word in this journey, collected as a stamp.';b.appendChild(say);
+  const a=el('div','actions');const c=el('button','btn','Back to the road');c.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});a.appendChild(c);
+  const r=el('button','btn sec danger','Restart journey');r.addEventListener('click',()=>{AudioKit.sfx.blip();a.innerHTML='';const y=el('button','btn danger','Yes, start over');y.addEventListener('click',restart);const n=el('button','btn sec','Keep going');n.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});a.appendChild(y);a.appendChild(n);});a.appendChild(r);b.appendChild(a);}
+function showEnd(fresh){S.done=true;save();if(fresh)AudioKit.sfx.win();const p=PRODUCTS[S.product];const gross=UNITS*p.price,amz=gross*0.15,fba=p.fba*UNITS,conv=(gross-amz-fba)*0.03,netUSD=gross-amz-fba-conv,netINR=Math.round(netUSD*FX);const refund=S.taxLocked?Math.round(prodCost(S)*0.18):0;const final=S.wallet+netINR+refund;const delta=final-START_WALLET;
+  const perBatch=prodCost(S)+9000+(S.air?90000:35000)+dutyINR(S)+25000+20000+10200;const nextProfit=netINR-perBatch;
+  const b=ov(true);b.appendChild(el('h1',null,(S.brand||'Your box')+' made it home'));b.appendChild(el('p',null,'300 units of '+p.name.toLowerCase()+' sold in the USA at '+both(p.price)+' each. Here is where the dollars went.'));
+  const m=el('div','money');const bar=el('div','bar');const cols=['#E8563F','#F2A93B','#7B5CD6','#4CC96A'];[[amz],[fba],[conv],[netUSD]].forEach(([v],i)=>{const it=document.createElement('i');it.style.width=(v/gross*100)+'%';it.style.background=cols[i];bar.appendChild(it);});m.appendChild(bar);
+  const lg=el('div','legend');[['Amazon fee',0],['Warehouse + delivery',1],['Currency change',2],['Yours',3]].forEach(([k,i])=>{const s=el('span');const sw=el('i');sw.style.background=cols[i];s.appendChild(sw);s.appendChild(document.createTextNode(k));lg.appendChild(s);});m.appendChild(lg);
+  [['Customers paid',both(gross),''],['Amazon\u2019s 15% cut','\u2212'+both(amz),'neg'],['Warehouse and delivery fee','\u2212'+both(fba),'neg'],['Dollars to rupees, 3%','\u2212'+both(conv),'neg'],['Landed in your bank',fmtINR(netINR)+' ('+fmtUSD(netUSD)+')','pos']].forEach(([k,v,cls])=>{const r=el('div','row');r.appendChild(el('span',null,k));r.appendChild(el('span',cls,v));m.appendChild(r);});b.appendChild(m);
+  const g=el('div','endgrid');[['You started with',fmtINR(START_WALLET),''],['You spent',fmtINR(S.spent),'neg'],['First batch result',(delta>=0?'+':'')+fmtINR(delta),delta>=0?'pos':'neg'],['Next batch, same 300 units',(nextProfit>=0?'+':'')+fmtINR(nextProfit),nextProfit>=0?'pos':'neg'],['Weeks on the road',String(S.weeks),''],['Stamps collected',S.stamps.length+' / '+Object.keys(STAMPS).length,'']].forEach(([k,v,cls])=>{const t=el('div','tile');t.appendChild(el('div','k',k));t.appendChild(el('div','v '+cls,v));g.appendChild(t);});b.appendChild(g);
+  b.appendChild(el('p',null,delta>=0?'The first batch already paid for the setup. Everything from here is easier.':'The first batch paid for the setup: trademark, tests, photos, bond. Those never repeat. The next batch is where the profit lives.'));
+  if(refund)b.appendChild(el('p',null,'Your 18% tax deposit came back after 7 months: '+fmtINR(refund)+'.'));
+  const a=el('div','actions');const pp=el('button','btn sec','Passport');pp.addEventListener('click',()=>{AudioKit.sfx.blip();showPassport();});a.appendChild(pp);const ag=el('button','btn go','Play again, new product');ag.addEventListener('click',()=>{AudioKit.sfx.blip();restart();});a.appendChild(ag);b.appendChild(a);
+  const cr=el('div','credits');cr.innerHTML='Example numbers at \u20B984 per dollar. Rules and duty rates change; check before you spend. <a href="'+GUIDE_URL+'" target="_blank" rel="noopener">Read the full written guide</a>.';b.appendChild(cr);}
+
+/* ============ LOOP + INPUT ============ */
+let W=320,scale=2,camX=0,lastT=0,tt=0,curSong='',stepT=0;
+function resize(){const r=view.getBoundingClientRect();if(!r.height)return;const dpr=Math.min(3,window.devicePixelRatio||1);const k=Math.max(2,Math.min(6,Math.round(r.height*dpr/H)));scale=k/dpr;W=Math.ceil(r.width/scale);const cssH=H*scale;canvas.width=W*k;canvas.height=H*k;canvas.style.width=(W*scale)+'px';canvas.style.height=cssH+'px';canvas.style.top=(r.height-cssH)+'px';ctx.setTransform(k,0,0,k,0,0);ctx.imageSmoothingEnabled=false;}
+window.addEventListener('resize',resize);
+function frameName(){return (walking||manual)?(Math.floor(tt*8)%2?'player1':'player0'):'player0';}
+function drawArrow(c,x,y){c.fillStyle=PAL.k;c.fillRect(x-6,y,12,4);c.fillRect(x-4,y+4,8,3);c.fillRect(x-2,y+7,4,3);c.fillStyle=PAL.o;c.fillRect(x-5,y+1,10,2);c.fillRect(x-3,y+3,6,3);c.fillRect(x-1,y+6,2,3);}
+function update(dt){if(!S||!S.started)return;const target=STATIONS[Math.min(S.station,STATIONS.length-1)];const sea=S.px>=SEA0&&S.px<SEA1;
+  let v=0;if(walking)v=(hurry?200:95)*(sea?1.9:1);else if(manual)v=manual*85;
+  if(v){const maxX=target.x-6;const nx=Math.max(20,Math.min(S.px+v*dt,maxX));if(nx!==S.px){S.px=nx;if(!sea){stepT+=dt;if(stepT>0.28){stepT=0;AudioKit.sfx.step();}}}
+    if(!arrived&&S.station<STATIONS.length&&S.px>=maxX-0.01)arrive();}
+  const rg=REGIONS[regionAt(S.px)];if(rg.song!==curSong){curSong=rg.song;AudioKit.play(curSong);}
+  camX=Math.max(0,Math.min(S.px-W*0.35,WORLD_W-W));}
+function draw(){const px0=S?S.px:START_X;const pal=paletteAt(px0);view.style.background=pal.top;
+  const g=ctx.createLinearGradient(0,0,0,GROUND);g.addColorStop(0,pal.top);g.addColorStop(1,pal.bot);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  const sea=pal.name==='sea';drawFar(ctx,camX,W,pal,pal.name);if(!sea)drawClouds(ctx,camX,W);
+  if(sea)drawSea(ctx,camX,W,tt);else{rect(ctx,0,GROUND,W,H-GROUND,pal.ground);rect(ctx,0,GROUND+9,W,H-GROUND-9,pal.road);for(let x=-(camX%16);x<W;x+=16)rect(ctx,x,GROUND+16,8,1,'#FFE66D');}
+  for(const p of PROPS){const sx=p.x-camX;if(sx<-80||sx>W+80)continue;drawProp(ctx,sx,p,tt);}
+  const cur=S?S.station:0;
+  STATIONS.forEach((st,i)=>{const sx=st.x-camX;if(sx<-140||sx>W+140)return;drawBuilding(ctx,sx,st.building,tt);
+    if(i<cur){rect(ctx,sx+16,GROUND-st.building.h-16,1,14,PAL.k);rect(ctx,sx+17,GROUND-st.building.h-16,8,6,PAL.g);rect(ctx,sx+18,GROUND-st.building.h-14,3,1,PAL.w);}
+    else if(i===cur&&!arrived&&S)drawArrow(ctx,sx,GROUND-st.building.h-30+Math.sin(tt*6)*3);});
+  const px=px0-camX;
+  if(sea){drawShip(ctx,px-40,GROUND-14);drawMap(ctx,MAPS[frameName()],px-6,GROUND-38,1);}else drawMap(ctx,MAPS[frameName()],px-6,GROUND-18,1);
+  if(S&&S.brand){ctx.fillStyle='rgba(27,27,36,.75)';ctx.fillRect(px-18,GROUND-32,36,9);txt(ctx,S.brand.slice(0,8),px,GROUND-30,'#FFE66D',5,'center');}}
+function frame(ts){const dt=Math.min(0.05,(ts-lastT)/1000||0);lastT=ts;tt+=dt;update(dt);draw();requestAnimationFrame(frame);}
+
+window.addEventListener('keydown',e=>{if(e.repeat)return;const k=e.key;
+  if(k==='ArrowRight'||k==='d'||k==='D'){manual=1;e.preventDefault();}
+  else if(k==='ArrowLeft'||k==='a'||k==='A'){manual=-1;e.preventDefault();}
+  else if((k==='Enter'||k===' ')&&!overlay.classList.contains('show')&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='BUTTON'){const b=panel.querySelector('.btn.go, .btn.walk, .choices.one .choice:not(:disabled)');if(b){e.preventDefault();b.click();}}
+  else if(k==='Escape'&&overlay.querySelector('.ov .x')){closeOv();}});
+window.addEventListener('keyup',e=>{if(['ArrowRight','d','D','ArrowLeft','a','A'].includes(e.key))manual=0;});
+view.addEventListener('pointerdown',e=>{if(!S||!S.started)return;const r=view.getBoundingClientRect();manual=(e.clientX-r.left)>r.width/2?1:-1;try{view.setPointerCapture(e.pointerId);}catch(err){}});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>view.addEventListener(ev,()=>{manual=0;}));
+window.addEventListener('blur',()=>{manual=0;});
+$('#btn-pass').addEventListener('click',()=>{if(!S||!S.started)return;AudioKit.sfx.blip();if(overlay.querySelector('.ov .x'))closeOv();else if(!overlay.classList.contains('show'))showPassport();});
+function setMuteUI(m){const b=$('#btn-mute');b.setAttribute('aria-pressed',m?'false':'true');b.title=m?'Music is off. Tap to turn on.':'Music is on. Tap to mute.';const c=b.querySelector('canvas');const s=iconCanvas(m?'mute':'note',3);c.width=s.width;c.height=s.height;c.getContext('2d').drawImage(s,0,0);}
+$('#btn-mute').addEventListener('click',()=>{const m=!AudioKit.isMuted();AudioKit.setMuted(m);try{localStorage.setItem('one-box-muted',m?'1':'0');}catch(e){}setMuteUI(m);if(!m)AudioKit.sfx.blip();});
+function start(saved){AudioKit.init();closeOv();S=saved||fresh();S.started=true;walking=false;hurry=false;manual=0;arrived=false;applied=null;curSong='';if(!trackBuilt)buildTrack();hud();
+  if(S.station>=STATIONS.length||S.done){S.station=Math.min(S.station,STATIONS.length-1);showEnd(false);doneCard();return;}
+  const target=STATIONS[S.station];if(S.px>=target.x-6-0.01){S.px=target.x-6;arrive();}else travelCard();save();}
+
+/* boot */
+AudioKit.setMuted(getMuted());setMuteUI(getMuted());resize();requestAnimationFrame(frame);
+const savedGame=load();showTitle(savedGame&&savedGame.product&&!savedGame.done?savedGame:null);
+</script>
+</html>

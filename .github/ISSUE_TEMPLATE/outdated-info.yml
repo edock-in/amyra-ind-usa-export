@@ -1,0 +1,26 @@
+name: Outdated rule or number
+description: A rule, form, fee, deadline or duty rate in the game is out of date.
+title: "Outdated: "
+labels: ["content"]
+body:
+  - type: input
+    id: stop
+    attributes:
+      label: Which stop in the game?
+      placeholder: e.g. GST Office, Port, FBA Warehouse
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What does the game say, and what is correct now?
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source
+      description: A link to a government or Amazon page that shows the current rule.
+      placeholder: https://
+    validations:
+      required: true

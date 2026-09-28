@@ -1,0 +1,23 @@
+name: Something is broken
+description: The game does not work, looks wrong, or gets stuck.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead. A screenshot helps.
+    validations:
+      required: true
+  - type: input
+    id: stop
+    attributes:
+      label: Which stop were you at?
+  - type: input
+    id: device
+    attributes:
+      label: Phone or computer, and which browser?
+      placeholder: e.g. Redmi Note 12, Chrome
+    validations:
+      required: true

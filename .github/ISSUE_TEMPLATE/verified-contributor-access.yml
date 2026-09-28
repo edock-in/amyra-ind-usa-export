@@ -1,0 +1,30 @@
+name: Verified Edock contributor access
+description: Ask for write access to this repository. For verified Edock users only.
+title: "Access request: "
+labels: ["access-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue is public. Share only your Edock username. Never post your email, phone number, PAN or any ID document here.
+  - type: input
+    id: edock-username
+    attributes:
+      label: Edock username
+      placeholder: e.g. ravi-exports
+    validations:
+      required: true
+  - type: textarea
+    id: plan
+    attributes:
+      label: What would you like to work on?
+      description: Optional. A fix, a new product, a translation, or anything else.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: My Edock account is verified.
+          required: true
+        - label: I have read CONTRIBUTING.md.
+          required: true
