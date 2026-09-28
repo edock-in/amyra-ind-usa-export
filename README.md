@@ -143,7 +143,7 @@ If you host your own copy, change `GUIDE_URL` in `src/game.js`, the address in `
 
 Any static host works. Serve `index.html` at the root of the site and `guide/index.html` under `/guide/`.
 
-This repository publishes itself with GitHub Pages through `.github/workflows/pages.yml`. Every change to `main` is published, and `main` only changes through a merged pull request.
+This repository publishes itself with GitHub Pages through `.github/workflows/pages.yml`. Every change to `main` is published, and only the maintainer can change `main`.
 
 To publish your own fork the same way, set **Settings → Pages → Source** to **GitHub Actions**, then add a repository variable named `DEPLOY_TO_GITHUB_PAGES` with the value `true`.
 

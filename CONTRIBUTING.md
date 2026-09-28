@@ -19,7 +19,7 @@ Access ends if your Edock account is no longer verified, or if it is used to har
 ## Branches
 
 - **`develop`** is where all work comes together. It is the default branch.
-- **`main`** is the live game. Every change to `main` is published straight away. `main` only changes through a merged pull request, and only the maintainer, [@065rshdeep](https://github.com/065rshdeep), can merge into it.
+- **`main`** is the live game. Every change to `main` is published straight away. Only the maintainer, [@065rshdeep](https://github.com/065rshdeep), can change `main`, by merging a pull request or pushing to it directly.
 
 ## Making a change
 
@@ -31,7 +31,7 @@ Access ends if your Edock account is no longer verified, or if it is used to har
 
 ## Releasing
 
-When `develop` is ready, a pull request from `develop` into `main` is opened. The maintainer reviews it and merges it, and the game is published.
+When `develop` is ready, the maintainer moves it to `main`, through a pull request or a direct push, and the game is published.
 
 ## House rules
 

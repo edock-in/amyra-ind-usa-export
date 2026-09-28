@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 
-# Publishes the game every time main changes. main only changes through a merged pull request.
+# Publishes the game every time main changes. Only the maintainer can change main.
 # Runs only when the repository variable DEPLOY_TO_GITHUB_PAGES is "true"
 # and Settings > Pages > Source is set to "GitHub Actions".
 on:
