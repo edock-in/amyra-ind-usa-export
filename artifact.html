@@ -650,7 +650,9 @@ const STATIONS=[
 const $=s=>document.querySelector(s);
 const panel=$('#panel'),overlay=$('#overlay'),toastEl=$('#toast'),popEl=$('#pop'),hintEl=$('#hint'),view=$('#view'),trackEl=$('#track');
 const canvas=$('#game'),ctx=canvas.getContext('2d');
-const SAVE_KEY='one-box-save-v2',GUIDE_URL='https://games.edock.io/amyra-ind-usa-export/guide/';
+const SAVE_KEY='one-box-save-v2';
+/* The written guide sits in guide/ next to the game. Hosts that cannot serve it (a local file, a Claude artifact) use the public copy. */
+const GUIDE_URL=(()=>{try{if(/^https?:$/.test(location.protocol)&&/\/(index\.html)?$/.test(location.pathname)&&!/claude/.test(location.hostname))return new URL('guide/',location.href).href;}catch(e){}return 'https://games.edock.io/amyra-ind-usa-export/guide/';})();
 const START_WALLET=500000,SEA0=2500,SEA1=3000,WORLD_W=4200,START_X=30;
 const fmtINR=n=>{const neg=n<0;n=Math.abs(Math.round(n));let s=String(n);if(s.length>3){const last=s.slice(-3);let rest=s.slice(0,-3);rest=rest.replace(/\B(?=(\d{2})+(?!\d))/g,',');s=rest+','+last;}return (neg?'\u2212':'')+'\u20B9'+s;};
 const fmtUSD=n=>'$'+(Math.abs(n)>=1000?Math.round(n).toLocaleString('en-US'):n.toFixed(2));

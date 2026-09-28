@@ -109,7 +109,7 @@ The game itself has no analytics and sends nothing. The tags only travel when a 
 
 ## Contributing
 
-Any verified Edock user can make changes to this repository. Read [CONTRIBUTING.md](CONTRIBUTING.md) to request access and for the house rules: plain words first, pictures over text, rupees next to dollars, and an official source for every rule or fee.
+Any verified Edock user can make changes to this repository. Work lands on the `develop` branch, and the live game is published from `main`. Read [CONTRIBUTING.md](CONTRIBUTING.md) to request access and for the house rules: plain words first, pictures over text, rupees next to dollars, and an official source for every rule or fee.
 
 Anyone else is welcome to open an issue, or to fork the project and make it their own.
 
@@ -123,7 +123,9 @@ If you host your own copy, change `GUIDE_URL` in `src/game.js`, the address in `
 
 Any static host works. Serve `index.html` at the root of the site and `guide/index.html` under `/guide/`.
 
-A GitHub Pages workflow is included in `.github/workflows/pages.yml`. To use it, set **Settings → Pages → Source** to **GitHub Actions**, then add a repository variable named `DEPLOY_TO_GITHUB_PAGES` with the value `true`. Every push to `main` then publishes the game.
+This repository publishes itself with GitHub Pages through `.github/workflows/pages.yml`. Every change to `main` is published, and `main` only changes through a merged pull request.
+
+To publish your own fork the same way, set **Settings → Pages → Source** to **GitHub Actions**, then add a repository variable named `DEPLOY_TO_GITHUB_PAGES` with the value `true`.
 
 ## Part of Edock Games
 

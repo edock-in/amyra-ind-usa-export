@@ -16,13 +16,22 @@ Thank you for helping more people in India learn to export.
 
 Access ends if your Edock account is no longer verified, or if it is used to harm the project.
 
+## Branches
+
+- **`develop`** is where all work comes together. It is the default branch.
+- **`main`** is the live game. Every change to `main` is published straight away. `main` only changes through a merged pull request, and only the maintainer, [@065rshdeep](https://github.com/065rshdeep), can merge into it.
+
 ## Making a change
 
-1. Create a branch from `main` with a short name, such as `content/lut-renewal-date` or `fix/hud-overflow`.
+1. Create a branch from `develop` with a short name, such as `content/lut-renewal-date` or `fix/hud-overflow`.
 2. Edit the files in `src/`. Most content lives in `src/content.js`.
 3. Run `./build.sh` and commit both your `src/` changes and the rebuilt `index.html`, `artifact.html` and `guide/index.html`. A check on every pull request fails if the built files are out of date.
-4. Open a pull request and fill in the checklist.
-5. Another verified contributor reviews it. Once it is merged into `main`, it goes live.
+4. Open a pull request into `develop` and fill in the checklist.
+5. Another verified contributor reviews it and merges it into `develop`.
+
+## Releasing
+
+When `develop` is ready, a pull request from `develop` into `main` is opened. The maintainer reviews it and merges it, and the game is published.
 
 ## House rules
 
