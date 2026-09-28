@@ -2,17 +2,18 @@
   <button id="btn-mute" title="Music on or off" aria-pressed="true"><canvas data-icon="note"></canvas></button>
   <header id="hud">
     <div class="hud-top">
-      <span class="stat"><canvas data-icon="wallet"></canvas><b id="hud-spent">₹0</b><small>spent</small></span>
+      <span class="stat"><canvas data-icon="wallet"></canvas><b id="hud-spent">₹0</b><small data-t="spent">spent</small></span>
       <span class="stat"><canvas data-icon="clock"></canvas><b id="hud-week">1</b><small>weeks</small></span>
-      <span class="stat"><canvas data-icon="rupee"></canvas><b id="hud-wallet">₹5,00,000</b><small>left</small></span>
-      <button class="ib" id="btn-pass" title="Passport"><canvas data-icon="stampbook"></canvas><span id="hud-stamps">0</span></button>
+      <span class="stat"><canvas data-icon="rupee"></canvas><b id="hud-wallet">₹5,00,000</b><small data-t="left">left</small></span>
+      <button class="ib" id="btn-pass" title="Passport" data-t-title="Passport"><canvas data-icon="stampbook"></canvas><span id="hud-stamps">0</span></button>
+      <button class="ib" id="btn-lang" title="Hinglish mein khelein">Hinglish</button>
     </div>
     <div id="track" aria-label="Journey checklist"></div>
   </header>
   <div id="view">
     <canvas id="game"></canvas>
     <div id="toast" role="status"></div>
-    <div id="hint">Hold the right side to walk, or tap Walk</div>
+    <div id="hint" data-t="Hold the right side to walk, or tap Walk">Hold the right side to walk, or tap Walk</div>
   </div>
   <section id="panel" aria-live="polite"></section>
   <div id="overlay"></div>

@@ -24,7 +24,8 @@ html,body{height:100%}
 body{margin:0;background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.35;overflow:hidden}
 button{font-family:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--marigold);outline-offset:2px}
-#app{height:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;background:var(--night);position:relative}
+#app{height:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;background:var(--night);position:relative;overflow:hidden}
+/* overflow: the stamp pop-up starts at 2.6x size; unclipped it widened the page, so phones opened it zoomed out */
 
 /* mute, always on top */
 #btn-mute{position:absolute;right:10px;top:calc(8px + env(safe-area-inset-top,0px));z-index:80;width:40px;height:40px;border-radius:10px;background:var(--marigold);border:2px solid var(--ink);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;box-shadow:0 3px 0 var(--ink),0 0 0 3px rgba(255,255,255,.25)}
@@ -98,6 +99,33 @@ button{font-family:inherit;cursor:pointer}
 .btn.go{background:var(--green)}
 .btn.walk{background:var(--blue);color:#FFF}
 .btn.danger{background:#FFD9D2;color:var(--red2)}
+.actions.many .btn{flex:1 1 calc(50% - 5px)}
+.actions.many .btn.go{flex-basis:100%}
+/* surprise cards */
+.card.event{border-color:var(--red2);box-shadow:0 4px 0 var(--red2);position:relative;padding-top:24px}
+.ribbon{position:absolute;left:12px;top:-12px;display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#FFF;border:2px solid var(--ink);border-radius:6px;padding:5px 8px 4px;font-family:var(--f-title);font-size:9px;letter-spacing:.04em;line-height:1}
+.ribbon canvas{image-rendering:pixelated;width:16px;height:16px;background:#FFF;border-radius:3px}
+.shield{margin-top:10px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--green2);background:#E1F7E6;border:2px dashed var(--green2);border-radius:8px;padding:8px 10px}
+.shield .mini{flex:none;min-width:44px;height:44px;border-radius:50%;border:3px double var(--green2);display:flex;align-items:center;justify-content:center;font-family:var(--f-title);font-size:7px;padding:2px;transform:rotate(-8deg);background:#FFF}
+.quote{margin-top:10px;font-size:16px;font-weight:500;line-height:1.35;background:#FFF;border:2px solid var(--ink);border-left:6px solid var(--blue2);border-radius:8px;padding:10px 12px}
+.quote::before{content:"\201C"}.quote::after{content:"\201D"}
+/* language */
+#btn-lang{border-color:var(--marigold);color:var(--marigold)}
+.lang{display:flex;justify-content:center;gap:0;margin:14px auto 0;border:2px solid var(--ink);border-radius:10px;overflow:hidden;width:max-content;max-width:100%}
+.lang button{font-family:var(--f-body);font-weight:700;font-size:14px;padding:9px 16px;background:#FFF;color:var(--ink);border:0;line-height:1.1}
+.lang button+button{border-left:2px solid var(--ink)}
+.lang button.on{background:var(--ink);color:var(--marigold)}
+/* score */
+.score{margin-top:14px;background:#FFF;border:2px solid var(--ink);border-radius:10px;padding:12px}
+.score .rank{display:flex;align-items:center;gap:12px}
+.score .rank canvas{image-rendering:pixelated;width:48px;height:48px;flex:none;background:#FFF1CF;border:2px solid var(--ink);border-radius:8px}
+.score .rk{font-family:var(--f-title);font-size:clamp(11px,3.4vw,14px);line-height:1.5;color:var(--red2)}
+.score .sc{font-weight:700;font-size:16px;margin-top:2px;font-variant-numeric:tabular-nums}
+.score .bits{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:13px;color:var(--ink2)}
+.score .bits b{color:var(--ink);font-size:15px}
+.score .how{font-size:12px;color:var(--ink2);margin-top:6px;line-height:1.35}
+.score .actions{margin-top:10px}
+.score .btn.sec{flex-grow:1}
 .btn:disabled{opacity:.5;cursor:default}
 .more{margin-top:10px;font-size:13px;color:var(--ink2);background:none;border:0;padding:0;text-decoration:underline dotted;text-underline-offset:3px}
 .detail{margin-top:8px;font-size:15px;line-height:1.35;color:var(--ink);background:var(--panel2);padding:10px 12px;border-radius:8px;border-left:5px solid var(--marigold2)}
@@ -114,9 +142,11 @@ button{font-family:inherit;cursor:pointer}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 
 /* OVERLAYS */
-#overlay{position:absolute;inset:0;background:rgba(14,16,36,.94);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto;z-index:30}
+#overlay{position:absolute;inset:0;background:rgba(14,16,36,.94);display:none;align-items:center;justify-content:center;padding:calc(58px + env(safe-area-inset-top,0px)) 16px 16px;overflow-y:auto;z-index:30}
+/* the top padding keeps a tall panel's close button clear of the music button above it */
 #overlay.show{display:flex}
 .ov{position:relative;width:100%;max-width:560px;background:var(--panel);border:2px solid var(--ink);border-radius:12px;box-shadow:0 8px 0 #000;padding:18px 16px 20px;color:var(--ink);margin:auto}
+.ov .x~h1{padding:0 34px}
 .ov h1{font-family:var(--f-title);font-size:clamp(12px,3.6vw,18px);line-height:1.6;margin:0;text-wrap:balance;text-align:center}
 .ov h2{font-weight:700;font-size:18px;line-height:1.3;margin:0 0 6px}
 .ov p{margin:10px 0 0;font-size:15px;line-height:1.35;text-align:center}
@@ -130,6 +160,7 @@ button{font-family:inherit;cursor:pointer}
 .prod .tag{font-size:12px;font-weight:400;color:var(--ink2)}
 .prod:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
 .prod.sel{background:#E1F7E6;border-color:var(--green2);box-shadow:0 3px 0 var(--green2)}
+.prod:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 5px)}
 .pass{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:12px}
 .stamp{aspect-ratio:1;border:2px dashed var(--panel2);border-radius:8px;display:flex;align-items:center;justify-content:center;background:#FFF;padding:4px;cursor:pointer}
 .stamp.got{border-style:solid;border-color:var(--ink);transform:rotate(var(--rot,-4deg))}
@@ -169,17 +200,18 @@ button{font-family:inherit;cursor:pointer}
   <button id="btn-mute" title="Music on or off" aria-pressed="true"><canvas data-icon="note"></canvas></button>
   <header id="hud">
     <div class="hud-top">
-      <span class="stat"><canvas data-icon="wallet"></canvas><b id="hud-spent">₹0</b><small>spent</small></span>
+      <span class="stat"><canvas data-icon="wallet"></canvas><b id="hud-spent">₹0</b><small data-t="spent">spent</small></span>
       <span class="stat"><canvas data-icon="clock"></canvas><b id="hud-week">1</b><small>weeks</small></span>
-      <span class="stat"><canvas data-icon="rupee"></canvas><b id="hud-wallet">₹5,00,000</b><small>left</small></span>
-      <button class="ib" id="btn-pass" title="Passport"><canvas data-icon="stampbook"></canvas><span id="hud-stamps">0</span></button>
+      <span class="stat"><canvas data-icon="rupee"></canvas><b id="hud-wallet">₹5,00,000</b><small data-t="left">left</small></span>
+      <button class="ib" id="btn-pass" title="Passport" data-t-title="Passport"><canvas data-icon="stampbook"></canvas><span id="hud-stamps">0</span></button>
+      <button class="ib" id="btn-lang" title="Hinglish mein khelein">Hinglish</button>
     </div>
     <div id="track" aria-label="Journey checklist"></div>
   </header>
   <div id="view">
     <canvas id="game"></canvas>
     <div id="toast" role="status"></div>
-    <div id="hint">Hold the right side to walk, or tap Walk</div>
+    <div id="hint" data-t="Hold the right side to walk, or tap Walk">Hold the right side to walk, or tap Walk</div>
   </div>
   <section id="panel" aria-live="polite"></section>
   <div id="overlay"></div>
@@ -205,6 +237,7 @@ bottle:['......kkkk......','.....kMMMMk.....','.....kMMMMk.....','......kmmk....
 spice:['.....kkkkkk.....','....kNNNNNNk....','....kNNNNNNk....','.....kkkkkk.....','...kkllllllkk...','..kllrrrrrrllk..','..klrrrrrrrrlk..','..klrrrrrrrrlk..','..kwwwwwwwwwwk..','..kwwyoooywwwk..','..kwwoorrooywk..','..kwwwwwwwwwwk..','..klrrrrrrrrlk..','..klrrrrrrrrlk..','..kkllllllllkk..','...kkkkkkkkkk...'],
 toy:['.......kk.......','......kyyk......','.......kk.......','.....kkkkkk.....','....krrrrrrk....','...kkkkkkkkkk...','...kooooooook...','..kkkkkkkkkkkk..','..kyyyyyyyyyyk..','.kkkkkkkkkkkkkk.','.kggggggggggggk.','kkkkkkkkkkkkkkkk','kbbbbbbbbbbbbbbk','kkkkkkkkkkkkkkkk','.kNNNNNNNNNNNNk.','..kkkkkkkkkkkk..'],
 throw:['................','................','..kkkkkkkkkkkk..','.kcccccccccccck.','.kcccccccccccck.','.kwwwwwwwwwwwwk.','.kcccccccccccck.','.kkkkkkkkkkkkkk.','.kppppppppppppk.','.kwwwwwwwwwwwwk.','.kppppppppppppk.','.kkkkkkkkkkkkkk.','..kkkkkkkkkkkk..','....k.k.k.k.....','....k.k.k.k.....','................'],
+balm:['................','................','................','...kkkkkkkkkk...','..kGGGGGGGGGGk..','..kggggggggggk..','..kkkkkkkkkkkk..','..kyyyyyyyyyyk..','..kyyyGyyrryyk..','..kyyGGGyyyyyk..','..kyyyGyyrryyk..','..kyyyyyyyyyyk..','..kOOOOOOOOOOk..','...kkkkkkkkkk...','................','................'],
 heart:['..kk..kk..','.krrkkrrk.','krrrrrrrrk','krrwrrrrrk','krrrrrrrrk','.krrrrrrk.','..krrrrk..','...krrk...','....kk....'],
 };
 function drawMap(ctx,map,x,y,s){s=s||1;for(let r=0;r<map.length;r++){const row=map[r];for(let c=0;c<row.length;c++){const ch=row[c];if(ch==='.')continue;ctx.fillStyle=PAL[ch]||ch;ctx.fillRect(x+c*s,y+r*s,s,s);}}}
@@ -272,6 +305,14 @@ timer:'C8 9 6 w;C8 9 6 k;C8 9 5 w;R7 1 2 2 k;R8 5 1 4 k;R8 9 3 1 k;R4 11 8 1 r',
 key:'C5 6 3 y;C5 6 3 k;C5 6 2 y;R7 5 8 2 y;O7 5 8 2 k;R12 7 1 2 y;R14 7 1 3 y',
 ticket:'R1 4 14 9 y;O1 4 14 9 k;R1 7 2 3 k;R14 7 1 3 k;R10 5 1 1 k;R10 7 1 1 k;R10 9 1 1 k;R10 11 1 1 k;R4 6 4 1 r;R4 8 5 1 O;R4 10 3 1 O',
 map:'R1 2 14 12 s;O1 2 14 12 k;L3 4 6 8 b;L6 8 10 6 b;L10 6 13 11 b;R4 10 2 2 g;R9 4 2 2 r',
+diya:'R7 2 2 5 y;R8 1 1 1 o;R7 6 2 1 O;R8 3 1 2 w;R2 9 12 2 m;O2 9 12 2 k;R3 11 10 2 M;O3 11 10 2 k;R5 13 6 1 k;R1 8 2 1 k;R13 8 2 1 k',
+phone:'R4 1 8 14 k;R5 3 6 9 c;R7 2 2 1 d;R7 13 2 1 w;R7 4 2 5 r;R7 10 2 1 r',
+rain:'C5 5 3 l;C10 4 4 l;R2 5 13 4 l;O2 5 13 4 d;R3 4 11 1 l;L4 11 3 13 b;L8 11 7 13 b;L12 11 11 13 b;L6 14 5 15 b;L10 14 9 15 b',
+news:'R1 3 14 11 w;O1 3 14 11 k;R3 5 10 2 k;R3 8 4 4 c;O3 8 4 4 k;R8 8 5 1 e;R8 10 5 1 e;R3 12 10 1 e;R13 2 2 2 r',
+calendar:'R2 3 12 12 w;O2 3 12 12 k;R3 4 10 3 r;R4 1 1 4 k;R11 1 1 4 k;R4 9 2 2 e;R7 9 2 2 e;R10 9 2 2 e;R4 12 2 2 e;R7 12 2 2 G;R10 12 2 2 e',
+onestar:'R1 3 14 11 w;O1 3 14 11 k;M star 2 5;R11 6 3 1 e;R11 8 3 1 e;R11 10 2 1 e',
+trophy:'R4 2 8 6 y;O4 2 8 6 k;R2 3 2 1 k;R2 3 1 3 k;R3 6 1 1 k;R12 3 2 1 k;R13 3 1 3 k;R12 6 1 1 k;R6 3 1 3 w;R7 8 2 3 O;R5 11 6 1 O;R4 12 8 3 N;O4 12 8 3 k;R6 13 4 1 y',
+share:'R2 6 9 9 w;O2 6 9 9 k;L6 10 13 3 G;L7 10 14 3 G;R10 2 5 1 G;R14 2 1 5 G',
 };
 const iconCache={};
 function px(ctx,x,y,c){ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}
@@ -375,6 +416,7 @@ const AudioKit=(()=>{
     error(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.14,52,'sawtooth',0.14,sfxG,-3,false);tone(t+0.15,0.24,47,'sawtooth',0.14,sfxG,-5,false);},
     win(){if(!ctx||muted)return;const t=ctx.currentTime;[72,76,79,84].forEach((n,i)=>tone(t+i*0.09,0.2,n,'square',0.15,sfxG,0,false));tone(t+0.4,0.5,88,'square',0.13,sfxG,0,true);},
     step(){if(!ctx||muted)return;noise(ctx.currentTime,0.03,0.1,sfxG,1500,'lowpass');},
+    news(){if(!ctx||muted)return;const t=ctx.currentTime;[79,76,79,84].forEach((n,i)=>tone(t+i*0.08,0.07,n,'square',0.14,sfxG,0,false));},
     horn(){if(!ctx||muted)return;const t=ctx.currentTime;tone(t,0.7,41,'sawtooth',0.16,sfxG,0,false);tone(t,0.7,48,'square',0.07,sfxG,0,false);}
   };
   return {init,play,setMuted,sfx,isMuted:()=>muted};
@@ -462,6 +504,8 @@ function drawClouds(ctx,camX,W){const off=camX*0.15;for(const c of CLOUDS){const
 /* ============ CONTENT ============ */
 const UNITS=300,FX=84;
 const GAME_ID='amyra-ind-usa-export';
+/* The public address of the game, used in the share message. Forks change it to their own. */
+const GAME_URL='https://games.edock.io/amyra-ind-usa-export';
 /* The live session promoted at the end of the game. After endsAt the event card hides itself
    and the button points to all upcoming Edock sessions instead. */
 const SESSION={
@@ -476,10 +520,17 @@ const SESSION={
   allCampaign:'edock-sessions'
 };
 const PRODUCTS={
-  bottle:{name:'Copper bottle',sprite:'bottle',price:24.99,cost:350,fba:5.5,duty:0.03,compliance:'coo',tag:'Light, tough, India-famous',kwOk:'copper water bottle',kwBad:['tamba bottle','jal patra']},
-  spice:{name:'Spice blend',sprite:'spice',price:12.99,cost:120,fba:3.9,duty:0.02,compliance:'fda',tag:'Cheap to make, food rules apply',kwOk:'garam masala seasoning',kwBad:['masala powder packet','desi masala']},
-  toy:{name:'Wooden toy',sprite:'toy',price:19.99,cost:220,fba:5.0,duty:0.0,compliance:'toy',tag:'Loved abroad, safety tests apply',kwOk:'wooden stacking toy',kwBad:['lattu khilona','kids wood item']},
-  throw:{name:'Cotton throw',sprite:'throw',price:34.99,cost:600,fba:7.2,duty:0.09,compliance:'textile',tag:'Good price, bulky to ship',kwOk:'cotton throw blanket',kwBad:['chaddar','razai cover']}
+  bottle:{name:'Copper bottle',sprite:'bottle',price:24.99,cost:350,fba:5.5,duty:0.03,compliance:'coo',tag:'Light, tough, India-famous',kwOk:'copper water bottle',kwBad:['tamba bottle','jal patra'],
+    q:{ask:'Can I keep lemon water in it?',good:'No, plain water only',bad:'Yes, any drink',why:'Copper reacts with sour drinks. A false yes brings sick customers and returns.'}},
+  spice:{name:'Spice blend',sprite:'spice',price:12.99,cost:120,fba:3.9,duty:0.02,compliance:'fda',tag:'Cheap to make, food rules apply',kwOk:'garam masala seasoning',kwBad:['masala powder packet','desi masala'],
+    q:{ask:'Does it contain nuts? My son is allergic.',good:'Answer from the allergen label',bad:'Probably not',why:'A guess about allergies can put a child in hospital. Answer only from the label.'}},
+  toy:{name:'Wooden toy',sprite:'toy',price:19.99,cost:220,fba:5.0,duty:0.0,compliance:'toy',tag:'Loved abroad, safety tests apply',kwOk:'wooden stacking toy',kwBad:['lattu khilona','kids wood item'],
+    q:{ask:'Is it safe for my 1-year-old?',good:'No, it is for age 3 and up',bad:'Yes, any age',why:'Small parts can choke a baby. The age on the label is there for a reason.'}},
+  throw:{name:'Cotton throw',sprite:'throw',price:34.99,cost:600,fba:7.2,duty:0.09,compliance:'textile',tag:'Good price, bulky to ship',kwOk:'cotton throw blanket',kwBad:['chaddar','razai cover'],
+    q:{ask:'Can I wash it in hot water?',good:'No, wash cold, as the label says',bad:'Yes, hot is fine',why:'Hot water shrinks cotton. Every shrunk throw comes back as a return.'}},
+  /* A camphor and menthol balm is an over-the-counter drug in the USA (FDA OTC Monograph M017). */
+  balm:{name:'Pain relief balm',sprite:'balm',price:9.99,cost:70,fba:3.4,duty:0.0,compliance:'otc',tag:'India-famous, but a medicine in the US',kwOk:'pain relief balm',kwBad:['dard ka malham','sar dard balm'],
+    q:{ask:'Can I use it on my 1-year-old?',good:'No, ask a doctor under age 2',bad:'Yes, it is all natural',why:'Camphor can harm small children. The label says: under 2 years, ask a doctor.'}}
 };
 const STAMPS={
   SAMPLE:['Golden sample','The one approved piece. Every unit must match it.'],
@@ -492,11 +543,12 @@ const STAMPS={
   SELLER:['Seller account','Your shop on Amazon USA.'],
   EIN:['EIN','Free US tax number for your business.'],
   W8:['W-8BEN','Says you live outside the US. No 30% cut on payouts.'],
-  BATCH:['First batch','300 units, brand printed on.'],
+  BATCH:['First batch','The full run, brand printed on every unit.'],
   BR:['Brand Registry','Amazon agrees the brand is yours. Unlocks A+, Vine, protection.'],
   GS1:['GS1 barcode','Genuine barcode numbers for your listing.'],
   FDA:['FDA registered','Factory on the US food authority’s list, with a US agent.'],
   CPC:['CPC','Toy lab-tested to the US standard, certificate written.'],
+  DRUG:['FDA drug listing','Balm listed with FDA as an over-the-counter medicine, with its own NDC number.'],
   LABEL:['US label','Fibre, care and origin, written the American way.'],
   COO:['Made in India','Country of origin marked for good. Every import needs it.'],
   LIST:['Listing live','Photos, words and A+ ready.'],
@@ -507,8 +559,17 @@ const STAMPS={
   FIRA:['FIRA','Bank receipt: the dollars arrived.'],
   EBRC:['e-BRC','Official closing certificate. Promise kept.']
 };
-const prodCost=s=>UNITS*PRODUCTS[s.product].cost;
+/* Year 1 always makes UNITS. From year 2 the player picks the batch size, kept in s.units. */
+const unitsOf=s=>s.units||UNITS;
+const prodCost=s=>unitsOf(s)*PRODUCTS[s.product].cost;
 const dutyINR=s=>Math.round(prodCost(s)*PRODUCTS[s.product].duty);
+/* Sea freight has a fixed part, so bigger batches cost less per unit. Air is paid by weight. */
+const shipCost=(n,air)=>air?n*300:20000+n*50;
+/* Where the dollars from one batch go: Amazon's 15%, the warehouse fee, 3% lost converting to rupees. */
+function payout(s){const p=PRODUCTS[s.product],n=unitsOf(s);const gross=n*p.price,amz=gross*0.15,fba=p.fba*n,conv=(gross-amz-fba)*0.03,netUSD=gross-amz-fba-conv;return {gross,amz,fba,conv,netUSD,netINR:Math.round(netUSD*FX)};}
+/* A small seeded random, so a saved game gets the same surprises and questions when it reloads. */
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+function shuffle(list,r){const a=list.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 const STATIONS=[
  {id:'bazaar',x:150,name:'Bazaar',icon:'shop',title:'Pick your product',sub:'What will your box carry?',
   building:{type:'shop',w:60,h:44,wall:'#F7D9A6',accent:'#E8563F',sign:'BAZAAR'},
@@ -589,12 +650,16 @@ const STATIONS=[
    return st;}},
  {id:'rules',x:1920,name:'Rules Lab',icon:'lab',title:'Pass the US product rules',sub:'India’s rules do not travel with the goods.',
   building:{type:'lab',w:70,h:48,wall:'#DDF2E4',accent:'#2E9A4B',sign:'RULES LAB'},
-  detail:'Every country decides what is safe and honestly labelled. Food, skin products and children’s items have real checklists. Everything needs a permanent Made in India mark.',
+  detail:'Every country decides what is safe and honestly labelled. Food, medicines, skin products and children’s items have real checklists. Everything needs a permanent Made in India mark.',
   steps:s=>{const p=PRODUCTS[s.product],st=[];
    if(p.compliance==='fda'){st.push({prompt:'Food going to the USA.',one:true,choices:[{label:'Register factory with FDA',icon:'agent',ok:true,cost:25000,weeks:2,say:'Factory registered, US agent named. Each shipment gets announced in advance.',stamp:'FDA'}]});
      st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Nutrition panel, allergens',icon:'labelok',ok:true,cost:6000,say:'Correct format. Ingredients in order, allergens named.',stamp:'LABEL'},{label:'Plain Hindi label',icon:'labelbad',ok:false,say:'Customs can hold or destroy this. Redo it.'}]});}
    else if(p.compliance==='toy'){st.push({prompt:'A toy needs a lab test.',one:true,choices:[{label:'Send to approved lab',icon:'lab',ok:true,cost:60000,weeks:3,say:'Passed the US toy standard. Certificate written. Amazon opens the toy category.',stamp:'CPC'}]});
      st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Tracking label, age mark',icon:'labelok',ok:true,cost:3000,say:'Permanent tracking label on every toy.',stamp:'LABEL'},{label:'No label',icon:'labelbad',ok:false,say:'Every children’s item needs one. Redo it.'}]});}
+   else if(p.compliance==='otc'){st.push({prompt:'A pain balm is a medicine in the USA. Its factory must be on FDA’s drug list.',choices:[
+      {label:'Use a maker already listed',icon:'factory',ok:true,cost:40000,weeks:2,stamp:'DRUG',say:'Their factory is registered with FDA and pays the yearly fee. Your brand gets its own NDC number under it.'},
+      {label:'Register a new factory',icon:'agent',ok:false,say:['A medicine factory pays FDA about {fee} a year before it sells a single tin. Too much for 300 tins. Work with a maker already on the list.',{fee:both(19188)}]}]});
+     st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Drug Facts panel',icon:'labelok',ok:true,cost:6000,say:'Active ingredients with amounts, uses, warnings and directions, in the US format. Every OTC medicine carries one.',stamp:'LABEL'},{label:'Ayurvedic, cures 40 pains',icon:'labelbad',ok:false,say:'Cure claims and no warnings make it an unapproved drug in the US. Customs can refuse it.'}]});}
    else if(p.compliance==='textile'){st.push({prompt:'Pick the label the USA accepts.',choices:[{label:'Fibre, care, origin',icon:'labelok',ok:true,cost:3000,say:'100% cotton, wash cold, Made in India. Sewn in.',stamp:'LABEL'},{label:'Brand name only',icon:'labelbad',ok:false,say:'US law wants fibre content and care instructions. Redo it.'}]});}
    else{st.push({prompt:'Any claims on the box?',choices:[{label:'Keeps water cool',icon:'labelok',ok:true,say:'A plain, true claim. Fine.'},{label:'Cures 40 diseases',icon:'labelbad',ok:false,say:'A health claim needs approval. Amazon will pull the listing.'}]});}
    st.push({prompt:'Country of origin mark.',choices:[{label:'Made in India, permanent',icon:'coo',ok:true,say:'Marked. US customs checks every import for this.',stamp:'COO'},{label:'Skip it',icon:'plainbox',ok:false,say:'Not optional. Shipments without it get held.'}]});
@@ -602,7 +667,7 @@ const STATIONS=[
  {id:'studio',x:2075,name:'Photo Studio',icon:'camera',title:'Build the listing',sub:'Photos sell. Words get found.',
   building:{type:'studio',w:60,h:44,wall:'#3A3446',accent:'#F28CB1',sign:'PHOTO STUDIO',signBg:'#F28CB1'},
   detail:'Shoppers decide from the first photo: pure white background, product filling the frame. Lower on the page, brand owners add picture-rich A+ content. Use the words Americans type, not the Hindi ones.',
-  steps:s=>{const p=PRODUCTS[s.product];const kws=[{label:p.kwOk,icon:'search',ok:true,say:'That is what they type. Title, bullets, hidden keywords.'}].concat(p.kwBad.map(k=>({label:k,icon:'search',ok:false,say:'Nobody in Ohio searches that. Try again.'})));
+  steps:s=>{const p=PRODUCTS[s.product];const kws=[{label:p.kwOk,raw:true,icon:'search',ok:true,say:'That is what they type. Title, bullets, hidden keywords.'}].concat(p.kwBad.map(k=>({label:k,raw:true,icon:'search',ok:false,say:'Nobody in Ohio searches that. Try again.'})));
    for(let i=kws.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[kws[i],kws[j]]=[kws[j],kws[i]];}
    return [
     {prompt:'Pick the main photo.',choices:[
@@ -621,13 +686,13 @@ const STATIONS=[
      {label:'300 small parcels',icon:'parcels',ok:false,say:'The duty-free parcel shortcut ended in 2025. Each one gets stopped. No.'}]},
    {prompt:'Who signs at US customs?',choices:[
      {label:'Amazon',icon:'warehouse',ok:false,say:'Amazon never acts as importer. The boxes would sit at the port.'},
-     {label:'Me, with a customs bond',icon:'me',ok:true,cost:20000,say:'You are the importer, from India. Bond bought with your EIN.',stamp:'IOR'},
-     {label:'A customs broker',icon:'broker',ok:true,cost:25000,say:'The broker imports in your name and files everything.',stamp:'IOR'}]},
+     {label:'Me, with a customs bond',icon:'me',ok:true,cost:20000,say:'You are the importer, from India. Bond bought with your EIN.',stamp:'IOR',set:{ior:'self'}},
+     {label:'A customs broker',icon:'broker',ok:true,cost:25000,say:'The broker imports in your name and files everything.',stamp:'IOR',set:{ior:'broker'}}]},
    {prompt:'Customs issues the export paper.',one:true,choices:[{label:'Get the shipping bill',icon:'doc',ok:true,say:'Goods have officially left India. This paper stays open until the money comes home.',stamp:'SB'}]}]},
- {id:'usgate',x:3110,name:'US Customs',icon:'gate',title:'Welcome to America',sub:'Duty first, then the road opens.',
+ {id:'usgate',x:3110,name:'US Customs',icon:'gate',title:'Welcome to America',sub:'Answer the officer, pay duty, roll on.',
   building:{type:'gate',w:40,h:40,wall:'#E4E4EC',accent:'#4F8FE6',sign:'US CUSTOMS'},
   detail:'Duty depends on your product code and it changed several times in 2025 and 2026. Check the current rate before you set a price.',
-  steps:[{prompt:'Pay the import duty.',one:true,choices:[{label:'Pay duty',icon:'dollar',ok:true,cost:s=>dutyINR(s),weeks:1,say:'Cleared. The truck rolls to the warehouse.'}]}]},
+  steps:s=>quizSteps(s).concat([{prompt:'Pay the import duty.',one:true,choices:[{label:'Pay duty',icon:'dollar',ok:true,cost:s=>dutyINR(s),weeks:1,say:'Cleared. The truck rolls to the warehouse.'}]}])},
  {id:'fba',x:3340,name:'FBA Warehouse',icon:'warehouse',title:'Stock in, launch on',sub:'Amazon stores, packs and ships for you.',
   building:{type:'warehouse',w:130,h:56,wall:'#B9C4D0',accent:'#F2A93B',sign:'FBA WAREHOUSE'},
   detail:'A new listing has no reviews, so search barely shows it. Ads buy the first visits. Amazon Vine gives free units to trusted reviewers for honest reviews. Fake reviews end accounts.',
@@ -656,115 +721,924 @@ const STATIONS=[
 ];
 
 
+
+/* ============ YEAR 2 ============ */
+/* After the first journey the player can run another year with the same brand. The setup is done,
+   so only the stops listed here open; every other building is passed as already done. A field here
+   replaces the station's own field for year 2 and later. */
+const fmtN=n=>n.toLocaleString('en-IN');
+/* Cash a batch of n units needs before Amazon pays: making, printing, sea freight, duty, ads, customs. */
+const cashAtStart=s=>s.yearStart!=null?s.yearStart:s.wallet;
+const y2Need=(s,n)=>{const p=PRODUCTS[s.product];return n*p.cost+9000+shipCost(n,false)+Math.round(n*p.cost*p.duty)+40000+25000;};
+const Y2={
+ dgft:{title:'Confirm your exporter ID',sub:'A yearly update, April to June.',
+  detail:'Your IEC is yours for life, but DGFT switches it off if you skip the yearly update. Nothing changed? Confirm it anyway.',
+  steps:[{prompt:'Log in to DGFT and confirm your details.',one:true,choices:[{label:'Update my IEC',icon:'stamp',ok:true,say:'Confirmed for this year. Every shipping paper keeps working.'}]}]},
+ gst:{title:'File this year’s promise letter',sub:'An LUT lasts one financial year.',
+  detail:'Every April, file a fresh Letter of Undertaking. Skip it and the next exports need 18% tax paid upfront.',
+  steps:s=>[{prompt:'File the LUT for the new financial year.',one:true,choices:[{label:'File a fresh LUT',icon:'sign',ok:true,stamp:'LUT',
+    say:s.stamps.includes('LUT')?'Filed online for the new year. No tax paid upfront.':'Your first LUT. This year no tax money gets stuck in a refund queue.'}]}]},
+ batch:{title:'How big is this year’s batch?',sub:'Bigger batches tie up more cash.',
+  detail:'The trademark, tests, photos and listing are done and paid for. Now it is about cash: bigger batches cost less per unit to ship, but every rupee sits in boxes until Amazon pays you.',
+  steps:s=>[
+   /* Judged on the money the year started with: nothing before this stop costs anything, and the
+      wallet after a pick would make the picked size look unaffordable when the game reloads. */
+   {prompt:['You have {cash} in the bank. How many units this year?',{cash:fmtINR(cashAtStart(s))}],choices:[300,600,1000].map((n,i)=>{const cash=cashAtStart(s),need=y2Need(s,n),label=['{n} units',{n:fmtN(n)}],icon=['box','parcels','warehouse'][i];
+     const make={label,icon,meta:[['coin',i+1]],ok:true,cost:s=>n*PRODUCTS[s.product].cost+9000,weeks:4,set:{units:n},stamp:'BATCH',
+       say:['The safe size. Same stock, same sales as last year.','Double the stock. Shipping each unit gets cheaper.','A big bet. Cheapest per unit, and the most cash tied up.'][i]};
+     if(cash>=need)return make;
+     /* The smallest batch always stays possible, so a poor year never leaves the player stuck. */
+     if(i===0)return Object.assign(make,{ok:'meh',say:['Money is tight: this needs about {need} and you have {cash}. The bank lends you the gap until Amazon pays.',{need:fmtINR(need),cash:fmtINR(cash)}]});
+     return {label,icon,ok:false,say:['That needs about {need} for making, shipping, duty and ads. You have {cash}. Pick a size you can pay for.',{need:fmtINR(need),cash:fmtINR(cash)}]};})},
+   {prompt:'Check the batch before it leaves?',choices:[
+     {label:'Hire an inspector',icon:'search',ok:true,cost:s=>Math.round(8000*unitsOf(s)/300/1000)*1000,say:'Bad units found and fixed before shipping. A bigger batch takes the inspector longer.'},
+     {label:'Trust the maker',icon:'shrug',ok:'meh',say:'Saved a little. You will find out in the reviews.',set:{noInspect:true}}]}]},
+ port:{title:'The new batch sets sail',sub:'Same route, bigger load.',
+  detail:'Your freight forwarder and US customs setup carry over from last year. Only the load and the speed are new choices.',
+  steps:s=>{const n=unitsOf(s);return [
+   {prompt:['How do {n} units cross?',{n:fmtN(n)}],choices:[
+     {label:'Ship',icon:'ship',meta:[['coin',1],['clock',3]],ok:true,cost:shipCost(n,false),weeks:7,say:'Cheap, and cheaper per unit the more you send. About 7 weeks.'},
+     {label:'Plane',icon:'plane',meta:[['coin',3],['clock',1]],ok:'meh',cost:shipCost(n,true),weeks:1,set:{air:true},say:'Fast, but air is paid by weight. The bill grows with every unit.'}]},
+   {prompt:'US customs, same as last year.',one:true,choices:[s.ior==='broker'
+     ?{label:'Broker files the entry',icon:'broker',ok:true,cost:25000,say:'Your broker imports in your name again.'}
+     :{label:'Renew the yearly bond',icon:'me',ok:true,cost:20000,say:'Bond renewed. You stay the importer.'}]},
+   {prompt:'Customs issues the export paper.',one:true,choices:[{label:'Get the shipping bill',icon:'doc',ok:true,say:'A new shipping bill for this batch. It stays open until the money comes home.',stamp:'SB'}]}];}},
+ usgate:{title:'Back in America',sub:'Pay duty, roll on.',
+  steps:[{prompt:'Pay the import duty.',one:true,choices:[{label:'Pay duty',icon:'dollar',ok:true,cost:s=>dutyINR(s),weeks:1,say:'Cleared. The truck rolls to the warehouse.'}]}]},
+ fba:{title:'Restock and sell',sub:'Your reviews carry over.',
+  detail:'Last year’s reviews stay on the listing, so this batch starts with trust. Ads still bring the first visits.',
+  steps:[
+   {prompt:'Boxes arrive with Amazon’s labels.',one:true,choices:[{label:'Check them in',icon:'parcels',ok:true,say:'Stock live again, next to last year’s reviews.',stamp:'FBA'}]},
+   {prompt:'Ads this year?',choices:[
+     {label:'Small budget',icon:'megaphone',meta:[['coin',1]],ok:'meh',cost:15000,say:'Slow start. Fewer visits, fewer sales.'},
+     {label:'Steady budget',icon:'megaphone',meta:[['coin',2]],ok:true,cost:40000,say:'Enough clicks to keep the listing near the top.'},
+     {label:'Everything',icon:'megaphone',meta:[['coin',3]],ok:'meh',cost:90000,say:'More than the listing needs. Reviews do part of the work now.'}]}]},
+ home:{title:'Delivered again',sub:'A repeat customer ordered two.'},
+ bank2:{},
+ portal:{}
+};
+STATIONS.forEach(st=>{if(Y2[st.id])st.y2=Y2[st.id];});
+/* Year 2 skips the stamps that belong to one batch, so the player earns them again. */
+const PER_BATCH_STAMPS=['BATCH','SB','FBA','FIRA','EBRC'];
+
+/* ============ SURPRISES ============ */
+/* Things that happen on the road. Each run draws a few from the pool (auto:false); the auto ones
+   always happen when their `when` holds, so a risky pick earlier shows its cost later.
+   at: the stop where it appears. pos: 'start' before the stop's own steps, 'end' after them.
+   years: the years it can appear in (2 means year 2 and later). shield: a stamp that protects you.
+   step: builds a normal step, so choices work exactly like everywhere else. */
+const EVENTS=[
+ {id:'diwali',at:'batch',pos:'start',icon:'diya',title:'Diwali week',
+  step:()=>({prompt:'The workers go home for Diwali. The factory stops for a week.',one:true,choices:[{label:'Wait, then restart',icon:'clock',ok:true,weeks:1,say:'Happy Diwali. Next time, plan production around the festival season.'}]})},
+ {id:'otp',at:'seller',pos:'end',icon:'phone',title:'A call from “Amazon”',years:[1],
+  step:()=>({prompt:'A caller says he works for Amazon. He wants the OTP that just came to your phone.',choices:[
+    {label:'Hang up and report it',icon:'guard',ok:true,say:'Right. Amazon never asks for an OTP or a password on a call.'},
+    {label:'Read out the OTP',icon:'chat',ok:false,say:'He takes over your seller account and changes the bank details. Never share an OTP with anyone.'}]})},
+ {id:'monsoon',at:'port',pos:'end',icon:'rain',title:'Monsoon at the port',when:s=>!s.air,
+  step:()=>({prompt:'Heavy rain at the port. The cranes stop, and your ship sails late.',one:true,choices:[{label:'Wait it out',icon:'ship',ok:true,weeks:1,say:'One week lost. From June to September, add spare time to sea shipments.'}]})},
+ {id:'exam',at:'usgate',pos:'start',icon:'guard',title:'Random customs check',shield:'COO',
+  step:s=>({prompt:'US customs picks your boxes for a check. An officer opens one and looks closely.',one:true,choices:[{label:'Show the papers',icon:'doc',ok:true,weeks:0,
+    say:{fda:'Made in India on every pack, and the FDA papers match. Cleared in two days.',toy:'Made in India on every toy, and the test certificate is ready. Cleared in two days.',textile:'Made in India and the fibre label are sewn in. Cleared in two days.',coo:'Made in India is marked on every bottle. Cleared in two days.',otc:'Made in India, the Drug Facts label and the NDC number all match FDA’s list. Cleared in two days.'}[PRODUCTS[s.product].compliance]}]})},
+ {id:'question',at:'fba',pos:'end',icon:'chat',title:'A shopper has a question',
+  step:s=>{const q=PRODUCTS[s.product].q;return {prompt:q.ask,choices:[
+    {label:q.good,icon:'tick',ok:true,say:'Honest and quick. The answer stays on the page and helps the next shopper decide.'},
+    {label:q.bad,icon:'untick',ok:false,say:q.why}]};}},
+ {id:'lost',at:'fba',pos:'end',icon:'search',title:'Three units went missing',
+  step:()=>({prompt:'Amazon’s warehouse lost 3 of your units.',choices:[
+    {label:'File a claim',icon:'doc',ok:true,say:'Amazon pays you back for stock it loses. Check your stock report every month.'},
+    {label:'Let it go',icon:'shrug',ok:'meh',say:'That was your money. Amazon pays back lost stock when you ask.'}]})},
+ {id:'copycat',at:'home',pos:'start',icon:'guard',title:'A copycat on your page',shield:'BR',
+  step:()=>({prompt:'Another seller is selling a cheap fake on your listing and taking your sales.',one:true,choices:[{label:'Report it in Brand Registry',icon:'guard',ok:true,say:'Removed in two days. Without Brand Registry, it can take weeks of emails.'}]})},
+ {id:'rupee',at:'bank2',pos:'start',icon:'news',title:'Good news on the rupee',
+  step:s=>({prompt:['The dollar now buys {now}, not {was}. Your payout is worth more.',{now:fmtINR(FX+2),was:fmtINR(FX)}],one:true,choices:[{label:'Nice!',icon:'rupee',ok:true,gain:Math.round(payout(s).netUSD*2),say:'Same dollars, more rupees. Rates move both ways, so never plan on it.'}]})},
+ {id:'april',at:'bank2',pos:'start',icon:'calendar',title:'April: a new financial year',years:[1],
+  step:s=>({prompt:'Months have passed. It is April, when two things need renewing.',one:true,choices:[{label:'Renew both',icon:'stamp',ok:true,
+    say:s.stamps.includes('LUT')?'IEC confirmed on DGFT, fresh LUT filed on GST. Miss either and exporting gets harder.':'IEC confirmed on DGFT. You paid tax upfront, so there is no LUT to renew, and that refund is still in the queue.'}]})},
+ /* consequences of earlier picks */
+ {id:'makerBill',at:'batch',pos:'end',auto:true,when:s=>s.makerPremium,icon:'factory',title:'Maker A’s bill',
+  step:()=>({prompt:'Maker A does great work, and charges for it: 15% more on every unit.',one:true,choices:[{label:'Pay the bill',icon:'rupee',ok:true,cost:s=>Math.round(prodCost(s)*0.15),say:'You were warned. Quality costs more, so budget for it.'}]})},
+ {id:'cracks',at:'home',pos:'start',auto:true,when:s=>s.noInspect,icon:'onestar',title:'The reviews are in',
+  step:s=>{const n=Math.round(unitsOf(s)*0.02);return {prompt:'Some customers got faulty units.',one:true,choices:[{label:'Refund them',icon:'refund',ok:true,cost:Math.round(n*PRODUCTS[s.product].price*FX),
+    say:['{n} bad units an inspector would have caught reached customers. You pay the refunds, and two 1-star reviews stay on your page.',{n}]}]};}}
+];
+/* The pool events for one year, drawn once and saved with the game. */
+function pickEvents(s){const y=Math.min(s.year||1,2);const pool=EVENTS.filter(e=>!e.auto&&(!e.years||e.years.includes(y))&&(y===1||STATIONS.some(st=>st.id===e.at&&st.y2)));
+  return shuffle(pool,rng(s.seed*31+y)).slice(0,y===1?4:3).map(e=>e.id);}
+
+/* ============ THE OFFICER'S QUESTIONS ============ */
+/* At US customs, five quick questions about stamps already earned. */
+function quizSteps(s){const r=rng(s.seed*17+1);const own=shuffle(s.stamps.filter(id=>STAMPS[id]),r).slice(0,5);
+  return own.map((id,i)=>{const opts=shuffle([id].concat(shuffle(Object.keys(STAMPS).filter(k=>k!==id),r).slice(0,2)),r);
+    return {prompt:['Officer’s question {i} of {n}: which stamp means this?',{i:i+1,n:own.length}],quote:STAMPS[id][1],
+      choices:opts.map(k=>k===id?{label:STAMPS[k][0],icon:'stamp',ok:true,say:'Correct. The officer nods.'}
+        :{label:STAMPS[k][0],icon:'stamp',ok:false,say:['No. {name} means: {meaning}',{name:STAMPS[k][0],meaning:STAMPS[k][1]}]})};});}
+
+/* ============ SCORE ============ */
+/* Start at 100. Lose 6 for every wrong pick, 3 for every costly pick you keep, and 1 for every week
+   over the par for that year. */
+const PAR_WEEKS=[32,15];
+const RANKS=[[95,'Export champion'],[80,'Export pro'],[65,'Smart exporter'],[45,'Quick learner'],[0,'First-timer']];
+const parWeeks=s=>PAR_WEEKS[Math.min(s.year||1,2)-1];
+const scoreOf=s=>Math.max(0,Math.min(100,100-6*(s.mistakes||0)-3*(s.mehs||0)-Math.max(0,s.weeks-parWeeks(s))));
+const rankOf=n=>RANKS.find(r=>n>=r[0])[1];
+/* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
+/* ============ HINGLISH ============ */
+/* Every line a player reads, in Hinglish: Hindi written in English letters, the way people text.
+   The key is the exact English line. A line with no entry shows in English, so a missing one never
+   breaks the game; `node tools/hinglish-check.js` lists what is missing and what is no longer used.
+   Words in {braces} are filled in by the game: keep them, in any order.
+   Official names stay in English on purpose (IEC, LUT, GST, AD Code, EIN, W-8BEN, FDA, CPC, FBA,
+   FIRA, e-BRC, Brand Registry), because those are the words players will meet on real forms.
+   Instructions use the polite "-ein" form (chunein, karein). The share message is written the way a
+   friend would send it (khelo). */
+const HINGLISH={
+ /* products */
+ 'Copper bottle':'Copper ki bottle',
+ 'Light, tough, India-famous':'Halki, mazboot, India ki pehchaan',
+ 'Can I keep lemon water in it?':'Kya isme nimbu paani rakh sakte hain?',
+ 'No, plain water only':'Nahi, sirf saada paani',
+ 'Yes, any drink':'Haan, koi bhi drink',
+ 'Copper reacts with sour drinks. A false yes brings sick customers and returns.':'Copper khatti cheezon se react karta hai. Galat "haan" se customer beemar padenge aur returns aayenge.',
+ 'Spice blend':'Masala mix',
+ 'Cheap to make, food rules apply':'Banana sasta, par food ke rules lagte hain',
+ 'Does it contain nuts? My son is allergic.':'Kya isme nuts hain? Mere bete ko allergy hai.',
+ 'Answer from the allergen label':'Allergen label dekhkar jawab dein',
+ 'Probably not':'Shayad nahi',
+ 'A guess about allergies can put a child in hospital. Answer only from the label.':'Allergy par andaaza bachche ko hospital pahuncha sakta hai. Sirf label dekhkar jawab dein.',
+ 'Wooden toy':'Lakdi ka khilona',
+ 'Loved abroad, safety tests apply':'Videsh mein pasand, safety test zaroori',
+ 'Is it safe for my 1-year-old?':'Kya ye mere 1 saal ke bachche ke liye safe hai?',
+ 'No, it is for age 3 and up':'Nahi, ye 3 saal aur usse bade bachchon ke liye hai',
+ 'Yes, any age':'Haan, har umar ke liye',
+ 'Small parts can choke a baby. The age on the label is there for a reason.':'Chhote parts baby ke gale mein atak sakte hain. Label par umar yunhi nahi likhi.',
+ 'Cotton throw':'Cotton ki chaadar',
+ 'Good price, bulky to ship':'Achha daam, par bhejne mein bhaari',
+ 'Can I wash it in hot water?':'Kya ise garam paani mein dho sakte hain?',
+ 'No, wash cold, as the label says':'Nahi, thande paani mein, jaisa label par likha hai',
+ 'Yes, hot is fine':'Haan, garam chalega',
+ 'Hot water shrinks cotton. Every shrunk throw comes back as a return.':'Garam paani se cotton sikud jaata hai. Har sikudi chaadar return ban kar wapas aati hai.',
+ 'Pain relief balm':'Dard ka balm',
+ 'India-famous, but a medicine in the US':'India mein mashhoor, par US mein ye dawai hai',
+ 'Can I use it on my 1-year-old?':'Kya ise apne 1 saal ke bachche par laga sakte hain?',
+ 'No, ask a doctor under age 2':'Nahi, 2 saal se chhote ke liye doctor se poochhein',
+ 'Yes, it is all natural':'Haan, ye poori tarah natural hai',
+ 'Camphor can harm small children. The label says: under 2 years, ask a doctor.':'Kapoor chhote bachchon ko nuksaan pahuncha sakta hai. Label kehta hai: 2 saal se kam, doctor se poochhein.',
+ '{name}. Factory cost about {cost} a piece, sells for {price} on Amazon USA.':'{name}. Banane mein lagbhag {cost} per piece, Amazon USA par {price} mein bikti hai.',
+
+ /* stamps: names stay official, meanings in Hinglish */
+ 'Golden sample':'Golden sample',
+ 'The one approved piece. Every unit must match it.':'Wo ek pass kiya hua piece. Har unit bilkul waisa hona chahiye.',
+ 'Design paper':'Design ka kaagaz',
+ 'Written proof the design and moulds are yours.':'Likha hua saboot ki design aur moulds aapke hain.',
+ 'Trademark':'Trademark',
+ 'Your brand name booked in the USA. Pending is enough for Amazon.':'USA mein aapka brand naam book. Amazon ke liye pending bhi kaafi hai.',
+ 'IEC':'IEC',
+ 'India’s 10-digit exporter ID. Confirm it every year.':'India ka 10 digit exporter ID. Har saal confirm karein.',
+ 'GST number':'GST number',
+ 'Business tax number. Needed to export as a business.':'Business ka tax number. Business ke roop mein export ke liye zaroori.',
+ 'LUT':'LUT',
+ 'Promise letter: export now, skip 18% tax upfront.':'Vaade ki chitthi: abhi export karein, 18% tax pehle na bharein.',
+ 'AD Code':'AD Code',
+ 'Your bank’s code with customs, so foreign money can land.':'Customs ke paas aapke bank ka code, taaki videshi paisa aa sake.',
+ 'Seller account':'Seller account',
+ 'Your shop on Amazon USA.':'Amazon USA par aapki dukaan.',
+ 'EIN':'EIN',
+ 'Free US tax number for your business.':'Aapke business ka free US tax number.',
+ 'W-8BEN':'W-8BEN',
+ 'Says you live outside the US. No 30% cut on payouts.':'Batata hai ki aap US se bahar rehte hain. Payout se 30% nahi katega.',
+ 'First batch':'Pehla batch',
+ 'The full run, brand printed on every unit.':'Poora production, har unit par brand chhapa hua.',
+ 'Brand Registry':'Brand Registry',
+ 'Amazon agrees the brand is yours. Unlocks A+, Vine, protection.':'Amazon maanta hai ki brand aapka hai. A+, Vine aur protection khul jaate hain.',
+ 'GS1 barcode':'GS1 barcode',
+ 'Genuine barcode numbers for your listing.':'Aapki listing ke liye asli barcode number.',
+ 'FDA registered':'FDA registered',
+ 'Factory on the US food authority’s list, with a US agent.':'Factory US food authority ki list mein, ek US agent ke saath.',
+ 'CPC':'CPC',
+ 'Toy lab-tested to the US standard, certificate written.':'Khilona US standard par lab mein test hua, certificate bana.',
+ 'FDA drug listing':'FDA drug listing',
+ 'Balm listed with FDA as an over-the-counter medicine, with its own NDC number.':'Balm FDA mein bina parchi wali dawai ke roop mein listed, apne NDC number ke saath.',
+ 'US label':'US label',
+ 'Fibre, care and origin, written the American way.':'Fibre, dhulai aur origin, American tareeke se likha hua.',
+ 'Made in India':'Made in India',
+ 'Country of origin marked for good. Every import needs it.':'Kis desh mein bana, hamesha ke liye likha. Har import par zaroori.',
+ 'Listing live':'Listing live',
+ 'Photos, words and A+ ready.':'Photos, shabd aur A+ taiyaar.',
+ 'Shipping bill':'Shipping bill',
+ 'Customs proof the goods left India. Open until paid.':'Customs ka saboot ki maal India se nikla. Paisa aane tak khula rehta hai.',
+ 'Importer of Record':'Importer of Record',
+ 'The name that answers to US customs. Never Amazon.':'Wo naam jo US customs ko jawab deta hai. Kabhi Amazon nahi.',
+ 'In FBA':'In FBA',
+ 'Stock inside Amazon’s warehouse.':'Amazon ke warehouse mein stock.',
+ 'Launched':'Launched',
+ 'Ads on, honest reviews coming.':'Ads chalu, sachche reviews aa rahe hain.',
+ 'FIRA':'FIRA',
+ 'Bank receipt: the dollars arrived.':'Bank ki raseed: dollar aa gaye.',
+ 'e-BRC':'e-BRC',
+ 'Official closing certificate. Promise kept.':'Sarkari closing certificate. Vaada poora.',
+
+ /* ranks */
+ 'Export champion':'Export ke ustaad',
+ 'Export pro':'Export pro',
+ 'Smart exporter':'Samajhdaar exporter',
+ 'Quick learner':'Tez seekhne wale',
+ 'First-timer':'Naye khiladi',
+
+ /* 1 Bazaar */
+ 'Bazaar':'Bazaar',
+ 'Pick your product':'Apna product chunein',
+ 'What will your box carry?':'Aapke box mein kya jaayega?',
+ 'Pick something people abroad already buy and India makes well. Small, light, hard to break, not too cheap.':'Aisi cheez chunein jo videsh mein log pehle se khareedte hain aur India achhi banata hai. Chhoti, halki, jaldi na toote, aur bahut sasti na ho.',
+ /* 2 Workshop */
+ 'Workshop':'Workshop',
+ 'Find your maker':'Apna maker dhoondein',
+ 'Three workshops. Samples first.':'Teen workshop. Pehle samples.',
+ 'India makes things in clusters: brass in Moradabad, toys in Channapatna, textiles in Panipat. Get samples from three makers before choosing.':'India mein cheezein clusters mein banti hain: Moradabad mein peetal, Channapatna mein khilone, Panipat mein kapda. Chunne se pehle teen makers se samples mangaiye.',
+ 'Which maker gets the order?':'Order kis maker ko milega?',
+ 'Maker A':'Maker A',
+ 'Great quality, pricey, slow to reply. It works, but budget more per unit.':'Quality badhiya, daam zyada, jawab der se. Chalega, par har unit ka budget zyada rakhein.',
+ 'Maker B':'Maker B',
+ 'Good quality, fair price, replies fast. The one you can build a brand on.':'Achhi quality, sahi daam, jaldi jawab. Iske saath brand ban sakta hai.',
+ 'Maker C':'Maker C',
+ 'Cheapest, no samples. The trial batch came back cracked. Try again.':'Sabse sasta, koi sample nahi. Trial batch toota hua aaya. Phir se chunein.',
+ 'Who owns the design?':'Design kiska hai?',
+ 'Sign a paper':'Kaagaz par sign',
+ 'In writing: design, moulds and artwork are yours.':'Likhit mein: design, moulds aur artwork aapke.',
+ 'Handshake':'Haath milana',
+ 'Without paper, the maker can legally sell your design to the next buyer. Sign it.':'Kaagaz ke bina maker aapka design kanooni taur par agle buyer ko bech sakta hai. Sign karwaiye.',
+ /* 3 Cyber Café */
+ 'Cyber Café':'Cyber Café',
+ 'Claim your brand name in the USA':'USA mein apna brand naam pakka karein',
+ 'Name it, check it is free, file it.':'Naam rakhein, check karein ki khaali hai, file karein.',
+ 'A trademark is the government writing down that a name is yours, country by country. An Indian one means nothing in the USA. Amazon accepts a filed, still-pending application.':'Trademark matlab sarkar likh deti hai ki naam aapka hai, har desh mein alag. India ka trademark USA mein kaam nahi aata. Amazon file ki hui, pending application bhi maan leta hai.',
+ 'Searched the US trademark database: {brand} is free in your class.':'US trademark database mein dekha: aapki class mein {brand} khaali hai.',
+ 'File it in the US trademark office?':'US trademark office mein file karein?',
+ 'File now':'Abhi file karein',
+ 'Filed through a US attorney. You get a serial number today. Registration takes a year, but pending is enough.':'US attorney ke zariye file hua. Serial number aaj hi mil gaya. Registration mein saal lagta hai, par pending kaafi hai.',
+ 'Later, save money':'Baad mein, paise bachayein',
+ 'Saved for now. Remember this moment.':'Abhi ke liye bach gaye. Ye pal yaad rakhiye.',
+ /* 4 DGFT */
+ 'DGFT':'DGFT',
+ 'Get your exporter ID':'Apna exporter ID lein',
+ 'Ten digits. Yours for life.':'Das digit. Zindagi bhar aapka.',
+ 'The Importer Exporter Code is India’s permission slip. Online, small fee, linked to your PAN. Re-confirm it every year or it switches off.':'Importer Exporter Code India ki permission slip hai. Online, chhoti si fees, aapke PAN se juda. Har saal dobara confirm karein, warna band ho jaata hai.',
+ 'Apply online and stamp it.':'Online apply karein aur stamp lagwayein.',
+ 'Stamp my IEC':'Mera IEC stamp karein',
+ 'Done. Every shipping document from now on carries this number.':'Ho gaya. Ab se har shipping document par yahi number hoga.',
+ /* 5 GST Office */
+ 'GST Office':'GST Office',
+ 'Skip the upfront tax':'Pehle tax bharne se bachein',
+ 'Register, then sign a promise letter.':'Register karein, phir vaade ki chitthi sign karein.',
+ 'Exports are tax-free, but the default makes you pay 18% first and claim it back months later. The Letter of Undertaking is a promise to bring the money home, so you skip paying. Renew every April.':'Export par tax nahi lagta, par normally pehle 18% bharna padta hai aur mahino baad wapas milta hai. Letter of Undertaking vaada hai ki paisa ghar laayenge, isliye bharna nahi padta. Har April renew karein.',
+ 'Register your business for GST.':'Apne business ka GST registration karein.',
+ 'Register (via CA)':'Register (CA ke zariye)',
+ 'You now have a GST number.':'Ab aapke paas GST number hai.',
+ 'How will you handle export tax?':'Export tax ka kya karenge?',
+ 'Sign the promise letter':'Vaade ki chitthi sign karein',
+ 'LUT signed. No tax paid upfront. You promised to bring the money home within 9 months.':'LUT sign ho gaya. Pehle koi tax nahi. Aapne vaada kiya ki 9 mahine mein paisa ghar laayenge.',
+ 'Pay 18% now, claim later':'Abhi 18% bharein, baad mein claim',
+ 'Legal, but that cash is now stuck in a refund queue for months.':'Kanooni hai, par wo paisa ab mahino tak refund ki line mein atka rahega.',
+ /* 6 Bank */
+ 'Bank':'Bank',
+ 'Give customs your bank code':'Customs ko apna bank code dein',
+ 'So foreign money knows where to land.':'Taaki videshi paise ko pata ho kahan aana hai.',
+ 'The AD Code is a 14-digit code from the branch holding your business account. You register it on the customs portal once per port. Without it the port cannot create your shipping bill.':'AD Code 14 digit ka code hai, us branch se jahan aapka business account hai. Customs portal par har port ke liye ek baar register hota hai. Iske bina port aapka shipping bill nahi bana sakta.',
+ 'Which account?':'Kaunsa account?',
+ 'Business current a/c':'Business current a/c',
+ 'Right one. Separate business money means clean bank proofs later.':'Sahi. Business ka paisa alag rahega to baad mein bank ke saboot saaf rahenge.',
+ 'Personal savings':'Personal savings',
+ 'Bank says no. Export money needs a business account.':'Bank mana karta hai. Export ke paise ke liye business account chahiye.',
+ 'Register the code with customs.':'Customs ke saath code register karein.',
+ 'Register AD Code':'AD Code register karein',
+ 'Registered on the customs portal. The port can now issue your papers.':'Customs portal par register ho gaya. Ab port aapke kaagaz bana sakta hai.',
+ /* 7 Seller Central */
+ 'Seller Central':'Seller Central',
+ 'Open your Amazon USA shop':'Apni Amazon USA dukaan kholein',
+ 'ID check, then the US tax office.':'Pehle ID check, phir US tax office.',
+ 'Indian residents sign up through Amazon Global Selling with PAN, ID, bank account and IEC. For the USA add a free tax number (EIN) and a form that says you live outside the US, so Amazon does not keep 30% of your payouts.':'India mein rehne wale Amazon Global Selling se sign up karte hain: PAN, ID, bank account aur IEC ke saath. USA ke liye ek free tax number (EIN) aur ek form bhi chahiye jo batata hai ki aap US se bahar rehte hain, taaki Amazon payout ka 30% na rakhe.',
+ 'Amazon checks your documents.':'Amazon aapke documents check karta hai.',
+ 'Names match everywhere':'Har jagah naam same',
+ 'Verified on video call. Seller plan paid for 3 months.':'Video call par verify ho gaya. 3 mahine ka seller plan bhar diya.',
+ 'Ravi K. on one, Ravi Kumar on another':'Ek par Ravi K., doosre par Ravi Kumar',
+ 'Rejected. Every document must match, letter for letter.':'Reject. Har document mein naam akshar-akshar same hona chahiye.',
+ 'Tax interview: do you live outside the USA?':'Tax interview: kya aap USA se bahar rehte hain?',
+ 'Yes, sign W-8BEN':'Haan, W-8BEN sign karein',
+ 'No US tax will be held back from your payouts.':'Aapke payout se koi US tax nahi katega.',
+ 'Skip the form':'Form chhod dein',
+ 'Amazon would keep up to 30% of every payout. Sign it.':'Amazon har payout ka 30% tak rakh lega. Sign karein.',
+ 'Get a free US tax number.':'Free US tax number lein.',
+ 'Fax form to the IRS':'IRS ko form fax karein',
+ 'EIN arrived by fax. Free, and no US company needed.':'EIN fax se aa gaya. Free, aur US company ki zaroorat nahi.',
+ /* 8 Factory */
+ 'Factory':'Factory',
+ 'Make 300 units, brand on them':'300 units banayein, brand ke saath',
+ 'The name must be part of the product.':'Naam product ka hissa hona chahiye.',
+ 'Amazon’s brand programme wants real photos of the brand printed, engraved or woven on, not a sticker and not a design file. So the first run comes before you can finish registering the brand.':'Amazon ke brand programme ko asli photos chahiye jahan brand chhapa, khuda ya buna ho. Sticker ya design file nahi chalegi. Isliye pehla production brand registration poora hone se pehle hota hai.',
+ 'How does your brand go on?':'Brand product par kaise lagega?',
+ 'Printed and engraved':'Chhapa aur khuda hua',
+ 'Permanent. Exactly what Amazon wants to see.':'Pakka. Amazon bilkul yahi dekhna chahta hai.',
+ 'Paper sticker':'Kaagaz ka sticker',
+ 'Cheaper today. Stickers peel, and Amazon knows it.':'Aaj sasta. Sticker utar jaate hain, aur Amazon ye jaanta hai.',
+ 'No brand, plain':'Bina brand, saada',
+ 'Then it is nobody’s product. Anyone can copy the listing.':'Phir ye kisi ka product nahi. Koi bhi listing copy kar sakta hai.',
+ 'Check the batch before it leaves?':'Bhejne se pehle batch check karein?',
+ 'Hire an inspector':'Inspector rakhein',
+ 'Inspector found 6 bad units. Fixed before shipping.':'Inspector ne 6 kharab units pakde. Bhejne se pehle theek ho gaye.',
+ 'Trust the maker':'Maker par bharosa',
+ 'Saved a little. You will find out in the reviews.':'Thoda bacha liya. Reviews mein pata chal jaayega.',
+ 'Photograph product and box with the brand.':'Brand ke saath product aur box ki photo lein.',
+ 'Take the photos':'Photos lein',
+ 'Plain table, good light, brand visible. Saved.':'Saada table, achhi roshni, brand dikh raha hai. Save ho gaya.',
+ /* 9 Brand Registry */
+ 'Prove the brand is yours':'Saabit karein ki brand aapka hai',
+ 'The guard checks two things.':'Guard do cheezein check karta hai.',
+ 'Brand Registry is free and unlocks rich pages, better ads and copycat takedowns. It needs a trademark that is filed or registered, and photos of the brand permanently on the product.':'Brand Registry free hai. Isse achhe pages, behtar ads aur nakalchi hatane ki taaqat milti hai. Iske liye file ya register hua trademark chahiye, aur product par pakka laga brand dikhane wali photos.',
+ 'Guard: no trademark, no entry.':'Guard: trademark nahi, to entry nahi.',
+ 'File it now':'Abhi file karein',
+ 'Filed. Three weeks lost waiting for the serial number. Next time, file first.':'File ho gaya. Serial number ke intezaar mein teen hafte gaye. Agli baar pehle file karein.',
+ 'Guard: a sticker? Rejected.':'Guard: sticker? Reject.',
+ 'Reprint the boxes':'Boxes dobara chhapwayein',
+ 'Boxes reprinted with the brand on. Two weeks and ₹9,000 gone.':'Brand ke saath boxes dobara chhape. Do hafte aur ₹9,000 gaye.',
+ 'Upload the real photos and the serial number.':'Asli photos aur serial number upload karein.',
+ 'Submit':'Submit karein',
+ 'Approved. Your listings are now locked to you.':'Approve ho gaya. Ab aapki listings sirf aapki hain.',
+ 'Barcodes for the listing.':'Listing ke liye barcodes.',
+ 'GS1 official':'GS1 official',
+ 'Genuine numbers, accepted first time.':'Asli number, pehli baar mein accept.',
+ 'Cheap ones on Telegram':'Telegram wale saste',
+ 'Rejected. Resold barcodes belong to someone else.':'Reject. Dobara beche gaye barcode kisi aur ke hote hain.',
+ /* 10 Rules Lab */
+ 'Rules Lab':'Rules Lab',
+ 'Pass the US product rules':'US ke product rules paas karein',
+ 'India’s rules do not travel with the goods.':'India ke rules maal ke saath nahi jaate.',
+ 'Every country decides what is safe and honestly labelled. Food, medicines, skin products and children’s items have real checklists. Everything needs a permanent Made in India mark.':'Har desh khud tay karta hai ki kya safe hai aur label sahi hai. Khaane, dawaiyon, skin products aur bachchon ki cheezon ki poori checklist hoti hai. Har cheez par pakka Made in India mark chahiye.',
+ 'Food going to the USA.':'Khaane ka saamaan USA ja raha hai.',
+ 'Register factory with FDA':'Factory FDA mein register karein',
+ 'Factory registered, US agent named. Each shipment gets announced in advance.':'Factory register, US agent tay. Har shipment ki pehle se soochna jaati hai.',
+ 'Pick the label the USA accepts.':'Wo label chunein jo USA maanta hai.',
+ 'Nutrition panel, allergens':'Nutrition panel, allergens',
+ 'Correct format. Ingredients in order, allergens named.':'Sahi format. Ingredients kram se, allergens ke naam ke saath.',
+ 'Plain Hindi label':'Sirf Hindi label',
+ 'Customs can hold or destroy this. Redo it.':'Customs ise rok ya nasht kar sakta hai. Dobara banayein.',
+ 'A toy needs a lab test.':'Khilone ka lab test zaroori hai.',
+ 'Send to approved lab':'Approved lab bhejein',
+ 'Passed the US toy standard. Certificate written. Amazon opens the toy category.':'US toy standard paas. Certificate bana. Amazon ne toy category khol di.',
+ 'Tracking label, age mark':'Tracking label, umar ka mark',
+ 'Permanent tracking label on every toy.':'Har khilone par pakka tracking label.',
+ 'No label':'Koi label nahi',
+ 'Every children’s item needs one. Redo it.':'Bachchon ki har cheez par chahiye. Dobara karein.',
+ 'A pain balm is a medicine in the USA. Its factory must be on FDA’s drug list.':'USA mein dard ka balm dawai hai. Uski factory FDA ki drug list mein honi chahiye.',
+ 'Use a maker already listed':'Pehle se listed maker lein',
+ 'Their factory is registered with FDA and pays the yearly fee. Your brand gets its own NDC number under it.':'Unki factory FDA mein registered hai aur saal ki fees bharti hai. Aapke brand ko uske tahat apna NDC number milta hai.',
+ 'Register a new factory':'Nayi factory register karein',
+ 'A medicine factory pays FDA about {fee} a year before it sells a single tin. Too much for 300 tins. Work with a maker already on the list.':'Dawai ki factory ek bhi dibba bechne se pehle FDA ko har saal lagbhag {fee} deti hai. 300 dibbon ke liye ye bahut zyada hai. Pehle se listed maker ke saath kaam karein.',
+ 'Drug Facts panel':'Drug Facts panel',
+ 'Active ingredients with amounts, uses, warnings and directions, in the US format. Every OTC medicine carries one.':'Active ingredients unki matra ke saath, upyog, chetavani aur lagane ka tareeka, US format mein. Har OTC dawai par hota hai.',
+ 'Ayurvedic, cures 40 pains':'Ayurvedic, 40 dard mitaye',
+ 'Cure claims and no warnings make it an unapproved drug in the US. Customs can refuse it.':'Ilaaj ke daave aur chetavani na hone se ye US mein bina approval ki dawai ban jaati hai. Customs ise rok sakta hai.',
+ 'Fibre, care, origin':'Fibre, dhulai, origin',
+ '100% cotton, wash cold, Made in India. Sewn in.':'100% cotton, thande paani mein dhoyein, Made in India. Sil diya.',
+ 'Brand name only':'Sirf brand naam',
+ 'US law wants fibre content and care instructions. Redo it.':'US kanoon ko fibre aur dhulai ki jaankari chahiye. Dobara karein.',
+ 'Any claims on the box?':'Box par koi daava?',
+ 'Keeps water cool':'Paani thanda rakhe',
+ 'A plain, true claim. Fine.':'Seedha, sachcha daava. Theek hai.',
+ 'Cures 40 diseases':'40 bimaariyan theek kare',
+ 'A health claim needs approval. Amazon will pull the listing.':'Health claim ke liye approval chahiye. Amazon listing hata dega.',
+ 'Country of origin mark.':'Country of origin mark.',
+ 'Made in India, permanent':'Made in India, pakka',
+ 'Marked. US customs checks every import for this.':'Mark ho gaya. US customs har import mein ye check karta hai.',
+ 'Skip it':'Chhod dein',
+ 'Not optional. Shipments without it get held.':'Ye zaroori hai. Iske bina shipment ruk jaata hai.',
+ /* 11 Photo Studio */
+ 'Photo Studio':'Photo Studio',
+ 'Build the listing':'Listing banayein',
+ 'Photos sell. Words get found.':'Photos bechti hain. Shabd dhoondhne mein madad karte hain.',
+ 'Shoppers decide from the first photo: pure white background, product filling the frame. Lower on the page, brand owners add picture-rich A+ content. Use the words Americans type, not the Hindi ones.':'Shopper pehli photo se faisla karte hain: bilkul safed background, product poore frame mein. Page par neeche brand owner photos wala A+ content lagate hain. Wahi shabd use karein jo American type karte hain, Hindi wale nahi.',
+ 'Pick the main photo.':'Main photo chunein.',
+ 'White background, big':'Safed background, bada',
+ 'Amazon’s rule and the shopper’s favourite.':'Amazon ka rule aur shopper ki pasand.',
+ 'On the kitchen table':'Kitchen table par',
+ 'Rejected as a main image. Too busy, product too small.':'Main image ke roop mein reject. Bahut bheed, product bahut chhota.',
+ 'A drawing of it':'Uski drawing',
+ 'Mock-ups are not allowed. Real photos only.':'Mock-up allowed nahi. Sirf asli photos.',
+ 'Americans search for…':'American search karte hain…',
+ 'That is what they type. Title, bullets, hidden keywords.':'Yahi wo type karte hain. Title, bullets aur hidden keywords mein daalein.',
+ 'Nobody in Ohio searches that. Try again.':'Ohio mein koi ye search nahi karta. Phir koshish karein.',
+ 'Add the picture-rich section.':'Photos wala section jodein.',
+ 'Build A+ content':'A+ content banayein',
+ 'Banners, a comparison chart, the artisan’s story. Listing is live.':'Banners, comparison chart, kaarigar ki kahani. Listing live hai.',
+ /* 12 Port */
+ 'Port':'Port',
+ 'Ship the boxes':'Boxes bhejein',
+ 'And decide who answers to US customs.':'Aur tay karein ki US customs ko jawab kaun dega.',
+ 'A freight forwarder is a travel agent for cargo. Sea is cheap and slow, air is fast and pricey. On the US side someone must sign the customs entry and pay duty. Amazon refuses that role.':'Freight forwarder maal ka travel agent hai. Samundar sasta aur dheema, hawai jahaz tez aur mehenga. US mein kisi ko customs entry sign karke duty bharni hoti hai. Amazon ye kaam nahi karta.',
+ 'How do 300 units cross?':'300 units kaise jaayenge?',
+ 'Ship':'Jahaz',
+ 'Cheap. About 7 weeks door to door.':'Sasta. Darwaze se darwaze tak lagbhag 7 hafte.',
+ 'Plane':'Hawai jahaz',
+ 'There in a week, at nearly three times the price. Fine for a first small batch.':'Ek hafte mein pahunch, par lagbhag teen guna daam. Pehle chhote batch ke liye theek.',
+ '300 small parcels':'300 chhote parcel',
+ 'The duty-free parcel shortcut ended in 2025. Each one gets stopped. No.':'Bina duty wale parcel ka shortcut 2025 mein band ho gaya. Har parcel rukega. Nahi.',
+ 'Who signs at US customs?':'US customs par sign kaun karega?',
+ 'Amazon':'Amazon',
+ 'Amazon never acts as importer. The boxes would sit at the port.':'Amazon kabhi importer nahi banta. Boxes port par pade rahenge.',
+ 'Me, with a customs bond':'Main, customs bond ke saath',
+ 'You are the importer, from India. Bond bought with your EIN.':'India se aap hi importer hain. Aapke EIN se bond khareed liya.',
+ 'A customs broker':'Customs broker',
+ 'The broker imports in your name and files everything.':'Broker aapke naam se import karta hai aur sab file karta hai.',
+ 'Customs issues the export paper.':'Customs export ka kaagaz deta hai.',
+ 'Get the shipping bill':'Shipping bill lein',
+ 'Goods have officially left India. This paper stays open until the money comes home.':'Maal officially India se nikal gaya. Paisa ghar aane tak ye kaagaz khula rehta hai.',
+ /* 13 US Customs */
+ 'US Customs':'US Customs',
+ 'Welcome to America':'America mein swagat hai',
+ 'Answer the officer, pay duty, roll on.':'Officer ko jawab dein, duty bharein, aage badhein.',
+ 'Duty depends on your product code and it changed several times in 2025 and 2026. Check the current rate before you set a price.':'Duty aapke product code par depend karti hai, aur 2025 aur 2026 mein kai baar badli. Daam tay karne se pehle aaj ka rate check karein.',
+ 'Officer’s question {i} of {n}: which stamp means this?':'Officer ka sawaal {i}/{n}: kis stamp ka ye matlab hai?',
+ 'Correct. The officer nods.':'Sahi. Officer ne sir hilaya.',
+ 'No. {name} means: {meaning}':'Nahi. {name} ka matlab: {meaning}',
+ 'Pay the import duty.':'Import duty bharein.',
+ 'Pay duty':'Duty bharein',
+ 'Cleared. The truck rolls to the warehouse.':'Clear. Truck warehouse ki taraf chal pada.',
+ /* 14 FBA Warehouse */
+ 'FBA Warehouse':'FBA Warehouse',
+ 'Stock in, launch on':'Stock andar, launch shuru',
+ 'Amazon stores, packs and ships for you.':'Amazon aapke liye rakhta, pack karta aur bhejta hai.',
+ 'A new listing has no reviews, so search barely shows it. Ads buy the first visits. Amazon Vine gives free units to trusted reviewers for honest reviews. Fake reviews end accounts.':'Nayi listing par reviews nahi hote, isliye search mein mushkil se dikhti hai. Pehle visitors ads se aate hain. Amazon Vine bharosemand reviewers ko free units deta hai, sachche reviews ke liye. Fake reviews se account band ho jaata hai.',
+ 'Boxes arrive with Amazon’s labels.':'Boxes Amazon ke labels ke saath pahunche.',
+ 'Check them in':'Check in karein',
+ 'Stock live. Amazon now packs every order and handles returns.':'Stock live. Ab Amazon har order pack karta hai aur returns sambhalta hai.',
+ 'First month of ads?':'Pehle mahine ke ads?',
+ 'Small budget':'Chhota budget',
+ 'Slow start. Fewer visits, fewer sales.':'Dheemi shuruaat. Kam visitors, kam sales.',
+ 'Steady budget':'Theek-thaak budget',
+ 'Enough clicks to learn which words sell.':'Itne clicks ki pata chale kaunse shabd bikte hain.',
+ 'Everything':'Sab kuch',
+ 'Money burns fast on a page with no reviews yet.':'Bina reviews wale page par paisa tezi se jalta hai.',
+ 'How do you get the first reviews?':'Pehle reviews kaise laayenge?',
+ 'Amazon Vine':'Amazon Vine',
+ 'Honest reviews from vetted reviewers. Sales begin.':'Jaanche-parkhe reviewers se sachche reviews. Sales shuru.',
+ 'Request a Review button':'Request a Review button',
+ 'Free and allowed. Slower, but it adds up.':'Free aur allowed. Dheema, par dheere-dheere badhta hai.',
+ 'Buy 50 five-star reviews':'50 five-star reviews khareedein',
+ 'Account suspended. Money frozen. Appeal cost ₹20,000 and a month. Never again.':'Account suspend. Paisa freeze. Appeal mein ₹20,000 aur ek mahina gaya. Dobara kabhi nahi.',
+ /* 15 Customer */
+ 'Customer':'Customer',
+ 'Delivered':'Deliver ho gaya',
+ 'Someone in Ohio just paid for your box.':'Ohio mein kisi ne abhi aapke box ke paise diye.',
+ 'The customer pays Amazon in dollars. Amazon keeps its fees and pays you every two weeks.':'Customer Amazon ko dollar mein paise deta hai. Amazon apni fees rakhkar har do hafte aapko paise deta hai.',
+ 'Ring the bell.':'Ghanti bajayein.',
+ 'Deliver':'Deliver karein',
+ 'Five stars. Now the money has to come home.':'Five stars. Ab paisa ghar aana hai.',
+ /* 16 Your Bank */
+ 'Your Bank':'Aapka Bank',
+ 'The money lands':'Paisa aa gaya',
+ 'Dollars in, rupees out, one receipt.':'Dollar aaye, rupaye bane, ek raseed.',
+ 'Amazon pays roughly every 14 days. Dollars become rupees on the way. Each time, ask the bank for the receipt proving foreign money arrived.':'Amazon lagbhag har 14 din mein paise deta hai. Raaste mein dollar rupaye ban jaate hain. Har baar bank se wo raseed maangein jo saabit kare ki videshi paisa aaya.',
+ 'Payout arrived. Ask for the receipt.':'Payout aa gaya. Raseed maangein.',
+ 'Collect FIRA':'FIRA lein',
+ 'Receipt in your name, amount in dollars. Keep every one.':'Raseed aapke naam, rakam dollar mein. Har ek sambhaal kar rakhein.',
+ /* 17 DGFT Portal */
+ 'DGFT Portal':'DGFT Portal',
+ 'Keep the promise':'Vaada nibhayein',
+ 'Match the receipt to the shipping bill.':'Raseed ko shipping bill se milayein.',
+ 'The bank receipt plus the shipping bill make the e-BRC, the government’s proof that the goods left and the money came home. It closes the LUT promise and unlocks export cash-back.':'Bank ki raseed aur shipping bill milkar e-BRC banate hain, sarkar ka saboot ki maal gaya aur paisa ghar aaya. Isse LUT ka vaada poora hota hai aur export cash-back khulta hai.',
+ 'Generate the closing certificate.':'Closing certificate banayein.',
+ 'Match and close':'Milayein aur band karein',
+ 'e-BRC issued. Promise kept. Shipment closed.':'e-BRC jaari. Vaada poora. Shipment band.',
+
+ /* surprises */
+ 'Diwali week':'Diwali ka hafta',
+ 'The workers go home for Diwali. The factory stops for a week.':'Workers Diwali par ghar gaye. Factory ek hafte band.',
+ 'Wait, then restart':'Rukein, phir shuru karein',
+ 'Happy Diwali. Next time, plan production around the festival season.':'Happy Diwali. Agli baar tyohaar ka season dekhkar production plan karein.',
+ 'A call from “Amazon”':'“Amazon” se call',
+ 'A caller says he works for Amazon. He wants the OTP that just came to your phone.':'Caller kehta hai wo Amazon se hai. Use wo OTP chahiye jo abhi aapke phone par aaya.',
+ 'Hang up and report it':'Phone kaatein, report karein',
+ 'Right. Amazon never asks for an OTP or a password on a call.':'Sahi. Amazon call par kabhi OTP ya password nahi maangta.',
+ 'Read out the OTP':'OTP bata dein',
+ 'He takes over your seller account and changes the bank details. Never share an OTP with anyone.':'Usne aapka seller account le liya aur bank details badal di. OTP kabhi kisi ko na batayein.',
+ 'Monsoon at the port':'Port par monsoon',
+ 'Heavy rain at the port. The cranes stop, and your ship sails late.':'Port par tez baarish. Cranes ruk gayi, jahaz der se chalega.',
+ 'Wait it out':'Intezaar karein',
+ 'One week lost. From June to September, add spare time to sea shipments.':'Ek hafta gaya. June se September tak samundari shipment mein extra time rakhein.',
+ 'Random customs check':'Achanak customs check',
+ 'US customs picks your boxes for a check. An officer opens one and looks closely.':'US customs ne check ke liye aapke boxes chune. Officer ek box kholkar dhyan se dekhta hai.',
+ 'Show the papers':'Kaagaz dikhayein',
+ 'Made in India on every pack, and the FDA papers match. Cleared in two days.':'Har pack par Made in India, aur FDA ke kaagaz match. Do din mein clear.',
+ 'Made in India on every toy, and the test certificate is ready. Cleared in two days.':'Har khilone par Made in India, aur test certificate taiyaar. Do din mein clear.',
+ 'Made in India and the fibre label are sewn in. Cleared in two days.':'Made in India aur fibre label sile hue hain. Do din mein clear.',
+ 'Made in India is marked on every bottle. Cleared in two days.':'Har bottle par Made in India likha hai. Do din mein clear.',
+ 'Made in India, the Drug Facts label and the NDC number all match FDA’s list. Cleared in two days.':'Made in India, Drug Facts label aur NDC number, sab FDA ki list se match. Do din mein clear.',
+ 'A shopper has a question':'Ek shopper ka sawaal',
+ 'Honest and quick. The answer stays on the page and helps the next shopper decide.':'Sachcha aur jaldi. Jawab page par rehta hai aur agle shopper ki madad karta hai.',
+ 'Three units went missing':'Teen units gum ho gaye',
+ 'Amazon’s warehouse lost 3 of your units.':'Amazon ke warehouse ne aapke 3 units kho diye.',
+ 'File a claim':'Claim file karein',
+ 'Amazon pays you back for stock it loses. Check your stock report every month.':'Amazon khoye stock ke paise wapas deta hai. Har mahine apni stock report check karein.',
+ 'Let it go':'Jaane dein',
+ 'That was your money. Amazon pays back lost stock when you ask.':'Wo aapka paisa tha. Maangne par Amazon khoye stock ke paise deta hai.',
+ 'A copycat on your page':'Aapke page par nakalchi',
+ 'Another seller is selling a cheap fake on your listing and taking your sales.':'Koi aur seller aapki listing par sasta nakli maal bech raha hai aur aapki sales le raha hai.',
+ 'Report it in Brand Registry':'Brand Registry mein report karein',
+ 'Removed in two days. Without Brand Registry, it can take weeks of emails.':'Do din mein hat gaya. Brand Registry ke bina hafton tak emails chalti.',
+ 'Good news on the rupee':'Rupaye par achhi khabar',
+ 'The dollar now buys {now}, not {was}. Your payout is worth more.':'Ab ek dollar {now} ka hai, {was} ka nahi. Aapke payout ki keemat badh gayi.',
+ 'Nice!':'Badhiya!',
+ 'Same dollars, more rupees. Rates move both ways, so never plan on it.':'Wahi dollar, zyada rupaye. Rate dono taraf chalta hai, isliye iske bharose plan na karein.',
+ 'April: a new financial year':'April: naya financial year',
+ 'Months have passed. It is April, when two things need renewing.':'Mahine beet gaye. April aa gaya, do cheezein renew karni hain.',
+ 'Renew both':'Dono renew karein',
+ 'IEC confirmed on DGFT, fresh LUT filed on GST. Miss either and exporting gets harder.':'DGFT par IEC confirm, GST par naya LUT file. Ek bhi chhoota to export mushkil ho jaata hai.',
+ 'IEC confirmed on DGFT. You paid tax upfront, so there is no LUT to renew, and that refund is still in the queue.':'DGFT par IEC confirm. Aapne tax pehle bhara tha, isliye renew karne ko LUT nahi hai, aur wo refund abhi bhi line mein hai.',
+ 'Maker A’s bill':'Maker A ka bill',
+ 'Maker A does great work, and charges for it: 15% more on every unit.':'Maker A kaam badhiya karta hai, aur uske paise leta hai: har unit par 15% zyada.',
+ 'Pay the bill':'Bill bharein',
+ 'You were warned. Quality costs more, so budget for it.':'Aapko bataya gaya tha. Quality mehengi hoti hai, uska budget rakhein.',
+ 'The reviews are in':'Reviews aa gaye',
+ 'Some customers got faulty units.':'Kuch customers ko kharab units mile.',
+ 'Refund them':'Refund karein',
+ '{n} bad units an inspector would have caught reached customers. You pay the refunds, and two 1-star reviews stay on your page.':'Jo {n} kharab units inspector pakad leta, wo customers tak pahunch gaye. Refund aapki jeb se, aur do 1-star reviews page par reh gaye.',
+
+ /* year 2 */
+ 'Confirm your exporter ID':'Apna exporter ID confirm karein',
+ 'A yearly update, April to June.':'Saal ka update, April se June.',
+ 'Your IEC is yours for life, but DGFT switches it off if you skip the yearly update. Nothing changed? Confirm it anyway.':'IEC zindagi bhar aapka hai, par saal ka update chhoda to DGFT use band kar deta hai. Kuch nahi badla? Phir bhi confirm karein.',
+ 'Log in to DGFT and confirm your details.':'DGFT par login karke apni details confirm karein.',
+ 'Update my IEC':'Mera IEC update karein',
+ 'Confirmed for this year. Every shipping paper keeps working.':'Is saal ke liye confirm. Har shipping kaagaz chalta rahega.',
+ 'File this year’s promise letter':'Is saal ki vaade ki chitthi file karein',
+ 'An LUT lasts one financial year.':'LUT ek financial year chalta hai.',
+ 'Every April, file a fresh Letter of Undertaking. Skip it and the next exports need 18% tax paid upfront.':'Har April naya Letter of Undertaking file karein. Chhoda to agle export par 18% tax pehle bharna padega.',
+ 'File the LUT for the new financial year.':'Naye financial year ka LUT file karein.',
+ 'File a fresh LUT':'Naya LUT file karein',
+ 'Filed online for the new year. No tax paid upfront.':'Naye saal ke liye online file ho gaya. Pehle koi tax nahi.',
+ 'Your first LUT. This year no tax money gets stuck in a refund queue.':'Aapka pehla LUT. Is saal tax ka paisa refund ki line mein nahi atkega.',
+ 'How big is this year’s batch?':'Is saal ka batch kitna bada?',
+ 'Bigger batches tie up more cash.':'Bade batch mein zyada paisa atakta hai.',
+ 'The trademark, tests, photos and listing are done and paid for. Now it is about cash: bigger batches cost less per unit to ship, but every rupee sits in boxes until Amazon pays you.':'Trademark, tests, photos aur listing ho chuke, paise bhi bhar diye. Ab baat cash ki hai: bade batch mein har unit bhejna sasta padta hai, par Amazon ke paise dene tak har rupaya boxes mein band rehta hai.',
+ 'You have {cash} in the bank. How many units this year?':'Bank mein {cash} hain. Is saal kitne units?',
+ '{n} units':'{n} units',
+ 'The safe size. Same stock, same sales as last year.':'Safe size. Pichhle saal jitna stock, utni sales.',
+ 'Double the stock. Shipping each unit gets cheaper.':'Double stock. Har unit bhejna sasta.',
+ 'A big bet. Cheapest per unit, and the most cash tied up.':'Bada daanv. Har unit sabse sasta, aur sabse zyada paisa atka.',
+ 'Money is tight: this needs about {need} and you have {cash}. The bank lends you the gap until Amazon pays.':'Paisa kam hai: iske liye lagbhag {need} chahiye aur aapke paas {cash} hain. Amazon ke paise aane tak baaki bank udhaar deta hai.',
+ 'That needs about {need} for making, shipping, duty and ads. You have {cash}. Pick a size you can pay for.':'Iske liye banane, bhejne, duty aur ads mein lagbhag {need} chahiye. Aapke paas {cash} hain. Utna chunein jitna bhar sakein.',
+ 'Bad units found and fixed before shipping. A bigger batch takes the inspector longer.':'Kharab units bhejne se pehle pakde aur theek kiye. Bade batch mein inspector ko zyada samay lagta hai.',
+ 'The new batch sets sail':'Naya batch ravana',
+ 'Same route, bigger load.':'Wahi raasta, zyada maal.',
+ 'Your freight forwarder and US customs setup carry over from last year. Only the load and the speed are new choices.':'Freight forwarder aur US customs ka setup pichhle saal wala hi hai. Sirf maal aur speed naye faisle hain.',
+ 'How do {n} units cross?':'{n} units kaise jaayenge?',
+ 'Cheap, and cheaper per unit the more you send. About 7 weeks.':'Sasta, aur jitna zyada bhejein har unit utna sasta. Lagbhag 7 hafte.',
+ 'Fast, but air is paid by weight. The bill grows with every unit.':'Tez, par hawai jahaz mein vajan ke hisaab se paise lagte hain. Har unit ke saath bill badhta hai.',
+ 'US customs, same as last year.':'US customs, pichhle saal jaisa.',
+ 'Broker files the entry':'Broker entry file karta hai',
+ 'Your broker imports in your name again.':'Broker phir se aapke naam se import karta hai.',
+ 'Renew the yearly bond':'Saal ka bond renew karein',
+ 'Bond renewed. You stay the importer.':'Bond renew ho gaya. Importer aap hi hain.',
+ 'A new shipping bill for this batch. It stays open until the money comes home.':'Is batch ka naya shipping bill. Paisa ghar aane tak khula rahega.',
+ 'Back in America':'Wapas America mein',
+ 'Pay duty, roll on.':'Duty bharein, aage badhein.',
+ 'Restock and sell':'Stock bharein aur bechein',
+ 'Your reviews carry over.':'Aapke reviews saath rehte hain.',
+ 'Last year’s reviews stay on the listing, so this batch starts with trust. Ads still bring the first visits.':'Pichhle saal ke reviews listing par rehte hain, isliye ye batch bharose ke saath shuru hota hai. Pehle visitors ab bhi ads se aate hain.',
+ 'Stock live again, next to last year’s reviews.':'Stock phir se live, pichhle saal ke reviews ke saath.',
+ 'Ads this year?':'Is saal ads?',
+ 'Enough clicks to keep the listing near the top.':'Itne clicks ki listing upar bani rahe.',
+ 'More than the listing needs. Reviews do part of the work now.':'Listing ki zaroorat se zyada. Ab reviews bhi kuch kaam karte hain.',
+ 'Delivered again':'Phir se deliver',
+ 'A repeat customer ordered two.':'Purane customer ne do mangaye.',
+
+ /* on screen */
+ 'spent':'kharch',
+ 'left':'baaki',
+ 'week':'hafta',
+ 'weeks':'hafte',
+ 'YEAR {n}':'SAAL {n}',
+ 'Passport':'Passport',
+ 'Hold the right side to walk, or tap Walk':'Chalne ke liye daayin taraf dabaye rakhein, ya Chalein tap karein',
+ 'done last year':'pichhle saal ho gaya',
+ 'done':'ho gaya',
+ 'you are here':'aap yahan hain',
+ 'next stop':'agla stop',
+ 'later':'baad mein',
+ 'stamp earned':'stamp mila',
+ 'SURPRISE!':'ACHANAK!',
+ 'Stop {n}: {place}':'Stop {n}: {place}',
+ 'Your {stamp} stamp protects you here.':'Aapka {stamp} stamp yahan aapko bachata hai.',
+ 'Hide the explanation':'Explanation chhupayein',
+ 'Show the explanation':'Explanation dikhayein',
+ 'Tap the one your box will carry. You can change your mind before Next.':'Jo cheez box mein jaayegi us par tap karein. Aage badhne se pehle man badal sakte hain.',
+ 'Next':'Aage',
+ 'Name your brand. It goes on every box.':'Apne brand ka naam rakhein. Ye har box par jaayega.',
+ 'BRAND NAME':'BRAND KA NAAM',
+ 'Rename':'Naam badlein',
+ 'Name it':'Naam rakhein',
+ 'Change':'Badlein',
+ 'Done here':'Yahan ho gaya',
+ 'Next stop: {place}':'Agla stop: {place}',
+ 'Year {n} · Next stop: {place}':'Saal {n} · Agla stop: {place}',
+ 'The boxes board the ship. Long crossing ahead.':'Boxes jahaz par chadh gaye. Lamba safar aage.',
+ 'Walk on. Hold the right side of the picture, or tap the button.':'Aage chalein. Tasveer ki daayin taraf dabaye rakhein, ya button tap karein.',
+ 'Walk':'Chalein',
+ 'Set sail':'Jahaz chalayein',
+ 'Hurry!':'Jaldi!',
+ 'Hurrying…':'Jaldi-jaldi…',
+ 'Your brand':'Aapka brand',
+ 'Your box':'Aapka box',
+ 'Journey complete':'Safar poora',
+ 'Year complete':'Saal poora',
+ '{brand} went from a workshop in India to a home in America and the money came back.':'{brand} India ke workshop se America ke ghar tak gaya, aur paisa wapas aaya.',
+ '{brand} finished year {n}, and the money came home again.':'{brand} ka saal {n} poora, aur paisa phir ghar aaya.',
+ 'Your results stay here. Share your score, run the business for another year, or start over with another product.':'Aapke results yahin rahenge. Score share karein, business ek saal aur chalayein, ya naye product se phir shuru karein.',
+ 'Start year {n}':'Saal {n} shuru karein',
+ 'See results':'Results dekhein',
+ 'Share':'Share karein',
+ 'Play again, new product':'Phir khelein, naya product',
+ 'YOU MADE IT TO THE END':'AAP AAKHIR TAK PAHUNCH GAYE',
+ 'That means you will enjoy our live online session. Ask real exporters everything this game could not answer.':'Matlab aapko hamara live online session pasand aayega. Asli exporters se wo sab poochhiye jo ye game nahi bata paaya.',
+ 'Keep going with Edock’s live sessions, where people who export for real answer your questions.':'Edock ke live sessions ke saath aage badhein, jahan asli exporters aapke sawaalon ke jawab dete hain.',
+ 'Save my seat · from {price}':'Meri seat pakki karein · {price} se',
+ 'See upcoming sessions':'Aane wale sessions dekhein',
+ 'Opens edock.io in a new tab.':'edock.io naye tab mein khulega.',
+ 'Close':'Band karein',
+ 'From an Indian workshop to an American doorstep':'Indian workshop se American darwaze tak',
+ 'Carry one box through 17 stops. Tap, pick, stamp. Every price is in dollars and rupees. Music plays, so turn the sound up or tap the speaker to mute.':'Ek box ko 17 stops se le jaayein. Tap karein, chunein, stamp lein. Har daam dollar aur rupaye mein. Music bajta hai, awaaz badhayein ya speaker tap karke band karein.',
+ 'Continue':'Jaari rakhein',
+ 'See my results':'Mere results dekhein',
+ 'Continue year {n}':'Saal {n} jaari rakhein',
+ 'New game':'Naya game',
+ 'Tap to start':'Shuru karne ke liye tap karein',
+ 'A plain-words game about exporting from India and selling on Amazon USA. Example numbers at ₹84 per dollar, not advice. Free and open source under the MIT license.':'India se export karke Amazon USA par bechne ka, seedhi bhasha mein game. Numbers sirf misaal hain, ₹84 per dollar par, salah nahi. MIT license ke saath free aur open source.',
+ 'Passport · {n} / {total} stamps':'Passport · {n} / {total} stamps',
+ 'Tap a stamp to see what it means.':'Stamp par tap karke uska matlab dekhein.',
+ 'Not yet.':'Abhi nahi mila.',
+ 'Every official word in this journey, collected as a stamp.':'Is safar ka har sarkari shabd, stamp ke roop mein.',
+ 'Back to the road':'Wapas raaste par',
+ 'Restart journey':'Safar dobara shuru karein',
+ 'Yes, start over':'Haan, shuru se',
+ 'Keep going':'Chalte rahein',
+ 'Music is off. Tap to turn on.':'Music band hai. Chalu karne ke liye tap karein.',
+ 'Music is on. Tap to mute.':'Music chalu hai. Band karne ke liye tap karein.',
+
+ /* results */
+ '{brand} made it home':'{brand} ghar pahunch gaya',
+ '{brand}: year {n} done':'{brand}: saal {n} poora',
+ '{n} units of {product} sold in the USA at {price} each. Here is where the dollars went.':'USA mein {n} units bike ({product}), har ek {price} mein. Dekhiye dollar kahan gaye.',
+ 'Score {n} / 100':'Score {n} / 100',
+ 'Best {n}':'Best {n}',
+ 'wrong picks':'galat chunaav',
+ 'costly picks':'mehenge chunaav',
+ '100 points, minus 6 for each wrong pick, 3 for each costly pick, and 1 for each week over {par}.':'100 points se shuru. Har galat chunaav par 6 kam, har mehenge chunaav par 3, aur {par} se upar har hafte par 1.',
+ 'Share on WhatsApp':'WhatsApp par bhejein',
+ 'Save picture':'Photo save karein',
+ 'Amazon fee':'Amazon fee',
+ 'Warehouse + delivery':'Warehouse + delivery',
+ 'Currency change':'Currency badalna',
+ 'Yours':'Aapka',
+ 'Customers paid':'Customers ne diye',
+ 'Amazon’s 15% cut':'Amazon ka 15% hissa',
+ 'Warehouse and delivery fee':'Warehouse aur delivery fee',
+ 'Dollars to rupees, 3%':'Dollar se rupaye, 3%',
+ 'Landed in your bank':'Aapke bank mein aaya',
+ 'You started with':'Shuruaat mein the',
+ 'You started the year with':'Saal ki shuruaat mein the',
+ 'You spent':'Aapne kharch kiye',
+ 'First batch result':'Pehle batch ka nateeja',
+ 'Next batch, same {n} units':'Agla batch, wahi {n} units',
+ 'This year’s result':'Is saal ka nateeja',
+ 'Last year’s result':'Pichhle saal ka nateeja',
+ 'Weeks on the road':'Raaste mein hafte',
+ 'Stamps collected':'Stamps mile',
+ 'The first batch already paid for the setup. Everything from here is easier.':'Pehle batch ne hi setup ka kharcha nikaal diya. Ab aage sab aasaan hai.',
+ 'The first batch paid for the setup: trademark, tests, photos, bond. Those never repeat. The next batch is where the profit lives.':'Pehle batch ne setup ka kharcha uthaya: trademark, tests, photos, bond. Ye dobara nahi lagte. Asli munafa agle batch mein hai.',
+ 'Better than last year. The setup is paid for, so more of every sale is yours.':'Pichhle saal se behtar. Setup ka kharcha ho chuka, isliye har sale ka zyada hissa aapka.',
+ 'Less than last year. A bigger batch ties up more cash, and costly picks add up.':'Pichhle saal se kam. Bade batch mein zyada paisa atakta hai, aur mehenge chunaav jud jaate hain.',
+ 'Your 18% tax deposit came back after 7 months: {amount}.':'Aapka 18% tax 7 mahine baad wapas aaya: {amount}.',
+ 'Example numbers at ₹84 per dollar. Rules and duty rates change; check before you spend.':'Numbers sirf misaal hain, ₹84 per dollar par. Rules aur duty rate badalte rehte hain, kharch se pehle check karein.',
+ 'Read the full written guide':'Poori likhit guide padhein',
+
+ /* the share picture and message */
+ 'Can you beat me? Play free:':'Mujhse aage nikal sakte ho? Free mein khelo:',
+ '{weeks} weeks · {wrong} wrong picks · {stamps} stamps':'{weeks} hafte · {wrong} galat chunaav · {stamps} stamps',
+ 'I took my {brand} {product} from India to America in {weeks} weeks and ranked {rank} ({score}/100) in The Journey of One Box. Can you beat me? {url}':'Maine apna {brand} ({product}) {weeks} hafte mein India se America pahunchaya. The Journey of One Box mein mera rank: {rank} ({score}/100). Mujhse aage nikal sakte ho? {url}',
+ 'Year {n} of my export business: {units} {brand} {product}s sold in America. I ranked {rank} ({score}/100) in The Journey of One Box. Can you beat me? {url}':'Mere export business ka saal {n}: America mein {brand} ({product}) ke {units} units bike. The Journey of One Box mein mera rank: {rank} ({score}/100). Mujhse aage nikal sakte ho? {url}'
+};
+const LANG_KEY='one-box-lang';
+let LANG=(()=>{try{return localStorage.getItem(LANG_KEY)==='hinglish'?'hinglish':'en';}catch(e){return 'en';}})();
+/* Lines with letters in them that have no Hinglish yet, collected as they show up.
+   To check a playthrough, type [...HINGLISH_MISSING] in the browser console. */
+const HINGLISH_MISSING=new Set();
+function t(s){if(LANG!=='hinglish'||typeof s!=='string')return s;const h=HINGLISH[s];if(h!=null)return h;if(/[a-z]/i.test(s))HINGLISH_MISSING.add(s);return s;}
+/* A line with {names} in it. Filled-in words are translated too when they are known lines, such as
+   a product or stamp name; numbers and brand names pass through untouched. */
+function tf(s,v){const w=x=>{x=String(x);return LANG==='hinglish'&&HINGLISH[x]!=null?HINGLISH[x]:x;};return t(s).replace(/\{(\w+)\}/g,(m,k)=>v&&v[k]!=null?w(v[k]):m);}
+/* Content can hold a plain line or a [line, {names}] pair. */
+function tx(x){return Array.isArray(x)?tf(x[0],x[1]):t(x);}
 /* The Journey of One Box · amyra-ind-usa-export · MIT License · https://games.edock.io/amyra-ind-usa-export */
 /* ============ GAME STATE + UI ============ */
 const $=s=>document.querySelector(s);
 const panel=$('#panel'),overlay=$('#overlay'),toastEl=$('#toast'),popEl=$('#pop'),hintEl=$('#hint'),view=$('#view'),trackEl=$('#track');
 const canvas=$('#game'),ctx=canvas.getContext('2d');
-const SAVE_KEY='one-box-save-v2';
+const SAVE_KEY='one-box-save-v2',BEST_KEY='one-box-best';
 /* The written guide sits in guide/ next to the game. Hosts that cannot serve it (a local file, a Claude artifact) use the public copy. */
 const GUIDE_URL=(()=>{try{if(/^https?:$/.test(location.protocol)&&/\/(index\.html)?$/.test(location.pathname)&&!/claude/.test(location.hostname))return new URL('guide/',location.href).href;}catch(e){}return 'https://games.edock.io/amyra-ind-usa-export/guide/';})();
 const START_WALLET=500000,SEA0=2500,SEA1=3000,WORLD_W=4200,START_X=30;
 const fmtINR=n=>{const neg=n<0;n=Math.abs(Math.round(n));let s=String(n);if(s.length>3){const last=s.slice(-3);let rest=s.slice(0,-3);rest=rest.replace(/\B(?=(\d{2})+(?!\d))/g,',');s=rest+','+last;}return (neg?'\u2212':'')+'\u20B9'+s;};
 const fmtUSD=n=>'$'+(Math.abs(n)>=1000?Math.round(n).toLocaleString('en-US'):n.toFixed(2));
 const both=n=>fmtUSD(n)+' ('+fmtINR(n*FX)+')';
-let S=null,steps=[],walking=false,hurry=false,manual=0,arrived=false,toastT=null,applied=null,trackBuilt=false;
-function fresh(){return {product:null,brand:'',wallet:START_WALLET,spent:0,weeks:1,stamps:[],station:0,stepIdx:0,px:START_X,done:false,started:false};}
+let S=null,steps=[],walking=false,hurry=false,manual=0,arrived=false,toastT=null,trackBuilt=false,reopen=null,evSound='',card=null;
+function fresh(){const s={product:null,brand:'',wallet:START_WALLET,spent:0,weeks:1,stamps:[],station:0,stepIdx:0,px:START_X,done:false,started:false,
+  year:1,yearStart:START_WALLET,seed:Math.floor(Math.random()*1e9),mistakes:0,mehs:0,wrong:[],pending:null,history:[]};s.events=pickEvents(s);return s;}
+/* Saves from before surprises, scores and years get the new fields. They get no surprises from the
+   pool, because a surprise added to a stop the player is standing at would shift its steps. */
+function upgrade(s){if(!s)return s;if(s.year==null)s.year=1;if(s.yearStart==null)s.yearStart=START_WALLET;if(s.seed==null)s.seed=Math.floor(Math.random()*1e9);if(!s.events)s.events=[];if(!s.wrong)s.wrong=[];if(s.mistakes==null)s.mistakes=0;if(s.mehs==null)s.mehs=0;if(!s.history)s.history=[];return s;}
 function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}}
-function load(){try{const j=localStorage.getItem(SAVE_KEY);return j?JSON.parse(j):null;}catch(e){return null;}}
+function load(){try{const j=localStorage.getItem(SAVE_KEY);return j?upgrade(JSON.parse(j)):null;}catch(e){return null;}}
 function getMuted(){try{return localStorage.getItem('one-box-muted')==='1';}catch(e){return false;}}
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
-function hud(){$('#hud-spent').textContent=fmtINR(S.spent);$('#hud-week').textContent=String(S.weeks);$('#hud-week').nextElementSibling.textContent=S.weeks===1?'week':'weeks';$('#hud-wallet').textContent=fmtINR(S.wallet);$('#hud-stamps').textContent=S.stamps.length;updateTrack();}
-function buildTrack(){trackEl.innerHTML='';STATIONS.forEach((st,i)=>{const b=el('button','tk');b.title=(i+1)+'. '+st.name;b.setAttribute('aria-label',b.title);b.appendChild(iconEl(st.icon,2));b.addEventListener('click',()=>{const status=i<S.station?'done':i===S.station?(arrived?'you are here':'next stop'):'later';toast((i+1)+'. '+st.name.toUpperCase()+' \u00B7 '+status.toUpperCase(),2200);AudioKit.sfx.blip();});trackEl.appendChild(b);});trackBuilt=true;}
-function updateTrack(){if(!trackBuilt)return;const ks=trackEl.children;for(let i=0;i<ks.length;i++)ks[i].className='tk'+(i<S.station?' done':i===S.station?' cur':'');}
+function hud(){$('#hud-spent').textContent=fmtINR(S.spent);$('#hud-week').textContent=String(S.weeks);$('#hud-week').nextElementSibling.textContent=t(S.weeks===1?'week':'weeks');$('#hud-wallet').textContent=fmtINR(S.wallet);$('#hud-stamps').textContent=S.stamps.length;updateTrack();}
+function buildTrack(){trackEl.innerHTML='';STATIONS.forEach((st,i)=>{const b=el('button','tk');b.title=(i+1)+'. '+t(st.name);b.setAttribute('aria-label',b.title);b.appendChild(iconEl(st.icon,2));b.addEventListener('click',()=>{const status=t(!activeAt(i)?'done last year':i<S.station?'done':i===S.station?(arrived?'you are here':'next stop'):'later');toast((i+1)+'. '+t(st.name).toUpperCase()+' \u00B7 '+status.toUpperCase(),2200);AudioKit.sfx.blip();});trackEl.appendChild(b);});trackBuilt=true;if(S)updateTrack();}
+function updateTrack(){if(!trackBuilt)return;const ks=trackEl.children;for(let i=0;i<ks.length;i++)ks[i].className='tk'+(i<S.station||!activeAt(i)?' done':i===S.station?' cur':'');}
 function toast(msg,ms){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove('show'),ms||1800);}
 function spend(n){if(!n)return;S.wallet-=n;S.spent+=n;hud();const w=$('#hud-spent');w.style.color='#FFF';setTimeout(()=>w.style.color='',450);}
+function gain(n){if(!n)return;S.wallet+=n;hud();AudioKit.sfx.cash();}
 function addWeeks(n){if(!n)return;S.weeks+=n;hud();}
-function earn(id){if(!STAMPS[id]||S.stamps.includes(id))return false;S.stamps.push(id);hud();AudioKit.sfx.stamp();popEl.innerHTML='';popEl.appendChild(el('div',null,STAMPS[id][0].toUpperCase()));popEl.appendChild(el('small',null,'stamp earned'));popEl.classList.remove('show');void popEl.offsetWidth;popEl.classList.add('show');setTimeout(()=>popEl.classList.remove('show'),1500);return true;}
-function computeSteps(){const st=STATIONS[S.station];steps=typeof st.steps==='function'?st.steps(S):st.steps;}
+function earn(id){if(!STAMPS[id]||S.stamps.includes(id))return false;S.stamps.push(id);hud();AudioKit.sfx.stamp();popEl.innerHTML='';popEl.appendChild(el('div',null,t(STAMPS[id][0]).toUpperCase()));popEl.appendChild(el('small',null,t('stamp earned')));popEl.classList.remove('show');void popEl.offsetWidth;popEl.classList.add('show');setTimeout(()=>popEl.classList.remove('show'),1500);return true;}
+
+/* ---- stops, steps and surprises ---- */
+/* From year 2 a stop shows its year-2 fields, and a stop without any is passed as already done. */
+const stationView=st=>S&&S.year>1&&st.y2?Object.assign({},st,st.y2):st;
+const activeAt=i=>!S||S.year<2||!!STATIONS[i].y2;
+/* A surprise decides whether it happens when the player reaches it, so it can react to picks made
+   earlier at the same stop. `resolve` turns it into a normal step, or null to skip it. */
+const resolve=x=>x&&x.lazy?x.lazy(S):x;
+function computeSteps(){const st=STATIONS[S.station],v=stationView(st);const base=typeof v.steps==='function'?v.steps(S):v.steps;const y=Math.min(S.year,2);
+  const ev=pos=>EVENTS.filter(e=>e.at===st.id&&(e.pos||'start')===pos&&(!e.years||e.years.includes(y))&&(e.auto||(S.events||[]).includes(e.id)))
+    .map(e=>({lazy:s=>(e.when&&!e.when(s))?null:Object.assign({event:e},e.step(s))}));
+  const end=base.findIndex(x=>x.kind==='end');
+  steps=ev('start').concat(end<0?base.concat(ev('end')):base.slice(0,end).concat(ev('end'),base.slice(end)));}
+const stepKey=()=>S.year+'|'+S.station+'|'+S.stepIdx;
+const choiceKey=ch=>stepKey()+'|'+(Array.isArray(ch.label)?ch.label[0]+JSON.stringify(ch.label[1]):ch.label);
+function isLast(){for(let i=S.stepIdx+1;i<steps.length;i++)if(resolve(steps[i]))return false;return true;}
 
 /* ---- cards ---- */
-function cardShell(st){panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl(st.icon,3));const tt=el('div');tt.appendChild(el('div','card-title',st.title));tt.appendChild(el('div','card-sub',st.sub));head.appendChild(tt);c.appendChild(head);panel.appendChild(c);panel.scrollTop=0;return c;}
-function banner(c,st){if(!st.detail)return;const d=el('div','detail',st.detail);const b=el('button','more','Hide the explanation');b.addEventListener('click',()=>{d.hidden=!d.hidden;b.textContent=d.hidden?'Show the explanation':'Hide the explanation';AudioKit.sfx.blip();});c.appendChild(d);c.appendChild(b);}
-function sayBox(c,text,kind,cost,weeks){let s=c.querySelector('.say');if(!s){s=el('div','say');c.appendChild(s);}s.className='say '+kind;s.innerHTML='';s.appendChild(iconEl(kind==='bad'?'cross':kind==='meh'?'clock':'check',3));const d=el('div');d.appendChild(el('div',null,text));const bits=[];if(cost)bits.push('\u2212'+fmtINR(cost));if(weeks)bits.push('+'+weeks+(weeks===1?' week':' weeks'));if(bits.length)d.appendChild(el('div','bits',bits.join('   \u00B7   ')));s.appendChild(d);s.scrollIntoView({block:'nearest',behavior:'smooth'});}
+function cardShell(v,ev){panel.innerHTML='';const c=el('div','card'+(ev?' event':''));
+  if(ev){const rb=el('div','ribbon');rb.appendChild(iconEl('news',1));rb.appendChild(document.createTextNode(t('SURPRISE!')));c.appendChild(rb);}
+  const head=el('div','card-head');head.appendChild(iconEl(ev?ev.icon:v.icon,3));const tt=el('div');tt.appendChild(el('div','card-title',t(ev?ev.title:v.title)));tt.appendChild(el('div','card-sub',ev?tf('Stop {n}: {place}',{n:S.station+1,place:v.name}):t(v.sub)));head.appendChild(tt);c.appendChild(head);panel.appendChild(c);panel.scrollTop=0;return c;}
+function banner(c,st){if(!st.detail)return;const d=el('div','detail',t(st.detail));const b=el('button','more',t('Hide the explanation'));b.addEventListener('click',()=>{d.hidden=!d.hidden;b.textContent=t(d.hidden?'Show the explanation':'Hide the explanation');AudioKit.sfx.blip();});c.appendChild(d);c.appendChild(b);}
+function sayBox(c,text,kind,cost,weeks,plus){let s=c.querySelector('.say');if(!s){s=el('div','say');c.appendChild(s);}s.className='say '+kind;s.innerHTML='';s.appendChild(iconEl(kind==='bad'?'cross':kind==='meh'?'clock':'check',3));const d=el('div');d.appendChild(el('div',null,tx(text)));const bits=[];if(cost)bits.push('\u2212'+fmtINR(cost));if(plus)bits.push('+'+fmtINR(plus));if(weeks)bits.push('+'+weeks+' '+t(weeks===1?'week':'weeks'));if(bits.length)d.appendChild(el('div','bits',bits.join('   \u00B7   ')));s.appendChild(d);s.scrollIntoView({block:'nearest',behavior:'smooth'});}
 function actions(c,list){let a=c.querySelector('.actions');if(a)a.remove();a=el('div','actions');list.forEach(([label,cls,fn,icon])=>{const b=el('button','btn '+(cls||''));if(icon)b.appendChild(iconEl(icon,2));b.appendChild(document.createTextNode(label));b.addEventListener('click',()=>{AudioKit.sfx.blip();fn();});a.appendChild(b);});c.appendChild(a);return a;}
 
-function renderStep(){const st=STATIONS[S.station];const step=steps[S.stepIdx];applied=null;if(!step){finishStation();return;}
-  const c=cardShell(st);banner(c,st);
-  if(step.kind==='product'){c.appendChild(el('div','card-line','Tap the one your box will carry. You can change your mind before Next.'));const g=el('div','products');Object.keys(PRODUCTS).forEach(k=>{const p=PRODUCTS[k];const b=el('button','prod'+(S.product===k?' sel':''));b.appendChild(iconEl(p.sprite,4));b.appendChild(el('div','lbl',p.name));b.appendChild(el('div','price',both(p.price)));b.appendChild(el('div','tag',p.tag));
-      b.addEventListener('click',()=>{S.product=k;AudioKit.sfx.coin();g.querySelectorAll('.prod').forEach(x=>x.classList.toggle('sel',x===b));sayBox(c,p.name+'. Factory cost about '+fmtINR(p.cost)+' a piece, sells for '+both(p.price)+' on Amazon USA.','good');actions(c,[['Next','go',next]]);save();});g.appendChild(b);});c.appendChild(g);
-    if(S.product){const p=PRODUCTS[S.product];sayBox(c,p.name+'. Factory cost about '+fmtINR(p.cost)+' a piece, sells for '+both(p.price)+' on Amazon USA.','good');actions(c,[['Next','go',next]]);}return;}
-  if(step.kind==='brand'){c.appendChild(el('div','card-line','Name your brand. It goes on every box.'));const row=el('div','brand-in');const inp=el('input');inp.id='brand-input';inp.maxLength=14;inp.placeholder='BRAND NAME';inp.value=S.brand||['KARIGAR','MITTI','SAFAR','DESI ROOTS'][Math.floor(Math.random()*4)];row.appendChild(inp);c.appendChild(row);
-    const go=()=>{const v=inp.value.trim().toUpperCase().slice(0,14);if(!v){inp.focus();return;}S.brand=v;inp.disabled=true;AudioKit.sfx.coin();sayBox(c,'Searched the US trademark database: '+v+' is free in your class.','good');actions(c,[['Rename','sec',()=>{inp.disabled=false;inp.focus();const s=c.querySelector('.say');if(s)s.remove();actions(c,[['Name it','',go]]);}],['Next','go',next]]);save();};
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!inp.disabled)go();});actions(c,[['Name it','',go]]);return;}
+function renderStep(){const st=STATIONS[S.station],v=stationView(st);let step=resolve(steps[S.stepIdx]);
+  while(!step&&S.stepIdx<steps.length){S.stepIdx++;step=resolve(steps[S.stepIdx]);}
+  if(!step){finishStation();return;}
+  if(S.pending&&S.pending.stepKey!==stepKey())S.pending=null;
+  const ev=step.event;const c=cardShell(v,ev);if(!ev)banner(c,v);card=c;
+  if(ev&&evSound!==stepKey()){evSound=stepKey();AudioKit.sfx.news();}
+  if(step.kind==='product'){c.appendChild(el('div','card-line',t('Tap the one your box will carry. You can change your mind before Next.')));const g=el('div','products');
+    const sayProduct=p=>sayBox(c,['{name}. Factory cost about {cost} a piece, sells for {price} on Amazon USA.',{name:p.name,cost:fmtINR(p.cost),price:both(p.price)}],'good');
+    Object.keys(PRODUCTS).forEach(k=>{const p=PRODUCTS[k];const b=el('button','prod'+(S.product===k?' sel':''));b.appendChild(iconEl(p.sprite,4));b.appendChild(el('div','lbl',t(p.name)));b.appendChild(el('div','price',both(p.price)));b.appendChild(el('div','tag',t(p.tag)));
+      b.addEventListener('click',()=>{S.product=k;AudioKit.sfx.coin();g.querySelectorAll('.prod').forEach(x=>x.classList.toggle('sel',x===b));sayProduct(p);actions(c,[[t('Next'),'go',next]]);save();});g.appendChild(b);});c.appendChild(g);
+    if(S.product){sayProduct(PRODUCTS[S.product]);actions(c,[[t('Next'),'go',next]]);}return;}
+  if(step.kind==='brand'){c.appendChild(el('div','card-line',t('Name your brand. It goes on every box.')));const row=el('div','brand-in');const inp=el('input');inp.id='brand-input';inp.maxLength=14;inp.placeholder=t('BRAND NAME');inp.value=S.brand||['KARIGAR','MITTI','SAFAR','DESI ROOTS'][Math.floor(Math.random()*4)];row.appendChild(inp);c.appendChild(row);
+    const named=()=>{inp.disabled=true;sayBox(c,['Searched the US trademark database: {brand} is free in your class.',{brand:S.brand}],'good');actions(c,[[t('Rename'),'sec',()=>{inp.disabled=false;inp.focus();const s=c.querySelector('.say');if(s)s.remove();actions(c,[[t('Name it'),'',go]]);}],[t('Next'),'go',next]]);};
+    const go=()=>{const v=inp.value.trim().toUpperCase().slice(0,14);if(!v){inp.focus();return;}S.brand=v;AudioKit.sfx.coin();named();save();};
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!inp.disabled)go();});actions(c,[[t('Name it'),'',go]]);return;}
   if(step.kind==='end'){showEnd(true);doneCard();return;}
-  c.appendChild(el('div','card-line',step.prompt));
+  c.appendChild(el('div','card-line',tx(step.prompt)));
+  if(step.quote)c.appendChild(el('div','quote',tx(step.quote)));
+  if(ev&&ev.shield&&S.stamps.includes(ev.shield)){const sh=el('div','shield');sh.appendChild(el('span','mini',ev.shield));sh.appendChild(el('span',null,tf('Your {stamp} stamp protects you here.',{stamp:STAMPS[ev.shield][0]})));c.appendChild(sh);}
   const grid=el('div','choices'+(step.one||step.choices.length===1?' one':''));
-  step.choices.forEach(ch=>{const b=el('button','choice');if(ch.photo)b.appendChild(photoCanvas(PRODUCTS[S.product].sprite,ch.photo));else b.appendChild(iconEl(ch.icon||'doc',3));b.appendChild(el('div','lbl',ch.label));
+  step.choices.forEach(ch=>{const b=el('button','choice');if(ch.photo)b.appendChild(photoCanvas(PRODUCTS[S.product].sprite,ch.photo));else b.appendChild(iconEl(ch.icon||'doc',3));b.appendChild(el('div','lbl',ch.raw?ch.label:tx(ch.label)));
     if(ch.meta){const m=el('div','meta');ch.meta.forEach(([ic,n])=>{const w=el('span');for(let i=0;i<n;i++)w.appendChild(iconEl(ic,1));m.appendChild(w);});b.appendChild(m);}
+    if(S.wrong.includes(choiceKey(ch))){b.classList.add('bad');b.disabled=true;}
     b.addEventListener('click',()=>pick(c,grid,step,ch,b));grid.appendChild(b);});
-  c.appendChild(grid);}
-function pick(c,grid,step,ch,btn){const cost=typeof ch.cost==='function'?ch.cost(S):(ch.cost||0);
-  if(ch.ok===false){AudioKit.sfx.error();btn.classList.add('bad');btn.disabled=true;if(ch.penalty)spend(ch.penalty);if(ch.weeks)addWeeks(ch.weeks);sayBox(c,ch.say,'bad',ch.penalty||0,ch.weeks||0);c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');save();return;}
+  c.appendChild(grid);
+  /* a pick made before a reload or a language switch shows as made, with Change still possible */
+  const p=S.pending;if(p){const i=step.choices.findIndex(ch=>choiceKey(ch)===p.key);if(i<0)S.pending=null;else{const bs=grid.querySelectorAll('.choice');bs.forEach(x=>x.disabled=true);bs[i].classList.add(p.ok===true?'ok':'meh');sayBox(c,step.choices[i].say,p.ok===true?'good':'meh',p.cost,p.weeks,p.gain);pickActions(c,grid);}}}
+function pick(c,grid,step,ch,btn){const cost=typeof ch.cost==='function'?ch.cost(S):(ch.cost||0);const key=choiceKey(ch);
+  if(ch.ok===false){AudioKit.sfx.error();btn.classList.add('bad');btn.disabled=true;if(!S.wrong.includes(key)){S.wrong.push(key);S.mistakes++;if(ch.penalty)spend(ch.penalty);if(ch.weeks)addWeeks(ch.weeks);}sayBox(c,ch.say,'bad',ch.penalty||0,ch.weeks||0);c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');save();return;}
   grid.querySelectorAll('.choice').forEach(x=>x.disabled=true);btn.classList.add(ch.ok===true?'ok':'meh');
   const prev={};if(ch.set)for(const k in ch.set){prev[k]=S[k];S[k]=ch.set[k];}
-  if(cost)spend(cost);if(ch.weeks)addWeeks(ch.weeks);
+  if(cost)spend(cost);if(ch.weeks)addWeeks(ch.weeks);if(ch.gain)gain(ch.gain);
   const newStamp=(ch.stamp&&earn(ch.stamp))?ch.stamp:null;
-  applied={cost,weeks:ch.weeks||0,prev,set:ch.set,stamp:newStamp};
-  AudioKit.sfx[ch.ok===true?'coin':'blip']();sayBox(c,ch.say,ch.ok===true?'good':'meh',cost,ch.weeks||0);
-  const last=S.stepIdx>=steps.length-1;actions(c,[['Change','sec',()=>undo(c,grid)],[last?'Done here':'Next','go',next]]);save();}
-function undo(c,grid){if(!applied)return;const a=applied;applied=null;if(a.cost){S.wallet+=a.cost;S.spent-=a.cost;}if(a.weeks)S.weeks-=a.weeks;if(a.set)for(const k in a.set){if(a.prev[k]===undefined)delete S[k];else S[k]=a.prev[k];}if(a.stamp){const i=S.stamps.indexOf(a.stamp);if(i>-1)S.stamps.splice(i,1);}
+  S.pending={key,stepKey:stepKey(),ok:ch.ok,cost,weeks:ch.weeks||0,gain:ch.gain||0,prev,set:ch.set||null,stamp:newStamp};
+  AudioKit.sfx[ch.ok===true?'coin':'blip']();sayBox(c,ch.say,ch.ok===true?'good':'meh',cost,ch.weeks||0,ch.gain||0);pickActions(c,grid);save();}
+function pickActions(c,grid){actions(c,[[t('Change'),'sec',()=>undo(c,grid)],[t(isLast()?'Done here':'Next'),'go',next]]);}
+function undo(c,grid){const a=S.pending;if(!a)return;S.pending=null;if(a.cost){S.wallet+=a.cost;S.spent-=a.cost;}if(a.gain)S.wallet-=a.gain;if(a.weeks)S.weeks-=a.weeks;if(a.set)for(const k in a.set){if(a.prev[k]===undefined)delete S[k];else S[k]=a.prev[k];}if(a.stamp){const i=S.stamps.indexOf(a.stamp);if(i>-1)S.stamps.splice(i,1);}
   hud();grid.querySelectorAll('.choice').forEach(x=>{if(!x.classList.contains('bad'))x.disabled=false;x.classList.remove('ok','meh');});const s=c.querySelector('.say');if(s)s.remove();const ac=c.querySelector('.actions');if(ac)ac.remove();save();}
-function next(){applied=null;S.stepIdx++;if(S.stepIdx>=steps.length)finishStation();else renderStep();save();}
-function finishStation(){S.station++;S.stepIdx=0;arrived=false;hud();save();if(S.station>=STATIONS.length){showEnd(true);doneCard();return;}travelCard();}
-function travelCard(){const nxt=STATIONS[S.station];panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl('walk',3));const tt=el('div');tt.appendChild(el('div','card-title','Next stop: '+nxt.name));tt.appendChild(el('div','card-sub',nxt.title));head.appendChild(tt);c.appendChild(head);
-  const inSea=S.px<SEA0&&nxt.x>SEA1;c.appendChild(el('div','card-line',inSea?'The boxes board the ship. Long crossing ahead.':'Walk on. Hold the right side of the picture, or tap the button.'));
-  const a=el('div','actions');const b=el('button','btn walk');b.appendChild(iconEl('walk',2));b.appendChild(document.createTextNode(inSea?'Set sail':'Walk'));
-  b.addEventListener('click',()=>{AudioKit.sfx.blip();if(!walking){walking=true;hurry=false;b.textContent='Hurry!';if(inSea)AudioKit.sfx.horn();}else{hurry=true;b.textContent='Hurrying\u2026';}});
+function next(){if(S.pending&&S.pending.ok==='meh')S.mehs++;S.pending=null;S.stepIdx++;if(S.stepIdx>=steps.length)finishStation();else renderStep();save();}
+function finishStation(){S.station++;while(S.station<STATIONS.length&&!activeAt(S.station))S.station++;S.stepIdx=0;S.pending=null;arrived=false;hud();save();if(S.station>=STATIONS.length){showEnd(true);doneCard();return;}travelCard();}
+function travelCard(){const nxt=STATIONS[S.station];panel.innerHTML='';const c=el('div','card');card=c;const head=el('div','card-head');head.appendChild(iconEl('walk',3));const tt=el('div');tt.appendChild(el('div','card-title',S.year>1?tf('Year {n} \u00B7 Next stop: {place}',{n:S.year,place:nxt.name}):tf('Next stop: {place}',{place:nxt.name})));tt.appendChild(el('div','card-sub',t(stationView(nxt).title)));head.appendChild(tt);c.appendChild(head);
+  const inSea=S.px<SEA0&&nxt.x>SEA1;c.appendChild(el('div','card-line',t(inSea?'The boxes board the ship. Long crossing ahead.':'Walk on. Hold the right side of the picture, or tap the button.')));
+  const a=el('div','actions');const b=el('button','btn walk');if(walking)b.textContent=t(hurry?'Hurrying\u2026':'Hurry!');else{b.appendChild(iconEl('walk',2));b.appendChild(document.createTextNode(t(inSea?'Set sail':'Walk')));}
+  b.addEventListener('click',()=>{AudioKit.sfx.blip();if(!walking){walking=true;hurry=false;b.textContent=t('Hurry!');if(inSea)AudioKit.sfx.horn();}else{hurry=true;b.textContent=t('Hurrying\u2026');}});
   a.appendChild(b);c.appendChild(a);panel.appendChild(c);panel.scrollTop=0;hintEl.classList.add('show');setTimeout(()=>hintEl.classList.remove('show'),3500);}
-function arrive(){arrived=true;walking=false;hurry=false;const st=STATIONS[S.station];S.px=st.x-6;computeSteps();S.stepIdx=Math.min(S.stepIdx,steps.length-1);toast(st.name.toUpperCase());AudioKit.sfx.blip();hud();renderStep();save();}
-function doneCard(){panel.innerHTML='';const c=el('div','card');const head=el('div','card-head');head.appendChild(iconEl('heart',3));const tt=el('div');tt.appendChild(el('div','card-title','Journey complete'));tt.appendChild(el('div','card-sub',(S.brand||'Your brand')+' went from a workshop in India to a home in America and the money came back.'));head.appendChild(tt);c.appendChild(head);
+function arrive(){arrived=true;walking=false;hurry=false;const st=STATIONS[S.station];S.px=st.x-6;computeSteps();S.stepIdx=Math.min(S.stepIdx,steps.length-1);toast(t(st.name).toUpperCase());AudioKit.sfx.blip();hud();renderStep();save();}
+function doneCard(){panel.innerHTML='';const c=el('div','card');card=c;const head=el('div','card-head');head.appendChild(iconEl('heart',3));const tt=el('div');const brand=S.brand||t('Your brand');
+  tt.appendChild(el('div','card-title',t(S.year>1?'Year complete':'Journey complete')));tt.appendChild(el('div','card-sub',S.year>1?tf('{brand} finished year {n}, and the money came home again.',{brand,n:S.year}):tf('{brand} went from a workshop in India to a home in America and the money came back.',{brand})));head.appendChild(tt);c.appendChild(head);
   c.appendChild(sessionPromo('end-card'));
-  c.appendChild(el('div','card-line','Your results stay here. Close them, reopen them, or start over with another product.'));
-  actions(c,[['See results','sec',()=>showEnd(false),'rupee'],['Passport','sec',showPassport,'stampbook'],['Play again, new product','go',restart,'walk']]);panel.appendChild(c);}
+  c.appendChild(el('div','card-line',t('Your results stay here. Share your score, run the business for another year, or start over with another product.')));
+  actions(c,[[tf('Start year {n}',{n:S.year+1}),'go',nextYear,'calendar'],[t('See results'),'sec',()=>showEnd(false),'rupee'],[t('Share'),'sec',shareScore,'share'],[t('Passport'),'sec',showPassport,'stampbook'],[t('Play again, new product'),'sec',restart,'walk']]).classList.add('many');panel.appendChild(c);}
 /* Links to Edock carry UTM tags so edock.io's analytics can see the visit came from this game.
    The game itself sends nothing. */
 function tagged(url,campaign,placement){try{const u=new URL(url);u.searchParams.set('utm_source',GAME_ID);u.searchParams.set('utm_medium','game');u.searchParams.set('utm_campaign',campaign);u.searchParams.set('utm_content',placement);if(S&&S.product)u.searchParams.set('utm_term',S.product);return u.toString();}catch(e){return url;}}
 function sessionPromo(placement){const live=Date.now()<Date.parse(SESSION.endsAt);const box=el('div','promo');
-  box.appendChild(el('div','eyebrow','YOU MADE IT TO THE END'));
-  box.appendChild(el('div','pitch',live?'That means you will enjoy our live online session. Ask real exporters everything this game could not answer.':'Keep going with Edock\u2019s live sessions, where people who export for real answer your questions.'));
+  box.appendChild(el('div','eyebrow',t('YOU MADE IT TO THE END')));
+  box.appendChild(el('div','pitch',t(live?'That means you will enjoy our live online session. Ask real exporters everything this game could not answer.':'Keep going with Edock\u2019s live sessions, where people who export for real answer your questions.')));
   if(live){const ev=el('div','ev');const cal=el('div','cal');cal.appendChild(el('b',null,SESSION.month));cal.appendChild(el('span',null,SESSION.day));ev.appendChild(cal);const info=el('div');info.appendChild(el('div','ev-t',SESSION.title));info.appendChild(el('div','ev-m',SESSION.when));info.appendChild(el('div','ev-m',SESSION.host));ev.appendChild(info);box.appendChild(ev);}
-  const a=el('a','cta');a.href=live?tagged(SESSION.url,SESSION.campaign,placement):tagged(SESSION.allUrl,SESSION.allCampaign,placement);a.target='_blank';a.rel='noopener';a.appendChild(iconEl('ticket',2));a.appendChild(document.createTextNode(live?'Save my seat \u00B7 from '+SESSION.price:'See upcoming sessions'));a.addEventListener('click',()=>AudioKit.sfx.coin());box.appendChild(a);
-  box.appendChild(el('div','fine','Opens edock.io in a new tab.'));return box;}
+  const a=el('a','cta');a.href=live?tagged(SESSION.url,SESSION.campaign,placement):tagged(SESSION.allUrl,SESSION.allCampaign,placement);a.target='_blank';a.rel='noopener';a.appendChild(iconEl('ticket',2));a.appendChild(document.createTextNode(live?tf('Save my seat \u00B7 from {price}',{price:SESSION.price}):t('See upcoming sessions')));a.addEventListener('click',()=>AudioKit.sfx.coin());box.appendChild(a);
+  box.appendChild(el('div','fine',t('Opens edock.io in a new tab.')));return box;}
 function restart(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}closeOv();start(null);}
+/* Another year with the same brand: the money carries over, the setup stays done, and the stamps
+   that belong to one batch are earned again. */
+function nextYear(){const r=yearResult();const hist=(S.history||[]).concat([{year:S.year,units:unitsOf(S),delta:r.delta,weeks:S.weeks,score:r.score}]);
+  const keep={product:S.product,brand:S.brand,history:hist,ior:S.ior,makerPremium:S.makerPremium,
+    year:S.year+1,wallet:r.final,yearStart:r.final,stamps:S.stamps.filter(id=>!PER_BATCH_STAMPS.includes(id))};
+  S=Object.assign(fresh(),keep);S.events=pickEvents(S);S.station=0;while(!activeAt(S.station))S.station++;
+  closeOv();S.started=true;walking=false;hurry=false;manual=0;arrived=false;curSong='';hud();AudioKit.sfx.win();toast(tf('YEAR {n}',{n:S.year}),2200);travelCard();save();}
+
+/* ---- score and sharing ---- */
+function yearResult(){const pay=payout(S);const refund=S.taxLocked?Math.round(prodCost(S)*0.18):0;const final=S.wallet+pay.netINR+refund;const start=S.yearStart==null?START_WALLET:S.yearStart;const score=scoreOf(S);return {pay,refund,final,start,delta:final-start,score,rank:rankOf(score)};}
+function bestScore(score){let best=0;try{best=+localStorage.getItem(BEST_KEY)||0;if(score!=null&&score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}catch(e){}return best;}
+function shareText(r){const v={brand:S.brand||'',product:t(PRODUCTS[S.product].name).toLowerCase(),weeks:S.weeks,rank:t(r.rank),score:r.score,n:S.year,units:fmtN(unitsOf(S)),url:GAME_URL};
+  return S.year>1?tf('Year {n} of my export business: {units} {brand} {product}s sold in America. I ranked {rank} ({score}/100) in The Journey of One Box. Can you beat me? {url}',v)
+    :tf('I took my {brand} {product} from India to America in {weeks} weeks and ranked {rank} ({score}/100) in The Journey of One Box. Can you beat me? {url}',v);}
+/* The picture people share: pixel art drawn small and scaled up, with sharp text drawn on top. */
+function shareCard(r){const L=document.createElement('canvas');L.width=180;L.height=180;const x=L.getContext('2d');x.imageSmoothingEnabled=false;
+  const g=x.createLinearGradient(0,0,0,150);g.addColorStop(0,'#7EC8F2');g.addColorStop(1,'#FFE2A8');x.fillStyle=g;x.fillRect(0,0,180,150);
+  [[14,58,22],[128,40,26],[150,98,18]].forEach(([cx,cy,w])=>{x.fillStyle='rgba(255,255,255,.85)';x.fillRect(cx,cy,w,5);x.fillRect(cx+4,cy-3,w-8,3);});
+  x.fillStyle='#C9A46A';x.fillRect(0,150,180,30);x.fillStyle='#6B5A45';x.fillRect(0,157,180,23);for(let i=0;i<180;i+=12){x.fillStyle='#FFE66D';x.fillRect(i,176,6,1);}
+  x.save();x.translate(0,150-GROUND);drawBuilding(x,22,{type:'shop',w:30,h:26,wall:'#F7D9A6',accent:'#E8563F'},0);drawBuilding(x,158,{type:'house',w:30,h:22,wall:'#FFF4DE',accent:'#B93A27'},0);x.restore();
+  drawMap(x,MAPS.player0,84,132,1);drawMap(x,MAPS[PRODUCTS[S.product].sprite],74,26,2);
+  const C=document.createElement('canvas');C.width=1080;C.height=1080;const c=C.getContext('2d');c.imageSmoothingEnabled=false;c.drawImage(L,0,0,1080,1080);
+  const T=(s,px,y,col,font,max)=>{c.font=font;c.fillStyle=col;c.textAlign='center';c.textBaseline='top';c.fillText(s,px,y,max||1000);};
+  T('THE JOURNEY',540,54,'#1B1B24','40px "Press Start 2P",monospace');T('OF ONE BOX',540,108,'#B93A27','40px "Press Start 2P",monospace');
+  if(S.brand){c.font='700 40px Rubik,sans-serif';const w=c.measureText(S.brand).width+48;c.fillStyle='#1B1B24';c.fillRect(540-w/2,362,w,58);T(S.brand,540,370,'#FFE66D','700 40px Rubik,sans-serif');}
+  c.fillStyle='#1B1B24';c.fillRect(84,432,912,292);c.fillStyle='#FFF6E6';c.fillRect(90,438,900,280);
+  T(tf('YEAR {n}',{n:S.year}),540,466,'#D98C1F','22px "Press Start 2P",monospace');T(t(r.rank).toUpperCase(),540,510,'#1B1B24','36px "Press Start 2P",monospace',860);
+  T(tf('Score {n} / 100',{n:r.score}),540,574,'#2E9A4B','700 60px Rubik,sans-serif');
+  T(tf('{weeks} weeks \u00B7 {wrong} wrong picks \u00B7 {stamps} stamps',{weeks:S.weeks,wrong:S.mistakes,stamps:S.stamps.length}),540,658,'#6B5A45','500 32px Rubik,sans-serif',860);
+  T(t('Can you beat me? Play free:'),540,952,'#FFE66D','700 32px Rubik,sans-serif');T(GAME_URL.replace(/^https?:\/\//,''),540,1000,'#FFFFFF','700 34px Rubik,sans-serif',1020);
+  return new Promise(res=>{try{C.toBlob(res,'image/png');}catch(e){res(null);}});}
+/* Drawn once when the results open, so the share tap can hand the picture over at once:
+   phones only open the share sheet straight from a tap. */
+let cardBlob=null,cardFor='';
+function prepareCard(r){const k=S.seed+'|'+S.year+'|'+r.score+'|'+LANG;if(cardFor===k)return;cardFor=k;cardBlob=null;const go=()=>shareCard(r).then(b=>{if(cardFor===k)cardBlob=b;});(document.fonts&&document.fonts.load?Promise.all([document.fonts.load('40px "Press Start 2P"'),document.fonts.load('700 40px Rubik')]).catch(()=>{}):Promise.resolve()).then(go);}
+function shareScore(){const r=yearResult();const text=shareText(r);
+  if(cardBlob&&navigator.canShare){const f=new File([cardBlob],'journey-of-one-box.png',{type:'image/png'});if(navigator.canShare({files:[f],text})){navigator.share({files:[f],text}).catch(()=>{});return;}}
+  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener');}
+function savePicture(){const r=yearResult();const done=b=>{if(!b)return;const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='journey-of-one-box.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);};if(cardBlob)done(cardBlob);else shareCard(r).then(done);}
+function scoreBlock(r,best){const w=el('div','score');const top=el('div','rank');top.appendChild(iconEl('trophy',3));const words=el('div');words.appendChild(el('div','rk',t(r.rank)));words.appendChild(el('div','sc',tf('Score {n} / 100',{n:r.score})+(best?'  \u00B7  '+tf('Best {n}',{n:best}):'')));top.appendChild(words);w.appendChild(top);
+  const bits=el('div','bits');[[S.mistakes,t('wrong picks')],[S.mehs,t('costly picks')],[S.weeks,t(S.weeks===1?'week':'weeks')]].forEach(([n,k])=>{const s=el('span');s.appendChild(el('b',null,String(n)));s.appendChild(document.createTextNode(' '+k));bits.appendChild(s);});w.appendChild(bits);
+  w.appendChild(el('div','how',tf('100 points, minus 6 for each wrong pick, 3 for each costly pick, and 1 for each week over {par}.',{par:parWeeks(S)})));
+  const a=el('div','actions');[[t('Share on WhatsApp'),'go',shareScore,'share'],[t('Save picture'),'sec',savePicture,'camera']].forEach(([label,cls,fn,icon])=>{const b=el('button','btn '+cls);b.appendChild(iconEl(icon,2));b.appendChild(document.createTextNode(label));b.addEventListener('click',()=>{AudioKit.sfx.blip();fn();});a.appendChild(b);});w.appendChild(a);return w;}
 
 /* ---- overlays ---- */
-function ov(closable){overlay.innerHTML='';const box=el('div','ov');if(closable){const x=el('button','x','\u2715');x.title='Close';x.setAttribute('aria-label','Close');x.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});box.appendChild(x);}overlay.appendChild(box);overlay.classList.add('show');overlay.scrollTop=0;return box;}
-function closeOv(){overlay.classList.remove('show');overlay.innerHTML='';}
+function ov(closable){overlay.innerHTML='';const box=el('div','ov');if(closable){const x=el('button','x','\u2715');x.title=t('Close');x.setAttribute('aria-label',x.title);x.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});box.appendChild(x);}overlay.appendChild(box);overlay.classList.add('show');overlay.scrollTop=0;return box;}
+function closeOv(){overlay.classList.remove('show');overlay.innerHTML='';reopen=null;}
 function logoCanvas(){const c=document.createElement('canvas');c.width=192;c.height=72;const x=c.getContext('2d');x.imageSmoothingEnabled=false;const g=x.createLinearGradient(0,0,0,72);g.addColorStop(0,'#7EC8F2');g.addColorStop(1,'#FFE2A8');x.fillStyle=g;x.fillRect(0,0,192,72);x.fillStyle='#C9A46A';x.fillRect(0,56,192,16);x.fillStyle='#6B5A45';x.fillRect(0,62,192,10);for(let i=0;i<192;i+=12){x.fillStyle='#FFE66D';x.fillRect(i,66,6,1);}
   x.save();x.translate(0,56-GROUND);drawBuilding(x,30,{type:'shop',w:40,h:30,wall:'#F7D9A6',accent:'#E8563F'},0);x.restore();drawMap(x,MAPS.player0,86,38,1);drawShip(x,120,44);x.fillStyle='rgba(31,111,168,.9)';x.fillRect(110,58,82,14);txt(x,'THE JOURNEY',96,8,'#1B1B24',8,'center');txt(x,'OF ONE BOX',96,20,'#B93A27',8,'center');return c;}
-function showTitle(saved){const b=ov(false);const lg=logoCanvas();lg.className='logo';b.appendChild(lg);b.appendChild(el('h1',null,'From an Indian workshop to an American doorstep'));b.appendChild(el('p',null,'Carry one box through 17 stops. Tap, pick, stamp. Every price is in dollars and rupees. Music plays, so turn the sound up or tap the speaker to mute.'));
-  const a=el('div','actions');const hasSave=saved&&saved.product&&!saved.done;
-  if(hasSave){const c=el('button','btn go','Continue');c.addEventListener('click',()=>start(saved));a.appendChild(c);}
-  const n=el('button','btn'+(hasSave?' sec':''),hasSave?'New game':'Tap to start');n.addEventListener('click',()=>start(null));a.appendChild(n);b.appendChild(a);
-  b.appendChild(el('div','credits','A plain-words game about exporting from India and selling on Amazon USA. Example numbers at \u20B984 per dollar, not advice. Free and open source under the MIT license.'));}
-function showPassport(){const b=ov(true);b.appendChild(el('h2',null,'Passport \u00B7 '+S.stamps.length+' / '+Object.keys(STAMPS).length+' stamps'));b.appendChild(el('p',null,'Tap a stamp to see what it means.'));const g=el('div','pass');
-  Object.keys(STAMPS).forEach((id,i)=>{const got=S.stamps.includes(id);const s=el('div','stamp'+(got?' got':''));s.style.setProperty('--rot',((i*37)%9-4)+'deg');const seal=el('div','seal');seal.style.color=got?['#B93A27','#2F63B0','#2E9A4B','#D98C1F'][i%4]:'';seal.appendChild(document.createTextNode(id));seal.appendChild(el('small',null,STAMPS[id][0]));s.appendChild(seal);s.tabIndex=0;const show=()=>{$('#stamp-say').textContent=(got?'':'Not yet. ')+STAMPS[id][0]+': '+STAMPS[id][1];AudioKit.sfx.blip();};s.addEventListener('click',show);s.addEventListener('keydown',e=>{if(e.key==='Enter')show();});g.appendChild(s);});
-  b.appendChild(g);const say=el('div');say.id='stamp-say';say.textContent='Every official word in this journey, collected as a stamp.';b.appendChild(say);
-  const a=el('div','actions');const c=el('button','btn','Back to the road');c.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});a.appendChild(c);
-  const r=el('button','btn sec danger','Restart journey');r.addEventListener('click',()=>{AudioKit.sfx.blip();a.innerHTML='';const y=el('button','btn danger','Yes, start over');y.addEventListener('click',restart);const n=el('button','btn sec','Keep going');n.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});a.appendChild(y);a.appendChild(n);});a.appendChild(r);b.appendChild(a);}
-function showEnd(fresh){S.done=true;save();if(fresh)AudioKit.sfx.win();const p=PRODUCTS[S.product];const gross=UNITS*p.price,amz=gross*0.15,fba=p.fba*UNITS,conv=(gross-amz-fba)*0.03,netUSD=gross-amz-fba-conv,netINR=Math.round(netUSD*FX);const refund=S.taxLocked?Math.round(prodCost(S)*0.18):0;const final=S.wallet+netINR+refund;const delta=final-START_WALLET;
-  const perBatch=prodCost(S)+9000+(S.air?90000:35000)+dutyINR(S)+25000+20000+10200;const nextProfit=netINR-perBatch;
-  const b=ov(true);b.appendChild(el('h1',null,(S.brand||'Your box')+' made it home'));b.appendChild(el('p',null,'300 units of '+p.name.toLowerCase()+' sold in the USA at '+both(p.price)+' each. Here is where the dollars went.'));
-  const m=el('div','money');const bar=el('div','bar');const cols=['#E8563F','#F2A93B','#7B5CD6','#4CC96A'];[[amz],[fba],[conv],[netUSD]].forEach(([v],i)=>{const it=document.createElement('i');it.style.width=(v/gross*100)+'%';it.style.background=cols[i];bar.appendChild(it);});m.appendChild(bar);
-  const lg=el('div','legend');[['Amazon fee',0],['Warehouse + delivery',1],['Currency change',2],['Yours',3]].forEach(([k,i])=>{const s=el('span');const sw=el('i');sw.style.background=cols[i];s.appendChild(sw);s.appendChild(document.createTextNode(k));lg.appendChild(s);});m.appendChild(lg);
-  [['Customers paid',both(gross),''],['Amazon\u2019s 15% cut','\u2212'+both(amz),'neg'],['Warehouse and delivery fee','\u2212'+both(fba),'neg'],['Dollars to rupees, 3%','\u2212'+both(conv),'neg'],['Landed in your bank',fmtINR(netINR)+' ('+fmtUSD(netUSD)+')','pos']].forEach(([k,v,cls])=>{const r=el('div','row');r.appendChild(el('span',null,k));r.appendChild(el('span',cls,v));m.appendChild(r);});b.appendChild(m);
-  const g=el('div','endgrid');[['You started with',fmtINR(START_WALLET),''],['You spent',fmtINR(S.spent),'neg'],['First batch result',(delta>=0?'+':'')+fmtINR(delta),delta>=0?'pos':'neg'],['Next batch, same 300 units',(nextProfit>=0?'+':'')+fmtINR(nextProfit),nextProfit>=0?'pos':'neg'],['Weeks on the road',String(S.weeks),''],['Stamps collected',S.stamps.length+' / '+Object.keys(STAMPS).length,'']].forEach(([k,v,cls])=>{const t=el('div','tile');t.appendChild(el('div','k',k));t.appendChild(el('div','v '+cls,v));g.appendChild(t);});b.appendChild(g);
-  b.appendChild(el('p',null,delta>=0?'The first batch already paid for the setup. Everything from here is easier.':'The first batch paid for the setup: trademark, tests, photos, bond. Those never repeat. The next batch is where the profit lives.'));
-  if(refund)b.appendChild(el('p',null,'Your 18% tax deposit came back after 7 months: '+fmtINR(refund)+'.'));
+function langSwitch(){const w=el('div','lang');w.setAttribute('role','group');w.setAttribute('aria-label','Language');
+  [['en','English'],['hinglish','Hinglish']].forEach(([k,name])=>{const b=el('button',LANG===k?'on':'',name);b.setAttribute('aria-pressed',String(LANG===k));b.addEventListener('click',()=>{if(LANG!==k)setLang(k);AudioKit.sfx.blip();});w.appendChild(b);});return w;}
+function showTitle(saved){const b=ov(false);reopen=()=>showTitle(saved);const lg=logoCanvas();lg.className='logo';b.appendChild(lg);b.appendChild(el('h1',null,t('From an Indian workshop to an American doorstep')));b.appendChild(el('p',null,t('Carry one box through 17 stops. Tap, pick, stamp. Every price is in dollars and rupees. Music plays, so turn the sound up or tap the speaker to mute.')));
+  b.appendChild(langSwitch());
+  const a=el('div','actions');const hasSave=saved&&saved.product;
+  if(hasSave){const c=el('button','btn go',saved.done?t('See my results'):saved.year>1?tf('Continue year {n}',{n:saved.year}):t('Continue'));c.addEventListener('click',()=>start(saved));a.appendChild(c);}
+  const n=el('button','btn'+(hasSave?' sec':''),t(hasSave?'New game':'Tap to start'));n.addEventListener('click',()=>start(null));a.appendChild(n);b.appendChild(a);
+  b.appendChild(el('div','credits',t('A plain-words game about exporting from India and selling on Amazon USA. Example numbers at \u20B984 per dollar, not advice. Free and open source under the MIT license.')));}
+function showPassport(){const b=ov(true);reopen=showPassport;b.appendChild(el('h2',null,tf('Passport \u00B7 {n} / {total} stamps',{n:S.stamps.length,total:Object.keys(STAMPS).length})));b.appendChild(el('p',null,t('Tap a stamp to see what it means.')));const g=el('div','pass');
+  Object.keys(STAMPS).forEach((id,i)=>{const got=S.stamps.includes(id);const s=el('div','stamp'+(got?' got':''));s.style.setProperty('--rot',((i*37)%9-4)+'deg');const seal=el('div','seal');seal.style.color=got?['#B93A27','#2F63B0','#2E9A4B','#D98C1F'][i%4]:'';seal.appendChild(document.createTextNode(id));seal.appendChild(el('small',null,t(STAMPS[id][0])));s.appendChild(seal);s.tabIndex=0;const show=()=>{$('#stamp-say').textContent=(got?'':t('Not yet.')+' ')+t(STAMPS[id][0])+': '+t(STAMPS[id][1]);AudioKit.sfx.blip();};s.addEventListener('click',show);s.addEventListener('keydown',e=>{if(e.key==='Enter')show();});g.appendChild(s);});
+  b.appendChild(g);const say=el('div');say.id='stamp-say';say.textContent=t('Every official word in this journey, collected as a stamp.');b.appendChild(say);
+  const a=el('div','actions');const c=el('button','btn',t('Back to the road'));c.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});a.appendChild(c);
+  const r=el('button','btn sec danger',t('Restart journey'));r.addEventListener('click',()=>{AudioKit.sfx.blip();a.innerHTML='';const y=el('button','btn danger',t('Yes, start over'));y.addEventListener('click',restart);const n=el('button','btn sec',t('Keep going'));n.addEventListener('click',()=>{AudioKit.sfx.blip();closeOv();});a.appendChild(y);a.appendChild(n);});a.appendChild(r);b.appendChild(a);}
+function showEnd(fresh){S.done=true;save();if(fresh)AudioKit.sfx.win();const p=PRODUCTS[S.product],r=yearResult(),pay=r.pay,u=unitsOf(S);const best=bestScore(fresh?r.score:null);prepareCard(r);
+  const last=S.history&&S.history[S.history.length-1];const brand=S.brand||t('Your box');
+  const b=ov(true);reopen=()=>showEnd(false);b.appendChild(el('h1',null,S.year>1?tf('{brand}: year {n} done',{brand,n:S.year}):tf('{brand} made it home',{brand})));b.appendChild(el('p',null,tf('{n} units of {product} sold in the USA at {price} each. Here is where the dollars went.',{n:fmtN(u),product:t(p.name).toLowerCase(),price:both(p.price)})));
+  b.appendChild(scoreBlock(r,best));
+  const m=el('div','money');const bar=el('div','bar');const cols=['#E8563F','#F2A93B','#7B5CD6','#4CC96A'];[pay.amz,pay.fba,pay.conv,pay.netUSD].forEach((v,i)=>{const it=document.createElement('i');it.style.width=(v/pay.gross*100)+'%';it.style.background=cols[i];bar.appendChild(it);});m.appendChild(bar);
+  const lg=el('div','legend');[[t('Amazon fee'),0],[t('Warehouse + delivery'),1],[t('Currency change'),2],[t('Yours'),3]].forEach(([k,i])=>{const s=el('span');const sw=el('i');sw.style.background=cols[i];s.appendChild(sw);s.appendChild(document.createTextNode(k));lg.appendChild(s);});m.appendChild(lg);
+  [[t('Customers paid'),both(pay.gross),''],[t('Amazon\u2019s 15% cut'),'\u2212'+both(pay.amz),'neg'],[t('Warehouse and delivery fee'),'\u2212'+both(pay.fba),'neg'],[t('Dollars to rupees, 3%'),'\u2212'+both(pay.conv),'neg'],[t('Landed in your bank'),fmtINR(pay.netINR)+' ('+fmtUSD(pay.netUSD)+')','pos']].forEach(([k,v,cls])=>{const row=el('div','row');row.appendChild(el('span',null,k));row.appendChild(el('span',cls,v));m.appendChild(row);});b.appendChild(m);
+  const sign=n=>(n>=0?'+':'')+fmtINR(n),cls=n=>n>=0?'pos':'neg';let tiles;
+  if(S.year>1)tiles=[[t('You started the year with'),fmtINR(r.start),''],[t('You spent'),fmtINR(S.spent),'neg'],[t('This year\u2019s result'),sign(r.delta),cls(r.delta)],[t('Last year\u2019s result'),last?sign(last.delta):'\u2013',last?cls(last.delta):''],[t('Weeks on the road'),String(S.weeks),''],[t('Stamps collected'),S.stamps.length+' / '+Object.keys(STAMPS).length,'']];
+  else{const perBatch=prodCost(S)+9000+(S.air?90000:35000)+dutyINR(S)+25000+20000+10200;const nextProfit=pay.netINR-perBatch;
+    tiles=[[t('You started with'),fmtINR(START_WALLET),''],[t('You spent'),fmtINR(S.spent),'neg'],[t('First batch result'),sign(r.delta),cls(r.delta)],[tf('Next batch, same {n} units',{n:UNITS}),sign(nextProfit),cls(nextProfit)],[t('Weeks on the road'),String(S.weeks),''],[t('Stamps collected'),S.stamps.length+' / '+Object.keys(STAMPS).length,'']];}
+  const g=el('div','endgrid');tiles.forEach(([k,v,c])=>{const tile=el('div','tile');tile.appendChild(el('div','k',k));tile.appendChild(el('div','v '+c,v));g.appendChild(tile);});b.appendChild(g);
+  if(S.year>1)b.appendChild(el('p',null,t(last&&r.delta>=last.delta?'Better than last year. The setup is paid for, so more of every sale is yours.':'Less than last year. A bigger batch ties up more cash, and costly picks add up.')));
+  else b.appendChild(el('p',null,t(r.delta>=0?'The first batch already paid for the setup. Everything from here is easier.':'The first batch paid for the setup: trademark, tests, photos, bond. Those never repeat. The next batch is where the profit lives.')));
+  if(r.refund)b.appendChild(el('p',null,tf('Your 18% tax deposit came back after 7 months: {amount}.',{amount:fmtINR(r.refund)})));
   b.appendChild(sessionPromo('end-results'));
-  const a=el('div','actions');const pp=el('button','btn sec','Passport');pp.addEventListener('click',()=>{AudioKit.sfx.blip();showPassport();});a.appendChild(pp);const ag=el('button','btn go','Play again, new product');ag.addEventListener('click',()=>{AudioKit.sfx.blip();restart();});a.appendChild(ag);b.appendChild(a);
-  const cr=el('div','credits');cr.innerHTML='Example numbers at \u20B984 per dollar. Rules and duty rates change; check before you spend. <a href="'+GUIDE_URL+'" target="_blank" rel="noopener">Read the full written guide</a>.';b.appendChild(cr);}
+  const a=el('div','actions');[[t('Passport'),'sec',showPassport],[t('Play again, new product'),'sec',restart],[tf('Start year {n}',{n:S.year+1}),'go',nextYear]].forEach(([label,c,fn])=>{const btn=el('button','btn '+c,label);btn.addEventListener('click',()=>{AudioKit.sfx.blip();fn();});a.appendChild(btn);});b.appendChild(a);
+  const cr=el('div','credits');cr.appendChild(document.createTextNode(t('Example numbers at \u20B984 per dollar. Rules and duty rates change; check before you spend.')+' '));const gl=el('a',null,t('Read the full written guide'));gl.href=GUIDE_URL;gl.target='_blank';gl.rel='noopener';cr.appendChild(gl);cr.appendChild(document.createTextNode('.'));b.appendChild(cr);}
+
+/* ---- language ---- */
+function setLang(k){LANG=k==='hinglish'?'hinglish':'en';try{localStorage.setItem(LANG_KEY,LANG);}catch(e){}applyStaticText();if(trackBuilt)buildTrack();if(S&&S.started)hud();setMuteUI(AudioKit.isMuted());
+  if(overlay.classList.contains('show')&&reopen)reopen();
+  if(S&&S.started){if(S.done)doneCard();else if(arrived)renderStep();else travelCard();}}
+function applyStaticText(){document.documentElement.lang=LANG==='hinglish'?'hi-Latn':'en';document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=t(e.dataset.t);});document.querySelectorAll('[data-t-title]').forEach(e=>{e.title=t(e.dataset.tTitle);e.setAttribute('aria-label',e.title);});
+  const lb=$('#btn-lang');lb.textContent=LANG==='hinglish'?'English':'Hinglish';lb.title=LANG==='hinglish'?'Switch to English':'Hinglish mein khelein';}
 
 /* ============ LOOP + INPUT ============ */
 let W=320,scale=2,camX=0,lastT=0,tt=0,curSong='',stepT=0;
@@ -785,7 +1659,7 @@ function draw(){const px0=S?S.px:START_X;const pal=paletteAt(px0);view.style.bac
   for(const p of PROPS){const sx=p.x-camX;if(sx<-80||sx>W+80)continue;drawProp(ctx,sx,p,tt);}
   const cur=S?S.station:0;
   STATIONS.forEach((st,i)=>{const sx=st.x-camX;if(sx<-140||sx>W+140)return;drawBuilding(ctx,sx,st.building,tt);
-    if(i<cur){rect(ctx,sx+16,GROUND-st.building.h-16,1,14,PAL.k);rect(ctx,sx+17,GROUND-st.building.h-16,8,6,PAL.g);rect(ctx,sx+18,GROUND-st.building.h-14,3,1,PAL.w);}
+    if(i<cur||(S&&!activeAt(i))){rect(ctx,sx+16,GROUND-st.building.h-16,1,14,PAL.k);rect(ctx,sx+17,GROUND-st.building.h-16,8,6,PAL.g);rect(ctx,sx+18,GROUND-st.building.h-14,3,1,PAL.w);}
     else if(i===cur&&!arrived&&S)drawArrow(ctx,sx,GROUND-st.building.h-30+Math.sin(tt*6)*3);});
   const px=px0-camX;
   if(sea){drawShip(ctx,px-40,GROUND-14);drawMap(ctx,MAPS[frameName()],px-6,GROUND-38,1);}else drawMap(ctx,MAPS[frameName()],px-6,GROUND-18,1);
@@ -802,14 +1676,17 @@ view.addEventListener('pointerdown',e=>{if(!S||!S.started)return;const r=view.ge
 ['pointerup','pointercancel','pointerleave'].forEach(ev=>view.addEventListener(ev,()=>{manual=0;}));
 window.addEventListener('blur',()=>{manual=0;});
 $('#btn-pass').addEventListener('click',()=>{if(!S||!S.started)return;AudioKit.sfx.blip();if(overlay.querySelector('.ov .x'))closeOv();else if(!overlay.classList.contains('show'))showPassport();});
-function setMuteUI(m){const b=$('#btn-mute');b.setAttribute('aria-pressed',m?'false':'true');b.title=m?'Music is off. Tap to turn on.':'Music is on. Tap to mute.';const c=b.querySelector('canvas');const s=iconCanvas(m?'mute':'note',3);c.width=s.width;c.height=s.height;c.getContext('2d').drawImage(s,0,0);}
+$('#btn-lang').addEventListener('click',()=>{setLang(LANG==='hinglish'?'en':'hinglish');AudioKit.sfx.blip();});
+function setMuteUI(m){const b=$('#btn-mute');b.setAttribute('aria-pressed',m?'false':'true');b.title=t(m?'Music is off. Tap to turn on.':'Music is on. Tap to mute.');const c=b.querySelector('canvas');const s=iconCanvas(m?'mute':'note',3);c.width=s.width;c.height=s.height;c.getContext('2d').drawImage(s,0,0);}
 $('#btn-mute').addEventListener('click',()=>{const m=!AudioKit.isMuted();AudioKit.setMuted(m);try{localStorage.setItem('one-box-muted',m?'1':'0');}catch(e){}setMuteUI(m);if(!m)AudioKit.sfx.blip();});
-function start(saved){AudioKit.init();closeOv();S=saved||fresh();S.started=true;walking=false;hurry=false;manual=0;arrived=false;applied=null;curSong='';if(!trackBuilt)buildTrack();hud();
+function start(saved){AudioKit.init();closeOv();S=saved||fresh();S.started=true;walking=false;hurry=false;manual=0;arrived=false;curSong='';if(!trackBuilt)buildTrack();hud();
   if(S.station>=STATIONS.length||S.done){S.station=Math.min(S.station,STATIONS.length-1);showEnd(false);doneCard();return;}
+  while(S.station<STATIONS.length-1&&!activeAt(S.station))S.station++;
   const target=STATIONS[S.station];if(S.px>=target.x-6-0.01){S.px=target.x-6;arrive();}else travelCard();save();}
 
 /* boot */
-AudioKit.setMuted(getMuted());setMuteUI(getMuted());resize();requestAnimationFrame(frame);
-const savedGame=load();showTitle(savedGame&&savedGame.product&&!savedGame.done?savedGame:null);
+applyStaticText();AudioKit.setMuted(getMuted());setMuteUI(getMuted());resize();requestAnimationFrame(frame);
+/* A finished game is offered too, so its results and the next year stay one tap away. */
+const savedGame=load();showTitle(savedGame&&savedGame.product?savedGame:null);
 </script>
 </html>

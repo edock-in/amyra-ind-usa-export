@@ -13,7 +13,8 @@ html,body{height:100%}
 body{margin:0;background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.35;overflow:hidden}
 button{font-family:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--marigold);outline-offset:2px}
-#app{height:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;background:var(--night);position:relative}
+#app{height:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;background:var(--night);position:relative;overflow:hidden}
+/* overflow: the stamp pop-up starts at 2.6x size; unclipped it widened the page, so phones opened it zoomed out */
 
 /* mute, always on top */
 #btn-mute{position:absolute;right:10px;top:calc(8px + env(safe-area-inset-top,0px));z-index:80;width:40px;height:40px;border-radius:10px;background:var(--marigold);border:2px solid var(--ink);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;box-shadow:0 3px 0 var(--ink),0 0 0 3px rgba(255,255,255,.25)}
@@ -87,6 +88,33 @@ button{font-family:inherit;cursor:pointer}
 .btn.go{background:var(--green)}
 .btn.walk{background:var(--blue);color:#FFF}
 .btn.danger{background:#FFD9D2;color:var(--red2)}
+.actions.many .btn{flex:1 1 calc(50% - 5px)}
+.actions.many .btn.go{flex-basis:100%}
+/* surprise cards */
+.card.event{border-color:var(--red2);box-shadow:0 4px 0 var(--red2);position:relative;padding-top:24px}
+.ribbon{position:absolute;left:12px;top:-12px;display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#FFF;border:2px solid var(--ink);border-radius:6px;padding:5px 8px 4px;font-family:var(--f-title);font-size:9px;letter-spacing:.04em;line-height:1}
+.ribbon canvas{image-rendering:pixelated;width:16px;height:16px;background:#FFF;border-radius:3px}
+.shield{margin-top:10px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--green2);background:#E1F7E6;border:2px dashed var(--green2);border-radius:8px;padding:8px 10px}
+.shield .mini{flex:none;min-width:44px;height:44px;border-radius:50%;border:3px double var(--green2);display:flex;align-items:center;justify-content:center;font-family:var(--f-title);font-size:7px;padding:2px;transform:rotate(-8deg);background:#FFF}
+.quote{margin-top:10px;font-size:16px;font-weight:500;line-height:1.35;background:#FFF;border:2px solid var(--ink);border-left:6px solid var(--blue2);border-radius:8px;padding:10px 12px}
+.quote::before{content:"\201C"}.quote::after{content:"\201D"}
+/* language */
+#btn-lang{border-color:var(--marigold);color:var(--marigold)}
+.lang{display:flex;justify-content:center;gap:0;margin:14px auto 0;border:2px solid var(--ink);border-radius:10px;overflow:hidden;width:max-content;max-width:100%}
+.lang button{font-family:var(--f-body);font-weight:700;font-size:14px;padding:9px 16px;background:#FFF;color:var(--ink);border:0;line-height:1.1}
+.lang button+button{border-left:2px solid var(--ink)}
+.lang button.on{background:var(--ink);color:var(--marigold)}
+/* score */
+.score{margin-top:14px;background:#FFF;border:2px solid var(--ink);border-radius:10px;padding:12px}
+.score .rank{display:flex;align-items:center;gap:12px}
+.score .rank canvas{image-rendering:pixelated;width:48px;height:48px;flex:none;background:#FFF1CF;border:2px solid var(--ink);border-radius:8px}
+.score .rk{font-family:var(--f-title);font-size:clamp(11px,3.4vw,14px);line-height:1.5;color:var(--red2)}
+.score .sc{font-weight:700;font-size:16px;margin-top:2px;font-variant-numeric:tabular-nums}
+.score .bits{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:13px;color:var(--ink2)}
+.score .bits b{color:var(--ink);font-size:15px}
+.score .how{font-size:12px;color:var(--ink2);margin-top:6px;line-height:1.35}
+.score .actions{margin-top:10px}
+.score .btn.sec{flex-grow:1}
 .btn:disabled{opacity:.5;cursor:default}
 .more{margin-top:10px;font-size:13px;color:var(--ink2);background:none;border:0;padding:0;text-decoration:underline dotted;text-underline-offset:3px}
 .detail{margin-top:8px;font-size:15px;line-height:1.35;color:var(--ink);background:var(--panel2);padding:10px 12px;border-radius:8px;border-left:5px solid var(--marigold2)}
@@ -103,9 +131,11 @@ button{font-family:inherit;cursor:pointer}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 
 /* OVERLAYS */
-#overlay{position:absolute;inset:0;background:rgba(14,16,36,.94);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto;z-index:30}
+#overlay{position:absolute;inset:0;background:rgba(14,16,36,.94);display:none;align-items:center;justify-content:center;padding:calc(58px + env(safe-area-inset-top,0px)) 16px 16px;overflow-y:auto;z-index:30}
+/* the top padding keeps a tall panel's close button clear of the music button above it */
 #overlay.show{display:flex}
 .ov{position:relative;width:100%;max-width:560px;background:var(--panel);border:2px solid var(--ink);border-radius:12px;box-shadow:0 8px 0 #000;padding:18px 16px 20px;color:var(--ink);margin:auto}
+.ov .x~h1{padding:0 34px}
 .ov h1{font-family:var(--f-title);font-size:clamp(12px,3.6vw,18px);line-height:1.6;margin:0;text-wrap:balance;text-align:center}
 .ov h2{font-weight:700;font-size:18px;line-height:1.3;margin:0 0 6px}
 .ov p{margin:10px 0 0;font-size:15px;line-height:1.35;text-align:center}
@@ -119,6 +149,7 @@ button{font-family:inherit;cursor:pointer}
 .prod .tag{font-size:12px;font-weight:400;color:var(--ink2)}
 .prod:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
 .prod.sel{background:#E1F7E6;border-color:var(--green2);box-shadow:0 3px 0 var(--green2)}
+.prod:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 5px)}
 .pass{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:12px}
 .stamp{aspect-ratio:1;border:2px dashed var(--panel2);border-radius:8px;display:flex;align-items:center;justify-content:center;background:#FFF;padding:4px;cursor:pointer}
 .stamp.got{border-style:solid;border-color:var(--ink);transform:rotate(var(--rot,-4deg))}

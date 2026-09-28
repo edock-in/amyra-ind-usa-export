@@ -10,6 +10,7 @@
 - [ ] Every new or changed rule, fee or rate has an official source linked below.
 - [ ] Player-facing text is plain words, one short line per card.
 - [ ] Dollar amounts also show rupees.
+- [ ] New or changed lines have Hinglish in `src/hinglish.js` (`node tools/hinglish-check.js`).
 - [ ] I played one full run at phone width and on a desktop, with sound on and off.
 
 ## Sources

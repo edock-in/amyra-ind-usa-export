@@ -17,6 +17,7 @@ bottle:['......kkkk......','.....kMMMMk.....','.....kMMMMk.....','......kmmk....
 spice:['.....kkkkkk.....','....kNNNNNNk....','....kNNNNNNk....','.....kkkkkk.....','...kkllllllkk...','..kllrrrrrrllk..','..klrrrrrrrrlk..','..klrrrrrrrrlk..','..kwwwwwwwwwwk..','..kwwyoooywwwk..','..kwwoorrooywk..','..kwwwwwwwwwwk..','..klrrrrrrrrlk..','..klrrrrrrrrlk..','..kkllllllllkk..','...kkkkkkkkkk...'],
 toy:['.......kk.......','......kyyk......','.......kk.......','.....kkkkkk.....','....krrrrrrk....','...kkkkkkkkkk...','...kooooooook...','..kkkkkkkkkkkk..','..kyyyyyyyyyyk..','.kkkkkkkkkkkkkk.','.kggggggggggggk.','kkkkkkkkkkkkkkkk','kbbbbbbbbbbbbbbk','kkkkkkkkkkkkkkkk','.kNNNNNNNNNNNNk.','..kkkkkkkkkkkk..'],
 throw:['................','................','..kkkkkkkkkkkk..','.kcccccccccccck.','.kcccccccccccck.','.kwwwwwwwwwwwwk.','.kcccccccccccck.','.kkkkkkkkkkkkkk.','.kppppppppppppk.','.kwwwwwwwwwwwwk.','.kppppppppppppk.','.kkkkkkkkkkkkkk.','..kkkkkkkkkkkk..','....k.k.k.k.....','....k.k.k.k.....','................'],
+balm:['................','................','................','...kkkkkkkkkk...','..kGGGGGGGGGGk..','..kggggggggggk..','..kkkkkkkkkkkk..','..kyyyyyyyyyyk..','..kyyyGyyrryyk..','..kyyGGGyyyyyk..','..kyyyGyyrryyk..','..kyyyyyyyyyyk..','..kOOOOOOOOOOk..','...kkkkkkkkkk...','................','................'],
 heart:['..kk..kk..','.krrkkrrk.','krrrrrrrrk','krrwrrrrrk','krrrrrrrrk','.krrrrrrk.','..krrrrk..','...krrk...','....kk....'],
 };
 function drawMap(ctx,map,x,y,s){s=s||1;for(let r=0;r<map.length;r++){const row=map[r];for(let c=0;c<row.length;c++){const ch=row[c];if(ch==='.')continue;ctx.fillStyle=PAL[ch]||ch;ctx.fillRect(x+c*s,y+r*s,s,s);}}}
@@ -84,6 +85,14 @@ timer:'C8 9 6 w;C8 9 6 k;C8 9 5 w;R7 1 2 2 k;R8 5 1 4 k;R8 9 3 1 k;R4 11 8 1 r',
 key:'C5 6 3 y;C5 6 3 k;C5 6 2 y;R7 5 8 2 y;O7 5 8 2 k;R12 7 1 2 y;R14 7 1 3 y',
 ticket:'R1 4 14 9 y;O1 4 14 9 k;R1 7 2 3 k;R14 7 1 3 k;R10 5 1 1 k;R10 7 1 1 k;R10 9 1 1 k;R10 11 1 1 k;R4 6 4 1 r;R4 8 5 1 O;R4 10 3 1 O',
 map:'R1 2 14 12 s;O1 2 14 12 k;L3 4 6 8 b;L6 8 10 6 b;L10 6 13 11 b;R4 10 2 2 g;R9 4 2 2 r',
+diya:'R7 2 2 5 y;R8 1 1 1 o;R7 6 2 1 O;R8 3 1 2 w;R2 9 12 2 m;O2 9 12 2 k;R3 11 10 2 M;O3 11 10 2 k;R5 13 6 1 k;R1 8 2 1 k;R13 8 2 1 k',
+phone:'R4 1 8 14 k;R5 3 6 9 c;R7 2 2 1 d;R7 13 2 1 w;R7 4 2 5 r;R7 10 2 1 r',
+rain:'C5 5 3 l;C10 4 4 l;R2 5 13 4 l;O2 5 13 4 d;R3 4 11 1 l;L4 11 3 13 b;L8 11 7 13 b;L12 11 11 13 b;L6 14 5 15 b;L10 14 9 15 b',
+news:'R1 3 14 11 w;O1 3 14 11 k;R3 5 10 2 k;R3 8 4 4 c;O3 8 4 4 k;R8 8 5 1 e;R8 10 5 1 e;R3 12 10 1 e;R13 2 2 2 r',
+calendar:'R2 3 12 12 w;O2 3 12 12 k;R3 4 10 3 r;R4 1 1 4 k;R11 1 1 4 k;R4 9 2 2 e;R7 9 2 2 e;R10 9 2 2 e;R4 12 2 2 e;R7 12 2 2 G;R10 12 2 2 e',
+onestar:'R1 3 14 11 w;O1 3 14 11 k;M star 2 5;R11 6 3 1 e;R11 8 3 1 e;R11 10 2 1 e',
+trophy:'R4 2 8 6 y;O4 2 8 6 k;R2 3 2 1 k;R2 3 1 3 k;R3 6 1 1 k;R12 3 2 1 k;R13 3 1 3 k;R12 6 1 1 k;R6 3 1 3 w;R7 8 2 3 O;R5 11 6 1 O;R4 12 8 3 N;O4 12 8 3 k;R6 13 4 1 y',
+share:'R2 6 9 9 w;O2 6 9 9 k;L6 10 13 3 G;L7 10 14 3 G;R10 2 5 1 G;R14 2 1 5 G',
 };
 const iconCache={};
 function px(ctx,x,y,c){ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}

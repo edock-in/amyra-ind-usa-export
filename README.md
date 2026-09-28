@@ -14,7 +14,7 @@ You carry one branded box from a workshop in India to a customer's doorstep in A
 
 | # | Stop | What you do there | Stamps you earn |
 |---|------|-------------------|-----------------|
-| 1 | Bazaar | Pick a product: copper bottle, spice blend, wooden toy or cotton throw | |
+| 1 | Bazaar | Pick a product: copper bottle, spice blend, wooden toy, cotton throw or pain relief balm | |
 | 2 | Workshop | Choose a maker and get the design in writing | Golden sample, Design paper |
 | 3 | Cyber Café | Name your brand and file a US trademark | Trademark |
 | 4 | DGFT | Get India's exporter ID | IEC |
@@ -23,10 +23,10 @@ You carry one branded box from a workshop in India to a customer's doorstep in A
 | 7 | Seller Central | Open Amazon USA, get a US tax number, declare you live outside the US | Seller account, EIN, W-8BEN |
 | 8 | Factory | Make 300 units with the brand printed on, inspect, photograph | First batch |
 | 9 | Brand Registry | Prove the brand is yours, buy genuine barcodes | Brand Registry, GS1 barcode |
-| 10 | Rules Lab | Pass US product rules, which differ by product | FDA, CPC or US label, Made in India |
+| 10 | Rules Lab | Pass US product rules, which differ by product. The balm is a medicine in the US | FDA, FDA drug listing, CPC or US label, Made in India |
 | 11 | Photo Studio | Pick the main photo and the words Americans search for | Listing live |
 | 12 | Port | Ship or fly, and choose who answers to US customs | Importer of Record, Shipping bill |
-| 13 | US Customs | Pay import duty | |
+| 13 | US Customs | Answer the officer's five questions about your stamps, then pay import duty | |
 | 14 | FBA Warehouse | Check stock in, run ads, get honest first reviews | In FBA, Launched |
 | 15 | Customer | Deliver the box | |
 | 16 | Your Bank | Collect the receipt proving the dollars arrived | FIRA |
@@ -39,8 +39,16 @@ You carry one branded box from a workshop in India to a customer's doorstep in A
 - **Change** undoes any pick before you move on, with the money and weeks refunded.
 - **Track** your progress in the top bar: money spent, weeks passed, money left, and a checklist of all 17 stops.
 - **Finish** to see where every dollar of a sale goes, shown in dollars and rupees, and whether your first batch paid for itself.
+- **Score** out of 100 at the end: 6 points off for each wrong pick, 3 for each costly pick you keep, 1 for each week over par. It comes with a rank, from First-timer to Export champion, and your best score is remembered.
+- **Share** your rank as a picture on WhatsApp, or save the picture.
+- **Play another year** with the same brand. The money carries over and the setup stays done, so only the yearly renewals, the factory, shipping, customs, the warehouse and getting paid are left. You choose how big the batch is, as long as you can afford it.
+- **Switch language** between English and Hinglish on the title screen or with the button in the top bar.
 
 Music and sound are generated in the browser. The speaker button at the top-right mutes them. Progress saves in the browser, so players can come back and continue.
+
+### Surprises on the road
+
+Each year draws a few surprises from a pool (four in the first year, three after): Diwali shutting the factory, a scam call asking for your OTP, the monsoon at the port, a random customs check, a shopper's question, lost stock, a copycat seller, a better rupee rate, and April renewals. Some are a quick choice with a right answer. Others just happen, and a stamp you already earned protects you. Two more follow from your own picks: skipping the inspector brings faulty units and 1-star reviews, and Maker A sends a bigger bill.
 
 A longer written version of the same journey lives at [games.edock.io/amyra-ind-usa-export/guide](https://games.edock.io/amyra-ind-usa-export/guide/).
 
@@ -62,7 +70,8 @@ artifact.html       the same page without the <!doctype> wrapper, for hosts that
 guide/index.html    the written guide (built from src/guide.html)
 build.sh            rebuilds the three files above from src/
 src/
-  content.js        products, stamps and all 17 stops: the file most changes touch
+  content.js        products, stamps, all 17 stops, year 2, surprises, the officer's questions and the score
+  hinglish.js       every line a player reads, in Hinglish
   game.js           game state, cards, checklist, passport, end screen, input
   world.js          regions, buildings, props and scenery
   art.js            pixel sprites and icons, all drawn in code
@@ -71,6 +80,8 @@ src/
   body.html         page skeleton
   guide.html        the written guide
 docs/screenshot.png
+tools/
+  hinglish-check.js lists lines that have no Hinglish yet
 ```
 
 The whole game is one static HTML page with no dependencies and no build tools beyond `sh`. There are no image or audio files. Every sprite is drawn in code and every sound is synthesized, so the page works anywhere that can serve a file.
@@ -82,8 +93,17 @@ Most changes happen in `src/content.js`:
 - **`PRODUCTS`** sets each product's price in dollars, factory cost in rupees, Amazon warehouse fee, US duty rate and search words.
 - **`STAMPS`** holds each official term with its one-line meaning.
 - **`STATIONS`** holds the 17 stops. Each stop has a plain-words explanation and a list of steps. Each step offers choices, and each choice can cost rupees, add weeks, earn a stamp, or be wrong with a reason.
+- **`Y2`** holds what changes from the second year on. A stop that is not listed there is passed as already done.
+- **`EVENTS`** holds the surprises. Each one names the stop it appears at and builds a normal step, so its choices work like every other card.
+- **`RANKS`** and **`PAR_WEEKS`** set the score.
 - **`FX`** is the dollar-to-rupee rate used everywhere, currently 84.
 - **`SESSION`** is the live Edock session promoted at the end of the game: title, date, host, price, link and end time. Once the end time passes, the event card hides itself and the button points to all upcoming Edock sessions instead.
+
+Every line a player reads also has a Hinglish version in `src/hinglish.js`, keyed by the exact English line. A line without one shows in English, so nothing breaks, but run this to see what is missing:
+
+```bash
+node tools/hinglish-check.js
+```
 
 After any change in `src/`, rebuild and commit both the source and the built files:
 
@@ -105,7 +125,7 @@ Every link from the game to edock.io carries campaign tags, so Edock's Google An
 | `utm_content` | `end-results` for the results popup, `end-card` for the card that stays after it closes |
 | `utm_term` | the product the player chose: `bottle`, `spice`, `toy` or `throw` |
 
-The game itself has no analytics and sends nothing. The tags only travel when a player taps the link.
+The game itself has no analytics and sends nothing. The tags only travel when a player taps the link. The share button works the same way: it hands a picture and a message to the phone's share sheet, or opens WhatsApp with the message, and only when the player taps it.
 
 ## Contributing
 
@@ -117,7 +137,7 @@ Anyone else is welcome to open an issue, or to fork the project and make it thei
 
 This project is released under the [MIT License](LICENSE). You may copy, change, rebrand, host and sell this game or anything you build from it, for free or for profit, without asking us. The one condition is to keep the copyright and license notice in your copy.
 
-If you host your own copy, change `GUIDE_URL` in `src/game.js`, the address in `build.sh`, and `GAME_ID` and `SESSION` in `src/content.js` to your own.
+If you host your own copy, change `GUIDE_URL` in `src/game.js`, the address in `build.sh`, and `GAME_ID`, `GAME_URL` and `SESSION` in `src/content.js` to your own.
 
 ## Hosting
 
